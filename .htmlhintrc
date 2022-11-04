@@ -1,0 +1,10 @@
+{
+  "attr-value-not-empty": false,
+  "tag-pair": true,
+  "id-unique": true,
+  "space-tab-mixed-disabled": true,
+  "spec-char-escape": true,
+  "attr-no-duplication": true,
+  "attr-unsafe-chars": true,
+  "alt-require": true
+}
