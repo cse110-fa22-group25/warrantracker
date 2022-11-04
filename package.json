@@ -1,0 +1,32 @@
+{
+  "name": "warrantracker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "doc": "jsdoc -c jsdoc.json",
+    "lint": "npx eslint ./src --ext .js,.jsx,.ts,.tsx"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cse110-fa22-group25/warrantracker.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cse110-fa22-group25/warrantracker/issues"
+  },
+  "homepage": "https://github.com/cse110-fa22-group25/warrantracker#readme",
+  "dependencies": {
+    "jest": "^29.2.2",
+    "jsdoc": "^4.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.26.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.4.0",
+    "eslint-plugin-promise": "^6.1.1"
+  }
+}
