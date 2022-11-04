@@ -39,7 +39,7 @@ jobs:
           npm install
       - name: run_linter
         run:
-          npx run lint
+          npm run lint
 
   # Job: Generate documentation, put output in ./docs
   generate_docs:
