@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: continuous_integration
+name: continuous integration pipeline
 
 # Controls when the workflow will run
 on:
@@ -28,8 +28,8 @@ jobs:
         run:
           npm test
 
-  # Job: Lint files
-  lint_files:
+  # Job: Lint javascript files
+  lint_js:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -39,7 +39,33 @@ jobs:
           npm install
       - name: run_linter
         run:
-          npm run lint
+          npm run jslint
+
+  # Job: Lint html files
+  lint_html:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install stuff
+        run:
+          npm install
+      - name: run_linter
+        run:
+          npm run htmllint
+
+  # Job: Lint html files
+  lint_css:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install stuff
+        run:
+          npm install
+      - name: run_linter
+        run:
+          npm run csslint
 
   # Job: Generate documentation, put output in ./docs
   generate_docs:
