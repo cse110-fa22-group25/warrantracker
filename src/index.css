@@ -1,21 +1,35 @@
+html,
 body {
-  text-align: center;
-  background-color: gray;
+  height: 100%;
+  width: 100%;
 }
 
-h1 {
-  box-shadow: 2px 5px 5px black;
+.search-bar {
+  max-width: 510px;
+  margin-right: 10px;
+  height: 50px;
 }
 
-#inc-dis {
-  font-size: 200px;
+.search-btn {
+  width: 80px;
 }
 
-.btn {
-  background-color: #ffffff;
+.btn-labels {
+  display: inline-block;
+  vertical-align: middle;
+  overflow-x: auto;
+  white-space: nowrap;
+  width: 600px;
 }
 
-.btn:hover {
-  background-color: black;
-  color: white;
+.event-card {
+  min-height: 500px;
+}
+
+.card {
+  box-shadow: 13px 15px 48px -12px rgba(120, 116, 116, 0.7);
+  -webkit-box-shadow: 13px 15px 48px -12px rgba(120, 116, 116, 0.7);
+  -moz-box-shadow: 13px 15px 48px -12px rgba(120, 116, 116, 0.7);
+  border-width: 0;
+  height: 180px;
 }

@@ -1,0 +1,59 @@
+<div
+  class="modal fade"
+  id="infoModal"
+  tabindex="-1"
+  aria-labelledby="infoModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- Change the modal's header -->
+        <h1 class="modal-title fs-5" id="infoModalLabel">Info</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <!-- when edit the content of this modal, just edit the code below -->
+        <!-- need to change the input elements below to text info -->
+        <div class="mb-3">
+          <label for="title" class="form-label">Title:</label>
+          <p id="title"></p>
+          <input
+            type="text"
+            class="form-control"
+            id="title"
+            placeholder="Product Name"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="expDate" class="form-label">Expiration Date:</label>
+          <p id="expDate"></p>
+          <input type="date" class="form-control" id="expDate" />
+        </div>
+        <div class="mb-3">
+          <label for="serialNum" class="form-label">Serial #:</label>
+          <p id="serialNum"></p>
+          <input type="text" class="form-control" id="serialNum" />
+        </div>
+        <div class="mb-3">
+          <label for="note" class="form-label">Additional Notes:</label>
+          <p id="note"></p>
+          <textarea class="form-control" id="note" rows="5"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Delete
+        </button>
+        <button type="button" class="btn btn-primary" id="modifyProfile">
+          Modify
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
