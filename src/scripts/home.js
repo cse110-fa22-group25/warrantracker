@@ -3,22 +3,21 @@
 /**
  * Global Variables
  */
-let profileList = [];  // store all profile object
-let grid;              // the html element which is the parent for all profile cards
-let newProfileBtn;     // the first element in the grid (the card with a "+" sign);
-let infoModal;         // the modal showing up when clicking a profile card
-let newProfileModal;   // the modal showing up when clicking the new-profile-btn
+let profileList = []; // store all profile object
+let grid; // the html element which is the parent for all profile cards
+let newProfileBtn; // the first element in the grid (the card with a "+" sign);
+let infoModal; // the modal showing up when clicking a profile card
+let newProfileModal; // the modal showing up when clicking the new-profile-btn
 // add more below
 
-
-window.addEventListener('DOMContentLoaded', init)
+window.addEventListener('DOMContentLoaded', init);
 
 /**
  * Initialize page after load -- test change
  */
-function init () {
+function init() {
   // select needed html elements
-  grid = document.querySelector("#grid");
+  grid = document.querySelector('#grid');
   newProfileBtn = document.querySelector("#new-profile-btn");
   infoModal = document.querySelector("#infoModal");
   newProfileModal = document.querySelector("#newProfileModal");
@@ -33,8 +32,6 @@ function init () {
 
   // add more opeartions below
 
-
-
   // add event listeners below
   // handle when user click save-btn in new profile modal
   newProfileModal
@@ -44,7 +41,7 @@ function init () {
 
 /**
  * Construct a new Profile Object using the pass-in arguments
- * 
+ *
  * @param title the name of the product
  * @param tag the tag of the product
  * @param expDate the expiration date of the product
@@ -61,9 +58,9 @@ function Profile(title, tag, expDate, serialNum, note) {
 
 /**
  * Retreat the existing profileList in localStorage.
- * Return the parsed array in which there are profile 
+ * Return the parsed array in which there are profile
  * object. If nothing in the localStorage, return nothing.
- * 
+ *
  * @return an array contains profile objects or nothing
  */
 function getProfileFromStorage() {
@@ -80,9 +77,9 @@ function saveProfileToStoratge() {
 }
 
 /**
- * Create bootstrap card component to display the 
+ * Create bootstrap card component to display the
  * stored profileList in the localStorage
- * 
+ *
  * @param profiles an array contains profile objects
  */
 function addProfilesToDocument(profiles) {
@@ -139,10 +136,10 @@ function createProfile() {
  *    note that the card only contains a title and addition note for now, need to modify
  * 2. construct the card components using appendChild()
  * 3. add an event listener to the cardWrapper
- *    (when user clicks that card, the handler need to update 
+ *    (when user clicks that card, the handler need to update
  *     infoModal to display the corresponding info)
  * 4. return the newly created cardWrapper
- * 
+ *
  * @param profile an Profile object
  */
 function createCard(profile) {
@@ -168,8 +165,6 @@ function createCard(profile) {
 
   // can add some btn or other needed elements here
 
-
-
   // construct the Card Components here
   cardBody.appendChild(cardTitle);
   cardBody.appendChild(cardText);
@@ -188,12 +183,12 @@ function createCard(profile) {
  * update infoModal with corresponding profile info
  * 1. hide all the input element (<input>, <textarea>)
  * 2. select the elements we need to update in the infoModal
- * 3. change its value (innerHTML) to the corresponding param 
+ * 3. change its value (innerHTML) to the corresponding param
  *    in the passed-in profile object
  * 4. add event listener to the modify and delete button, which should
- *    change the displayed info to a input box so that user 
+ *    change the displayed info to a input box so that user
  *    can modify them.
- * 
+ *
  * @param profile an Profile object
  */
 function updateInfoModal(profile) {}
@@ -202,72 +197,72 @@ function updateInfoModal(profile) {}
  * Change the infoModal to editing mode. Change the corresponding
  * elements to <input></input> element; set the value of that input
  * with the corresponding profile.param
- * 
+ *
  * 1. select the elements we need to update in the infoModal
  * 2. hide these elements
  * 3. show the input elements and update their value with profile.param
  * 4. add event listener to the save button and cancel button
  *    when clicking save or cancel btn, modal need to be changed back
  *    to the display mode (no input boxes)
- * 
+ *
  * @param profile an Profile object
  */
 function changeInfoModalToEditMode(profile) {}
 
 /**
- * Change the infoModal to display mode. Remove/hide (depends on your 
- * implementation) <input> elements; create/display the non-input elements 
+ * Change the infoModal to display mode. Remove/hide (depends on your
+ * implementation) <input> elements; create/display the non-input elements
  * (like <p></p> or others you choose to use)
- * 
+ *
  * 1. select the input elements we need to update in the infoModal
  * 2. hide these elements
  * 3. show the non-input elements and update their value with profile.param
  * 4. add event listener to the modify button, which should
- *    change the displayed info to a input box so that user 
+ *    change the displayed info to a input box so that user
  *    can modify them.
  * 5. add event listener to the delete button (should pop up a notification)
- * 
+ *
  * @param profile an Profile object
  */
 function changeInfoModalToDisplayMode(profile) {}
 
 /**
- * Delete the passed-in profile. Need to delete 
+ * Delete the passed-in profile. Need to delete
  * the corresponding card component, profile object, etc.
- * 
+ *
  * 1. remove the profile from profileList
  * 2. save the new profileList to localStorage
  * 3. remove corresponding card component
- * 
+ *
  * @param profile an Profile object
  */
 function deleteProfile(profile) {}
 
 /**
  * display all the cards with the same tag on main page
- * 
- * 1. for each profile in profileList, check if it has 
- *    such a tag. if it has, add this profile object to a 
+ *
+ * 1. for each profile in profileList, check if it has
+ *    such a tag. if it has, add this profile object to a
  *    temp list.
  * 2. remove all card components in grid
- * 3. call addProfilesToDocument(profiles) to display the 
+ * 3. call addProfilesToDocument(profiles) to display the
  *    profile we just added to the temp list
- * 
+ *
  * @param tag an tag
  */
 function sortByTag(tag) {}
 
 /**
- * Search the card by keyword. Display all the cards matching 
- * that keyword (or sentence). 
- * 
- * 1. for each profile in profileList, check all the params if 
+ * Search the card by keyword. Display all the cards matching
+ * that keyword (or sentence).
+ *
+ * 1. for each profile in profileList, check all the params if
  *    there are strings matches the keyword. If there is, add the
  *    profile to a temp list
  * 2. remove all card components in grid
- * 3. call addProfilesToDocument(profiles) to display the 
+ * 3. call addProfilesToDocument(profiles) to display the
  *    profile we just added to the temp list
- * 
- * @param keyWord a string 
+ *
+ * @param keyWord a string
  */
 function search(keyWord) {}
