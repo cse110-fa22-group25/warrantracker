@@ -8,7 +8,7 @@
     "doc": "jsdoc -c jsdoc.json",
     "jslint": "npx eslint ./src --ext .js,.jsx,.ts,.tsx",
     "htmllint": "npx htmlhint \"./src/**/*.html\"",
-    "csslint": "npx stylelint \"./src/**/*.css\""
+    "csslint": "npx stylelint \"./src/**/*.css\" --aei"
   },
   "repository": {
     "type": "git",

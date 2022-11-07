@@ -11,5 +11,13 @@
         "ecmaVersion": "latest"
     },
     "rules": {
+        "semi": ["off", "always"],
+        "quotes": ["off", "double"],
+        "no-unused-vars": ["warn", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }],
+        "prefer-const": ["warn", {
+            "destructuring": "any",
+            "ignoreReadBeforeAssign": false
+        }],
+        "space-before-function-paren": ["off", "always"]
     }
 }

@@ -1,0 +1,71 @@
+<div
+  class="modal fade"
+  id="newProfileModal"
+  tabindex="-1"
+  aria-labelledby="newProfileModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- Change the modal's header -->
+        <h1 class="modal-title fs-5" id="newProfileModalLabel">New Profile</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <!-- when edit the content of this modal, just edit the code below -->
+        <div class="mb-3">
+          <label for="title" class="form-label">Title:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="newProfileModal-title"
+            placeholder="Product Name"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="expDate" class="form-label">Expiration Date:</label>
+          <input
+            type="date"
+            class="form-control"
+            id="newProfileModal-expDate"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="serialNum" class="form-label">Serial #:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="newProfileModal-serialNum"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="note" class="form-label">Additional Notes:</label>
+          <textarea
+            class="form-control"
+            id="newProfileModal-note"
+            rows="5"
+          ></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-bs-dismiss="modal"
+          id="createProfile"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
