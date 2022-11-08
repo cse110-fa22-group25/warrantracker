@@ -277,3 +277,15 @@ function sortByTag(tag) {}
  * @param {String} keyWord a string
  */
 function search(keyWord) {}
+
+module.exports = {
+  createProfile,
+  createCard,
+  updateInfoModal,
+  changeInfoModalToDisplayMode,
+  changeInfoModalToEditMode,
+  deleteProfile,
+  sortByTag,
+  search,
+  Profile
+};

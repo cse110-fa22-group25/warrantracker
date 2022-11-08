@@ -71,10 +71,13 @@
       </section>
 
       <section class="row" id="info-section">
-        <!-- div for profile cards -->
+        <!-- div for profile cards, add shadow doms later -->
         <div class="col-lg-9">
           <div class="row" id="grid">
             <div class="col-sm-6 col-lg-4 p-2" id="new-profile-btn">
+              
+              <!-- Hiding/showing the modal is handled by bootstrap, see 
+                https://getbootstrap.com/docs/4.0/components/modal/ -->
               <div
                 type="button"
                 data-bs-toggle="modal"
@@ -114,7 +117,7 @@
       </section>
     </main>
 
-    <!-- New Profile Modal -->
+    <!-- New Profile Modal (Pop up) -->
     <!-- When user clicks the card with "+", this modal will pop up -->
     <div
       class="modal fade"
@@ -199,6 +202,9 @@
     In the event handler, we need to update the info to the corresponding Product
     More specifically, we need to change title, expDate, SerialNum, tag and note to that product 
     So when user clicks that card, the modal will open with the corresponding info -->
+   
+    <!-- Hiding/showing the modal is handled by bootstrap, see 
+      https://getbootstrap.com/docs/4.0/components/modal/ -->
     <div
       class="modal fade"
       id="infoModal"
