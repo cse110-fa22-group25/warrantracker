@@ -128,7 +128,7 @@ function createProfile() {
   expDate.value = "";
   serialNum.value = "";
   note.value = "";
-  tag.value="bedroom1";
+  tag.value = "bedroom1";
 }
 
 /**
@@ -199,13 +199,11 @@ function updateInfoModal(profile) {
   let serialNum = document.querySelector("#infoModal-input-serialNum");
   let note = document.querySelector("#infoModal-input-note");
 
-
   title.value = profile.title;
   expDate.value = profile.expDate;
   serialNum.value = profile.serialNum;
   note.value = profile.note;
-  tag.value= profile.tag;
-
+  tag.value = profile.tag;
 }
 
 /**
@@ -223,7 +221,7 @@ function updateInfoModal(profile) {
  * @param profile an Profile object
  */
 function changeInfoModalToEditMode(profile) {
-  
+
 }
 
 /**
