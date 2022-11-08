@@ -72,7 +72,7 @@ function getProfileFromStorage() {
 /**
  * save the profileList to the localStorage
  */
-function saveProfileToStoratge() {
+function saveProfileToStorage() {
   localStorage.setItem("profiles", JSON.stringify(profileList));
 }
 
@@ -100,7 +100,7 @@ function addProfilesToDocument(profiles) {
 function createProfile() {
   // select needed html elements in newProfileModal
   let title = newProfileModal.querySelector("#newProfileModal-title");
-  let tag = null; // haven't implement yet
+  let tag = newProfileModal.querySelector("#newProfileModal-tag"); // haven't implement yet
   let expDate = newProfileModal.querySelector("#newProfileModal-expDate");
   let serialNum = newProfileModal.querySelector("#newProfileModal-serialNum");
   let note = newProfileModal.querySelector("#newProfileModal-note");
@@ -108,7 +108,7 @@ function createProfile() {
   // create a new profile object
   let newProfile = new Profile(
     title.value,
-    tag,
+    tag.value,
     expDate.value,
     serialNum.value,
     note.value
@@ -116,7 +116,7 @@ function createProfile() {
 
   // save newProfile to localStorage
   profileList = [newProfile, ...profileList];
-  saveProfileToStoratge();
+  saveProfileToStorage();
 
   // create a card component to display
   let currCol = createCard(newProfile);
@@ -128,6 +128,7 @@ function createProfile() {
   expDate.value = "";
   serialNum.value = "";
   note.value = "";
+  tag.value = "bedroom1";
 }
 
 /**
@@ -191,7 +192,19 @@ function createCard(profile) {
  *
  * @param profile an Profile object
  */
-function updateInfoModal(profile) {}
+function updateInfoModal(profile) {
+  let title = document.querySelector("#infoModal-input-title");
+  let tag = document.querySelector("#infoModal-input-tag"); // haven't implement yet
+  let expDate = document.querySelector("#infoModal-input-expDate");
+  let serialNum = document.querySelector("#infoModal-input-serialNum");
+  let note = document.querySelector("#infoModal-input-note");
+
+  title.value = profile.title;
+  expDate.value = profile.expDate;
+  serialNum.value = profile.serialNum;
+  note.value = profile.note;
+  tag.value = profile.tag;
+}
 
 /**
  * Change the infoModal to editing mode. Change the corresponding
@@ -207,7 +220,9 @@ function updateInfoModal(profile) {}
  *
  * @param profile an Profile object
  */
-function changeInfoModalToEditMode(profile) {}
+function changeInfoModalToEditMode(profile) {
+
+}
 
 /**
  * Change the infoModal to display mode. Remove/hide (depends on your
