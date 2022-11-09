@@ -6,6 +6,9 @@ let grid; // the html element which is the parent for all profile cards
 let newProfileBtn; // the first element in the grid (the card with a "+" sign);
 let infoModal; // the modal showing up when clicking a profile card
 let newProfileModal; // the modal showing up when clicking the new-profile-btn
+let newProfileForm;
+let newModalInstance; // bootstrap modal instance for newPorifleModal;
+let infoModalInstance; // boostrap modal instance for inforModal;
 // add more below
 
 window.addEventListener('DOMContentLoaded', init);
@@ -17,8 +20,11 @@ function init() {
   // select needed html elements
   grid = document.querySelector('#grid');
   newProfileBtn = document.querySelector("#new-profile-btn");
-  infoModal = document.querySelector("#infoModal");
-  newProfileModal = document.querySelector("#newProfileModal");
+  infoModal = document.querySelector("#info-modal");
+  newProfileModal = document.querySelector("#new-modal");
+  newProfileForm = document.querySelector('#new-modal-form');
+  newModalInstance = new window.bootstrap.Modal(newProfileModal);
+  infoModalInstance = new window.bootstrap.Modal(infoModal);
 
   // get existing profiles from localStorage
   // generate card component and display them
@@ -32,9 +38,7 @@ function init() {
 
   // add event listeners below
   // handle when user click save-btn in new profile modal
-  newProfileModal
-    .querySelector("#createProfile")
-    .addEventListener("click", createProfile);
+  newProfileForm.addEventListener("submit", createProfile);
 }
 
 /**
@@ -95,11 +99,11 @@ function addProfilesToDocument(profiles) {
  */
 function createProfile() {
   // select needed html elements in newProfileModal
-  let title = newProfileModal.querySelector("#newProfileModal-title");
-  let tag = newProfileModal.querySelector("#newProfileModal-tag"); // haven't implement yet
-  let expDate = newProfileModal.querySelector("#newProfileModal-expDate");
-  let serialNum = newProfileModal.querySelector("#newProfileModal-serialNum");
-  let note = newProfileModal.querySelector("#newProfileModal-note");
+  let title = newProfileModal.querySelector("#new-modal-title");
+  let tag = newProfileModal.querySelector("#new-modal-tag"); // haven't implement yet
+  let expDate = newProfileModal.querySelector("#new-modal-expDate");
+  let serialNum = newProfileModal.querySelector("#new-modal-serialNum");
+  let note = newProfileModal.querySelector("#new-modal-note");
 
   // create a new profile object
   let newProfile = new Profile(
@@ -125,6 +129,9 @@ function createProfile() {
   serialNum.value = "";
   note.value = "";
   // tag.value = "bedroom1";
+
+  // hide bootstrap modal
+  newModalInstance.hide();
 }
 
 /**
@@ -146,7 +153,7 @@ function createCard(profile) {
   let card = document.createElement("div");
   card.setAttribute("type", "button");
   card.setAttribute("data-bs-toggle", "modal");
-  card.setAttribute("data-bs-target", "#infoModal");
+  card.setAttribute("data-bs-target", "#info-modal");
   card.setAttribute("class", "card");
 
   let cardBody = document.createElement("div");
