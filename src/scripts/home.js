@@ -141,7 +141,7 @@ function createProfile() {
  */
 function createCard(profile) {
   let cardWrapper = document.createElement("div");
-  cardWrapper.setAttribute("class", "col-sm-6 col-xl-4 p-2");
+  cardWrapper.setAttribute("class", "col-sm-6 col-lg-4 p-2");
 
   let card = document.createElement("div");
   card.setAttribute("type", "button");
