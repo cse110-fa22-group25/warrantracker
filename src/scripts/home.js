@@ -271,7 +271,7 @@ function deleteProfile(profile) {
   let reqCard = document.getElementById(name);
   reqCard.remove();
   // Remove profile from list and save list
-  profileList = profileList.filter(currProf => currProf.title == profile.title);
+  profileList = profileList.filter(currProf => currProf.title != profile.title);
   saveProfileToStorage();
 }
 
