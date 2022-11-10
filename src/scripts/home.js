@@ -142,7 +142,7 @@ function create_profile() {
  * 2. construct the card components using appendChild()
  * 3. add an event listener to the cardWrapper
  *    (when user clicks that card, the handler need to update
- *     infoModal to display the corresponding info)
+ *     info_modal to display the corresponding info)
  * 4. return the newly created cardWrapper
  * @param {Profile} profile -  an Profile object
  * @returns {HTMLDivElement} card wrapper
@@ -185,9 +185,9 @@ function create_card(profile) {
 }
 
 /**
- * update infoModal with corresponding profile info
+ * update info_modal with corresponding profile info
  * 1. hide all the input element (<input>, <textarea>)
- * 2. select the elements we need to update in the infoModal
+ * 2. select the elements we need to update in the info_modal
  * 3. change its value (innerHTML) to the corresponding param
  *    in the passed-in profile object
  * 4. add event listener to the modify and delete button, which should
@@ -197,11 +197,11 @@ function create_card(profile) {
  * @param {Profile} profile an Profile object
  */
 function update_info_modal(profile) {
-  const title = document.querySelector("#infoModal-input-title");
-  const tag = document.querySelector("#infoModal-input-tag"); // haven't implement yet
-  const exp_date = document.querySelector("#infoModal-input-exp_date");
-  const serial_num = document.querySelector("#infoModal-input-serial_num");
-  const note = document.querySelector("#infoModal-input-note");
+  const title = document.querySelector("#info_modal-input-title");
+  const tag = document.querySelector("#info_modal-input-tag"); // haven't implement yet
+  const exp_date = document.querySelector("#info_modal-input-exp_date");
+  const serial_num = document.querySelector("#info_modal-input-serial_num");
+  const note = document.querySelector("#info_modal-input-note");
 
   title.value = profile.title;
   exp_date.value = profile.exp_date;
@@ -219,11 +219,11 @@ function update_info_modal(profile) {
 }
 
 /**
- * Change the infoModal to editing mode. Change the corresponding
+ * Change the info_modal to editing mode. Change the corresponding
  * elements to <input></input> element; set the value of that input
  * with the corresponding profile.param
  *
- * 1. select the elements we need to update in the infoModal
+ * 1. select the elements we need to update in the info_modal
  * 2. hide these elements
  * 3. show the input elements and update their value with profile.param
  * 4. add event listener to the save button and cancel button
@@ -233,11 +233,11 @@ function update_info_modal(profile) {
  * @param {Profile} profile an Profile object
  */
 function change_info_modal_edit_mode(profile) {
-  const title = document.querySelector("#infoModal-input-title");
-  // let tag = document.querySelector("#infoModal-input-tag"); // haven't implement yet
-  const exp_date = document.querySelector("#infoModal-input-exp_date");
-  const serial_num = document.querySelector("#infoModal-input-serial_num");
-  const note = document.querySelector("#infoModal-input-note");
+  const title = document.querySelector("#info_modal-input-title");
+  // let tag = document.querySelector("#info_modal-input-tag"); // haven't implement yet
+  const exp_date = document.querySelector("#info_modal-input-exp_date");
+  const serial_num = document.querySelector("#info_modal-input-serial_num");
+  const note = document.querySelector("#info_modal-input-note");
   const s_button = document.querySelector("#modify-profile");
   const c_button = document.querySelector()
 
@@ -252,11 +252,11 @@ function change_info_modal_edit_mode(profile) {
 }
 
 /**
- * Change the infoModal to display mode. Remove/hide (depends on your
+ * Change the info_modal to display mode. Remove/hide (depends on your
  * implementation) <input> elements; create/display the non-input elements
  * (like <p></p> or others you choose to use)
  *
- * 1. select the input elements we need to update in the infoModal
+ * 1. select the input elements we need to update in the info_modal
  * 2. hide these elements
  * 3. show the non-input elements and update their value with profile.param
  * 4. add event listener to the modify button, which should
