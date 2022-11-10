@@ -9,7 +9,7 @@ let new_profile_modal; // the modal showing up when clicking the new-profile-btn
 let new_profile_form;
 let new_modal_instance; // bootstrap modal instance for newPorifleModal;
 let info_modal_instance; // boostrap modal instance for inforModal;
-let modify_on = false;
+const modify_on = false;
 // add more below
 
 window.addEventListener('DOMContentLoaded', init);
@@ -29,7 +29,7 @@ function init() {
 
   // get existing profiles from localStorage
   // generate card component and display them
-  let stored_profiles = get_profile_from_storage();
+  const stored_profiles = get_profile_from_storage();
   if (stored_profiles) {
     profile_list.push(...stored_profiles);
     add_profiles_to_doc(stored_profiles);
@@ -66,7 +66,7 @@ function Profile(title, tag, exp_date, serial_num, note) {
  * @returns {Profile[]} an array contains profile objects or nothing
  */
 function get_profile_from_storage() {
-  let profiles = localStorage.getItem("profiles");
+  const profiles = localStorage.getItem("profiles");
   if (!profiles) return;
   return JSON.parse(profiles);
 }
@@ -85,7 +85,7 @@ function save_profile_to_storage() {
  */
 function add_profiles_to_doc(profiles) {
   profiles.forEach((profile) => {
-    let curr_col = create_card(profile);
+    const curr_col = create_card(profile);
     grid.append(curr_col);
   });
 }
@@ -100,14 +100,14 @@ function add_profiles_to_doc(profiles) {
  */
 function create_profile() {
   // select needed html elements in newProfileModal
-  let title = new_profile_modal.querySelector("#new-modal-title");
-  let tag = new_profile_modal.querySelector("#new-modal-tag"); // haven't implement yet
-  let exp_date = new_profile_modal.querySelector("#new-modal-exp_date");
-  let serial_num = new_profile_modal.querySelector("#new-modal-serial_num");
-  let note = new_profile_modal.querySelector("#new-modal-note");
+  const title = new_profile_modal.querySelector("#new-modal-title");
+  const tag = new_profile_modal.querySelector("#new-modal-tag"); // haven't implement yet
+  const exp_date = new_profile_modal.querySelector("#new-modal-exp_date");
+  const serial_num = new_profile_modal.querySelector("#new-modal-serial_num");
+  const note = new_profile_modal.querySelector("#new-modal-note");
 
   // create a new profile object
-  let new_profile = new Profile(
+  const new_profile = new Profile(
     title.value,
     null,
     exp_date.value,
@@ -120,7 +120,7 @@ function create_profile() {
   save_profile_to_storage();
 
   // create a card component to display
-  let curr_col = create_card(new_profile);
+  const curr_col = create_card(new_profile);
   grid.insertBefore(curr_col, new_profile_btn.nextSibling);
 
   // clear input value of the form
@@ -148,23 +148,23 @@ function create_profile() {
  * @returns {HTMLDivElement} card wrapper
  */
 function create_card(profile) {
-  let card_wrapper = document.createElement("div");
+  const card_wrapper = document.createElement("div");
   card_wrapper.setAttribute("class", "col-sm-6 col-lg-4 p-2");
 
-  let card = document.createElement("div");
+  const card = document.createElement("div");
   card.setAttribute("type", "button");
   card.setAttribute("data-bs-toggle", "modal");
   card.setAttribute("data-bs-target", "#info-modal");
   card.setAttribute("class", "card");
 
-  let card_body = document.createElement("div");
+  const card_body = document.createElement("div");
   card_body.setAttribute("class", "card-body");
 
-  let card_title = document.createElement("h5");
+  const card_title = document.createElement("h5");
   card_title.innerHTML = `${profile.title}`;
   card_title.setAttribute("class", "card-title");
 
-  let card_text = document.createElement("p");
+  const card_text = document.createElement("p");
   card_text.setAttribute("class", "card-text");
   card_text.innerHTML = `${profile.note}`;
 
@@ -197,20 +197,20 @@ function create_card(profile) {
  * @param {Profile} profile an Profile object
  */
 function update_info_modal(profile) {
-  let title = document.querySelector("#infoModal-input-title");
-  let tag = document.querySelector("#infoModal-input-tag"); // haven't implement yet
-  let exp_date = document.querySelector("#infoModal-input-exp_date");
-  let serial_num = document.querySelector("#infoModal-input-serial_num");
-  let note = document.querySelector("#infoModal-input-note");
+  const title = document.querySelector("#infoModal-input-title");
+  const tag = document.querySelector("#infoModal-input-tag"); // haven't implement yet
+  const exp_date = document.querySelector("#infoModal-input-exp_date");
+  const serial_num = document.querySelector("#infoModal-input-serial_num");
+  const note = document.querySelector("#infoModal-input-note");
 
   title.value = profile.title;
   exp_date.value = profile.exp_date;
   serial_num.value = profile.serial_num;
   note.value = profile.note;
 
-  let mod_button = document.querySelector("#modify-profile");
-  let del_button = document.querySelector("#delete-profile");
-  let cancel_button = document.querySelector("#cancel-profile");
+  const mod_button = document.querySelector("#modify-profile");
+  const del_button = document.querySelector("#delete-profile");
+  const cancel_button = document.querySelector("#cancel-profile");
 
   mod_button.addEventListener("click", function () {
 
@@ -233,13 +233,13 @@ function update_info_modal(profile) {
  * @param {Profile} profile an Profile object
  */
 function change_info_modal_edit_mode(profile) {
-  let title = document.querySelector("#infoModal-input-title");
+  const title = document.querySelector("#infoModal-input-title");
   // let tag = document.querySelector("#infoModal-input-tag"); // haven't implement yet
-  let exp_date = document.querySelector("#infoModal-input-exp_date");
-  let serial_num = document.querySelector("#infoModal-input-serial_num");
-  let note = document.querySelector("#infoModal-input-note");
-  let s_button = document.querySelector("#modify-profile");
-  let c_button = document.querySelector()
+  const exp_date = document.querySelector("#infoModal-input-exp_date");
+  const serial_num = document.querySelector("#infoModal-input-serial_num");
+  const note = document.querySelector("#infoModal-input-note");
+  const s_button = document.querySelector("#modify-profile");
+  const c_button = document.querySelector()
 
   title.value = profile.title;
   title.disabled = false;
@@ -310,12 +310,12 @@ function sort_by_tag(tag) {}
 function search(key_word) {}
 
 module.exports = {
-  create_profile: create_profile,
-  create_card: create_card,
-  update_info_modal: update_info_modal,
-  change_info_modal_display_mode: change_info_modal_display_mode,
-  change_info_modal_edit_mode: change_info_modal_edit_mode,
-  delete_profile: delete_profile,
+  create_profile,
+  create_card,
+  update_info_modal,
+  change_info_modal_display_mode,
+  change_info_modal_edit_mode,
+  delete_profile,
   ort_by_tag: sort_by_tag,
   search,
   Profile
