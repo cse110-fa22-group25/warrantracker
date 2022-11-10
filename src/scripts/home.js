@@ -9,6 +9,7 @@ let newProfileModal; // the modal showing up when clicking the new-profile-btn
 let newProfileForm;
 let newModalInstance; // bootstrap modal instance for newPorifleModal;
 let infoModalInstance; // boostrap modal instance for inforModal;
+let modifyOn = false;
 // add more below
 
 window.addEventListener('DOMContentLoaded', init);
@@ -178,7 +179,9 @@ function createCard(profile) {
   // add a event listener to the component
   // when clicking, update the info modal with its info
   cardWrapper.addEventListener("click", () => {
+
     updateInfoModal(profile);
+
   });
   return cardWrapper;
 }
@@ -206,6 +209,15 @@ function updateInfoModal(profile) {
   expDate.value = profile.expDate;
   serialNum.value = profile.serialNum;
   note.value = profile.note;
+
+  
+  let modButton = document.querySelector("#modify-profile");
+  let delButton = document.querySelector("#delete-profile");
+  let cancelButton = document.querySelector("#cancel-profile");
+
+  modButton.addEventListener("click", function () {
+    
+  })
   // tag.value = profile.tag;
 }
 
@@ -224,6 +236,22 @@ function updateInfoModal(profile) {
  * @param {Profile} profile an Profile object
  */
 function changeInfoModalToEditMode(profile) {
+  let title = document.querySelector("#infoModal-input-title");
+  //let tag = document.querySelector("#infoModal-input-tag"); // haven't implement yet
+  let expDate = document.querySelector("#infoModal-input-expDate");
+  let serialNum = document.querySelector("#infoModal-input-serialNum");
+  let note = document.querySelector("#infoModal-input-note");
+  let sButton = document.querySelector("#modify-profile");
+  let cButtoin = document.querySelector()
+
+  title.value = profile.title;
+  title.disabled = false;
+  expDate.value = profile.expDate;
+  expDate.disabled = false;
+  serialNum.value = profile.serialNum;
+  serialNum.disabled = false;
+  note.value = profile.note;
+  note.disabled = false;
 
 }
 
@@ -284,6 +312,7 @@ function sortByTag(tag) {}
  * @param {String} keyWord a string
  */
 function search(keyWord) {}
+
 
 module.exports = {
   createProfile,
