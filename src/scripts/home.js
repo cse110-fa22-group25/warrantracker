@@ -60,7 +60,7 @@ function Profile(title, tag, exp_date, serial_num, note) {
 }
 
 /**
- * Retreat the existing profileList in localStorage.
+ * Retreat the existing profile_list in localStorage.
  * Return the parsed array in which there are profile
  * object. If nothing in the localStorage, return nothing.
  * @returns {Profile[]} an array contains profile objects or nothing
@@ -72,7 +72,7 @@ function get_profile_from_storage() {
 }
 
 /**
- * save the profileList to the localStorage
+ * save the profile_list to the localStorage
  */
 function save_profile_to_storage() {
   localStorage.setItem("profiles", JSON.stringify(profile_list));
@@ -80,7 +80,7 @@ function save_profile_to_storage() {
 
 /**
  * Create bootstrap card component to display the
- * stored profileList in the localStorage
+ * stored profile_list in the localStorage
  * @param {Profile[]} profiles an array contains profile objects
  */
 function add_profiles_to_doc(profiles) {
@@ -91,15 +91,15 @@ function add_profiles_to_doc(profiles) {
 }
 
 /**
- * Event handler for clicking the save btn in newProfileModal
- * 1. select needed html elements in newProfileModal
+ * Event handler for clicking the save btn in new_profile_modal
+ * 1. select needed html elements in new_profile_modal
  * 2. create a new Profile object
  * 3. save the profile to localStorage
  * 4. create a card component on the main page
- * 5. clear input value in the newProfileModal
+ * 5. clear input value in the new_profile_modal
  */
 function create_profile() {
-  // select needed html elements in newProfileModal
+  // select needed html elements in new_profile_modal
   const title = new_profile_modal.querySelector("#new-modal-title");
   const tag = new_profile_modal.querySelector("#new-modal-tag"); // haven't implement yet
   const exp_date = new_profile_modal.querySelector("#new-modal-exp_date");
@@ -140,10 +140,10 @@ function create_profile() {
  * 1. creat needed elements (refer to examples/profileCardTemplate.html)
  *    note that the card only contains a title and addition note for now, need to modify
  * 2. construct the card components using appendChild()
- * 3. add an event listener to the cardWrapper
+ * 3. add an event listener to the card_wrapper
  *    (when user clicks that card, the handler need to update
  *     info_modal to display the corresponding info)
- * 4. return the newly created cardWrapper
+ * 4. return the newly created card_wrapper
  * @param {Profile} profile -  an Profile object
  * @returns {HTMLDivElement} card wrapper
  */
@@ -272,8 +272,8 @@ function change_info_modal_display_mode(profile) {}
  * Delete the passed-in profile. Need to delete
  * the corresponding card component, profile object, etc.
  *
- * 1. remove the profile from profileList
- * 2. save the new profileList to localStorage
+ * 1. remove the profile from profile_list
+ * 2. save the new profile_list to localStorage
  * 3. remove corresponding card component
  *
  * @param {Profile} profile an Profile object
@@ -283,11 +283,11 @@ function delete_profile(profile) {}
 /**
  * display all the cards with the same tag on main page
  *
- * 1. for each profile in profileList, check if it has
+ * 1. for each profile in profile_list, check if it has
  *    such a tag. if it has, add this profile object to a
  *    temp list.
  * 2. remove all card components in grid
- * 3. call addProfilesToDocument(profiles) to display the
+ * 3. call add_profiles_to_doc(profiles) to display the
  *    profile we just added to the temp list
  *
  * @param {String} tag an tag
@@ -298,11 +298,11 @@ function sort_by_tag(tag) {}
  * Search the card by keyword. Display all the cards matching
  * that keyword (or sentence).
  *
- * 1. for each profile in profileList, check all the params if
+ * 1. for each profile in profile_list, check all the params if
  *    there are strings matches the keyword. If there is, add the
  *    profile to a temp list
  * 2. remove all card components in grid
- * 3. call addProfilesToDocument(profiles) to display the
+ * 3. call add_profiles_to_doc(profiles) to display the
  *    profile we just added to the temp list
  *
  * @param {String} keyWord a string
