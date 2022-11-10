@@ -9,6 +9,7 @@ let newProfileModal; // the modal showing up when clicking the new-profile-btn
 let newProfileForm;
 let newModalInstance; // bootstrap modal instance for newPorifleModal;
 let infoModalInstance; // boostrap modal instance for inforModal;
+let selectedProfile; // Profile selected for editing and deleting
 // add more below
 
 window.addEventListener('DOMContentLoaded', init);
@@ -39,6 +40,13 @@ function init() {
   // add event listeners below
   // handle when user click save-btn in new profile modal
   newProfileForm.addEventListener("submit", createProfile);
+
+  // Delete button and the event listner
+  let deleteBtn = infoModal.getElementsByClassName('modal-footer')[0].getElementsByClassName('btn btn-secondary')[0];
+  deleteBtn.addEventListener('click', ()=> {
+    deleteProfile(selectedProfile);
+  });
+
 }
 
 /**
@@ -149,6 +157,7 @@ function createProfile() {
 function createCard(profile) {
   let cardWrapper = document.createElement("div");
   cardWrapper.setAttribute("class", "col-sm-6 col-lg-4 p-2");
+  cardWrapper.setAttribute("id", `${profile.title}`);
 
   let card = document.createElement("div");
   card.setAttribute("type", "button");
@@ -179,6 +188,7 @@ function createCard(profile) {
   // when clicking, update the info modal with its info
   cardWrapper.addEventListener("click", () => {
     updateInfoModal(profile);
+    selectedProfile = profile;
   });
   return cardWrapper;
 }
@@ -254,7 +264,16 @@ function changeInfoModalToDisplayMode(profile) {}
  *
  * @param {Profile} profile an Profile object
  */
-function deleteProfile(profile) {}
+function deleteProfile(profile) {
+  if(!profile) return;
+  let name = profile.title;
+  // Get the card and remove the element
+  let reqCard = document.getElementById(name);
+  reqCard.remove();
+  // Remove profile from list and save list
+  profileList = profileList.filter(currProf => currProf.title == profile.title);
+  saveProfileToStorage();
+}
 
 /**
  * display all the cards with the same tag on main page
