@@ -42,7 +42,8 @@ function init() {
   newProfileForm.addEventListener("submit", createProfile);
 
   // Delete button and the event listner
-  let deleteBtn = infoModal.getElementsByClassName('modal-footer')[0].getElementsByClassName('btn btn-secondary')[0];
+  let confirmModal = document.querySelector("#confirm-modal");
+  let deleteBtn = confirmModal.getElementsByClassName('modal-footer')[0].getElementsByClassName('btn btn-primary')[0];
   deleteBtn.addEventListener('click', ()=> {
     deleteProfile(selectedProfile);
   });
@@ -266,12 +267,13 @@ function changeInfoModalToDisplayMode(profile) {}
  */
 function deleteProfile(profile) {
   if(!profile) return;
+ 
   let name = profile.title;
   // Get the card and remove the element
   let reqCard = document.getElementById(name);
   reqCard.remove();
   // Remove profile from list and save list
-  profileList = profileList.filter(currProf => currProf.title == profile.title);
+  profileList = profileList.filter(currProf => currProf.title != profile.title);
   saveProfileToStorage();
 }
 
