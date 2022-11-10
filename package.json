@@ -22,7 +22,9 @@
   "homepage": "https://github.com/cse110-fa22-group25/warrantracker#readme",
   "dependencies": {
     "jest": "^29.2.2",
-    "jsdoc": "^4.0.0"
+    "jest-environment-jsdom": "^29.3.1",
+    "jsdoc": "^4.0.0",
+    "jsdom": "^20.0.2"
   },
   "devDependencies": {
     "eslint": "^8.26.0",

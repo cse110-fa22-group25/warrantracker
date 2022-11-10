@@ -1,10 +1,9 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
 
     <!-- Bootstrap CDN -->
     <link
@@ -15,17 +14,17 @@
     />
 
     <!-- css -->
-    <link rel="stylesheet" href="./index.css">
+    <link rel="stylesheet" href="./index.css" />
 
     <!-- scripts -->
-    <script src="scripts/home.js"></script>
+    <script type="module" src="scripts/home.js"></script>
     <script
       src="https://kit.fontawesome.com/6d99204fba.js"
       crossorigin="anonymous"
     ></script>
 
     <title>Warrantracker</title>
-  </head> 
+  </head>
   <body>
     <!-- navbar -->
     <nav class="navbar bg-light navbar-light">
@@ -37,7 +36,7 @@
     </nav>
 
     <!-- main page -->
-    <div class="container p-auto pt-3" id="page">
+    <main class="container p-auto pt-3" id="page">
       <!-- div for search bar -->
       <form class="d-flex justify-content-center" role="search">
         <input
@@ -51,8 +50,8 @@
         </button>
       </form>
 
-      <!-- div for label bar -->
-      <div class="d-flex justify-content-center mt-3 mb-3">
+      <!-- section for label bar -->
+      <section class="d-flex justify-content-center mt-3 mb-3">
         <div class="btn-labels">
           <button
             type="button"
@@ -65,34 +64,35 @@
           <!-- <button type="button" class="btn btn-light" data-bs-toggle="button">
             Label 1
           </button> -->
-          
         </div>
         <!-- <div class="btn-add-label">
             <button type="button" class="btn btn-lg btn-light">+</button>
           </div> -->
-      </div>
+      </section>
 
-      <div class="row">
-        <!-- div for profile cards -->
-        <div class="profile-section col-lg-8">
+      <section class="row" id="info-section">
+        <!-- div for profile cards, add shadow doms later -->
+        <div class="col-lg-9">
           <div class="row" id="grid">
-            <div class="col-sm-6 col-xl-4 p-2" id="new-profile-btn">
+            <div class="col-sm-6 col-lg-4 p-2" id="new-profile-btn">
+              <!-- Hiding/showing the modal is handled by bootstrap, see 
+                https://getbootstrap.com/docs/4.0/components/modal/ -->
               <div
                 type="button"
                 data-bs-toggle="modal"
-                data-bs-target="#newProfileModal"
-                class="card text-center"
+                data-bs-target="#new-modal"
+                class="card"
               >
-                <div class="row h-100 align-items-center">
-                  <h5>+</h5>
-                </div>
+                <h5 class="position-absolute top-50 start-50 translate-middle">
+                  +
+                </h5>
               </div>
             </div>
           </div>
         </div>
 
         <!-- div for upcoming event -->
-        <div class="event-section col-lg-4 p-2">
+        <div class="col-lg-3 p-2">
           <div class="card event-card">
             <div class="card-header">
               <i class="fa-solid fa-calendar-days"></i> Upcoming Events
@@ -113,23 +113,23 @@
             </ul>
           </div>
         </div>
-      </div>
-    </div>
+      </section>
+    </main>
 
-    <!-- New Profile Modal -->
+    <!-- New Profile Modal (Pop up) -->
     <!-- When user clicks the card with "+", this modal will pop up -->
     <div
       class="modal fade"
-      id="newProfileModal"
+      id="new-modal"
       tabindex="-1"
-      aria-labelledby="newProfileModalLabel"
+      aria-labelledby="new-modal-label"
       aria-hidden="true"
     >
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header">
             <!-- Change the modal's header -->
-            <h1 class="modal-title fs-5" id="newProfileModalLabel">New Profile</h1>
+            <h1 class="modal-title fs-5" id="new-modal-label">New Profile</h1>
             <button
               type="button"
               class="btn-close"
@@ -137,44 +137,80 @@
               aria-label="Close"
             ></button>
           </div>
-          <div class="modal-body">
+          <form class="needs-validation" id="new-modal-form">
+            <div class="modal-body">
               <!-- when edit the content of this modal, just edit the code below -->
               <div class="mb-3">
-                <label for="title" class="form-label">Title:</label>
-                <input type="text" class="form-control" id="newProfileModal-title" placeholder="Product Name">
+                <label for="new-modal-title" class="form-label">Title:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="new-modal-title"
+                  placeholder="Product Name"
+                  required
+                />
+                <div class="valid-feedback">Looks good!</div>
               </div>
               <div class="mb-3">
-                <label for="expDate" class="form-label">Expiration Date:</label>
-                <input type="date" class="form-control" id="newProfileModal-expDate">
+                <label for="tag" class="form-label" id="new-modal-tag-label"
+                  >Tag:</label
+                >
+                <div class="dropdown d-inline-block">
+                  <input
+                    type="text"
+                    class="form-control form-control-sm dropdown-toggle m-1"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    id="new-modal-tag"
+                  />
+                  <ul class="dropdown-menu">
+                    <!-- <li><a class="dropdown-item" href="#">tag1</a></li> -->
+                  </ul>
+                </div>
               </div>
-              <div class = "mb-3">
-                <label>Label:</label>
-                <select name="tag" id="newProfileModal-tag" style="padding:10px; border:0;box-shadow:0 0 15px 4px rgba(0,0,0,0.06);border-radius:10px;font-size: 18px; font-family: Arial, Helvetica, sans-serif;">
-                  <option value="bedroom1">bedroom1</option>
-                  <option value="bedroom2">bedroom2</option>
-                  <option value="bedroom13">bedroom3</option>
-                </select><br><br>
+              <div class="mb-3">
+                <label for="new-modal-expDate" class="form-label"
+                  >Expiration Date:</label
+                >
+                <input
+                  type="date"
+                  class="form-control"
+                  id="new-modal-expDate"
+                  required
+                />
               </div>
               <div class="mb-3">
                 <label for="serialNum" class="form-label">Serial #:</label>
-                <input type="text" class="form-control" id="newProfileModal-serialNum">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="new-modal-serialNum"
+                  placeholder="Serial #"
+                />
               </div>
               <div class="mb-3">
                 <label for="note" class="form-label">Additional Notes:</label>
-                <textarea class="form-control" id="newProfileModal-note" rows="5"></textarea>
+                <textarea
+                  class="form-control"
+                  id="new-modal-note"
+                  rows="5"
+                  placeholder="Add more notes..."
+                ></textarea>
               </div>
-
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Close
-            </button>
-            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="createProfile">Save</button>
-          </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button type="submit" class="btn btn-primary" id="createProfile">
+                Save
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -184,9 +220,12 @@
     In the event handler, we need to update the info to the corresponding Product
     More specifically, we need to change title, expDate, SerialNum, tag and note to that product 
     So when user clicks that card, the modal will open with the corresponding info -->
+
+    <!-- Hiding/showing the modal is handled by bootstrap, see 
+      https://getbootstrap.com/docs/4.0/components/modal/ -->
     <div
       class="modal fade"
-      id="infoModal"
+      id="info-modal"
       tabindex="-1"
       aria-labelledby="infoModalLabel"
       aria-hidden="true"
@@ -195,7 +234,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <!-- Change the modal's header -->
-            <h1 class="modal-title fs-5" id="infoModalLabel">Info</h1>
+            <h1 class="modal-title fs-5" id="info-modal-label">Info</h1>
             <button
               type="button"
               class="btn-close"
@@ -204,37 +243,45 @@
             ></button>
           </div>
           <div class="modal-body">
-              <!-- when edit the content of this modal, just edit the code below -->
-              <!-- need to change the input elements below to text info -->
-              <div class="mb-3">
-                <label for="title" class="form-label">Title:</label>
-                <p id="infoModal-static-title"></p>
-                <input type="text" class="form-control" id="infoModal-input-title" placeholder="Product Name">
-              </div>
-              <div class="mb-3">
-                <label for="expDate" class="form-label">Expiration Date:</label>
-                <p id="infoModal-static-expDate"></p>
-                <input type="date" class="form-control" id="infoModal-input-expDate">
-              </div>
-              <div class = "mb-3">
-                <label>Label:</label>
-                <select name="tag" id="infoModal-input-tag" style="padding:10px; border:0;box-shadow:0 0 15px 4px rgba(0,0,0,0.06);border-radius:10px;font-size: 18px; font-family: Arial, Helvetica, sans-serif;">
-                  <option value="bedroom1">bedroom1</option>
-                  <option value="bedroom2">bedroom2</option>
-                  <option value="bedroom13">bedroom3</option>
-                </select><br><br>
-              </div>
-              <div class="mb-3">
-                <label for="serialNum" class="form-label">Serial #:</label>
-                <p id="infoModal-static-serialNum"></p>
-                <input type="text" class="form-control" id="infoModal-input-serialNum">
-              </div>
-              <div class="mb-3">
-                <label for="note" class="form-label">Additional Notes:</label>
-                <p id="infoModal-static-note"></p>
-                <textarea class="form-control" id="infoModal-input-note" rows="5"></textarea>
-              </div>
-
+            <!-- when edit the content of this modal, just edit the code below -->
+            <!-- need to change the input elements below to text info -->
+            <div class="mb-3">
+              <label for="title" class="form-label">Title:</label>
+              <p id="infoModal-static-title"></p>
+              <input
+                type="text"
+                class="form-control"
+                id="infoModal-input-title"
+                placeholder="Product Name"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="expDate" class="form-label">Expiration Date:</label>
+              <p id="infoModal-static-expDate"></p>
+              <input
+                type="date"
+                class="form-control"
+                id="infoModal-input-expDate"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="serialNum" class="form-label">Serial #:</label>
+              <p id="infoModal-static-serialNum"></p>
+              <input
+                type="text"
+                class="form-control"
+                id="infoModal-input-serialNum"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="note" class="form-label">Additional Notes:</label>
+              <p id="infoModal-static-note"></p>
+              <textarea
+                class="form-control"
+                id="infoModal-input-note"
+                rows="5"
+              ></textarea>
+            </div>
           </div>
           <div class="modal-footer">
             <button
@@ -244,7 +291,9 @@
             >
               Delete
             </button>
-            <button type="button" class="btn btn-primary" id="modifyProfile">Modify</button>
+            <button type="button" class="btn btn-primary" id="modify-profile">
+              Modify
+            </button>
           </div>
         </div>
       </div>
