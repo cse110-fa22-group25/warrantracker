@@ -1,15 +1,15 @@
 // home.js
 
 /** Global Variables */
-let profileList = []; // store all profile object
+let profile_list = []; // store all profile object
 let grid; // the html element which is the parent for all profile cards
-let newProfileBtn; // the first element in the grid (the card with a "+" sign);
-let infoModal; // the modal showing up when clicking a profile card
-let newProfileModal; // the modal showing up when clicking the new-profile-btn
-let newProfileForm;
-let newModalInstance; // bootstrap modal instance for newPorifleModal;
-let infoModalInstance; // boostrap modal instance for inforModal;
-let modifyOn = false;
+let new_profile_btn; // the first element in the grid (the card with a "+" sign);
+let info_modal; // the modal showing up when clicking a profile card
+let new_profile_modal; // the modal showing up when clicking the new-profile-btn
+let new_profile_form;
+let new_modal_instance; // bootstrap modal instance for newPorifleModal;
+let info_modal_instance; // boostrap modal instance for inforModal;
+let modify_on = false;
 // add more below
 
 window.addEventListener('DOMContentLoaded', init);
@@ -20,26 +20,26 @@ window.addEventListener('DOMContentLoaded', init);
 function init() {
   // select needed html elements
   grid = document.querySelector('#grid');
-  newProfileBtn = document.querySelector("#new-profile-btn");
-  infoModal = document.querySelector("#info-modal");
-  newProfileModal = document.querySelector("#new-modal");
-  newProfileForm = document.querySelector('#new-modal-form');
-  newModalInstance = new window.bootstrap.Modal(newProfileModal);
-  infoModalInstance = new window.bootstrap.Modal(infoModal);
+  new_profile_btn = document.querySelector("#new-profile-btn");
+  info_modal = document.querySelector("#info-modal");
+  new_profile_modal = document.querySelector("#new-modal");
+  new_profile_form = document.querySelector('#new-modal-form');
+  new_modal_instance = new window.bootstrap.Modal(new_profile_modal);
+  info_modal_instance = new window.bootstrap.Modal(info_modal);
 
   // get existing profiles from localStorage
   // generate card component and display them
-  let storedProfiles = getProfileFromStorage();
-  if (storedProfiles) {
-    profileList.push(...storedProfiles);
-    addProfilesToDocument(storedProfiles);
+  let stored_profiles = get_profile_from_storage();
+  if (stored_profiles) {
+    profile_list.push(...stored_profiles);
+    add_profiles_to_doc(stored_profiles);
   }
 
   // add more opeartions below
 
   // add event listeners below
   // handle when user click save-btn in new profile modal
-  newProfileForm.addEventListener("submit", createProfile);
+  new_profile_form.addEventListener("submit", create_profile);
 }
 
 /**
@@ -47,15 +47,15 @@ function init() {
  * @constructor
  * @param {string} title - the name of the product
  * @param {string} tag - the tag of the product
- * @param {string} expDate - the expiration date of the product
- * @param {string} serialNum - the serial number of the product
+ * @param {string} exp_date - the expiration date of the product
+ * @param {string} serial_num - the serial number of the product
  * @param {string} note - the additional notes for the product
  */
-function Profile(title, tag, expDate, serialNum, note) {
+function Profile(title, tag, exp_date, serial_num, note) {
   this.title = title;
   this.tag = tag;
-  this.expDate = expDate;
-  this.serialNum = serialNum;
+  this.exp_date = exp_date;
+  this.serial_num = serial_num;
   this.note = note;
 }
 
@@ -65,7 +65,7 @@ function Profile(title, tag, expDate, serialNum, note) {
  * object. If nothing in the localStorage, return nothing.
  * @returns {Profile[]} an array contains profile objects or nothing
  */
-function getProfileFromStorage() {
+function get_profile_from_storage() {
   let profiles = localStorage.getItem("profiles");
   if (!profiles) return;
   return JSON.parse(profiles);
@@ -74,8 +74,8 @@ function getProfileFromStorage() {
 /**
  * save the profileList to the localStorage
  */
-function saveProfileToStorage() {
-  localStorage.setItem("profiles", JSON.stringify(profileList));
+function save_profile_to_storage() {
+  localStorage.setItem("profiles", JSON.stringify(profile_list));
 }
 
 /**
@@ -83,10 +83,10 @@ function saveProfileToStorage() {
  * stored profileList in the localStorage
  * @param {Profile[]} profiles an array contains profile objects
  */
-function addProfilesToDocument(profiles) {
+function add_profiles_to_doc(profiles) {
   profiles.forEach((profile) => {
-    let currCol = createCard(profile);
-    grid.append(currCol);
+    let curr_col = create_card(profile);
+    grid.append(curr_col);
   });
 }
 
@@ -98,41 +98,41 @@ function addProfilesToDocument(profiles) {
  * 4. create a card component on the main page
  * 5. clear input value in the newProfileModal
  */
-function createProfile() {
+function create_profile() {
   // select needed html elements in newProfileModal
-  let title = newProfileModal.querySelector("#new-modal-title");
-  let tag = newProfileModal.querySelector("#new-modal-tag"); // haven't implement yet
-  let expDate = newProfileModal.querySelector("#new-modal-expDate");
-  let serialNum = newProfileModal.querySelector("#new-modal-serialNum");
-  let note = newProfileModal.querySelector("#new-modal-note");
+  let title = new_profile_modal.querySelector("#new-modal-title");
+  let tag = new_profile_modal.querySelector("#new-modal-tag"); // haven't implement yet
+  let exp_date = new_profile_modal.querySelector("#new-modal-exp_date");
+  let serial_num = new_profile_modal.querySelector("#new-modal-serial_num");
+  let note = new_profile_modal.querySelector("#new-modal-note");
 
   // create a new profile object
-  let newProfile = new Profile(
+  let new_profile = new Profile(
     title.value,
     null,
-    expDate.value,
-    serialNum.value,
+    exp_date.value,
+    serial_num.value,
     note.value
   );
 
   // save newProfile to localStorage
-  profileList = [newProfile, ...profileList];
-  saveProfileToStorage();
+  profile_list = [new_profile, ...profile_list];
+  save_profile_to_storage();
 
   // create a card component to display
-  let currCol = createCard(newProfile);
-  grid.insertBefore(currCol, newProfileBtn.nextSibling);
+  let curr_col = create_card(new_profile);
+  grid.insertBefore(curr_col, new_profile_btn.nextSibling);
 
   // clear input value of the form
   title.value = "";
-  expDate.value = "";
-  expDate.value = "";
-  serialNum.value = "";
+  exp_date.value = "";
+  exp_date.value = "";
+  serial_num.value = "";
   note.value = "";
   // tag.value = "bedroom1";
 
   // hide bootstrap modal
-  newModalInstance.hide();
+  new_modal_instance.hide();
 }
 
 /**
@@ -147,9 +147,9 @@ function createProfile() {
  * @param {Profile} profile -  an Profile object
  * @returns {HTMLDivElement} card wrapper
  */
-function createCard(profile) {
-  let cardWrapper = document.createElement("div");
-  cardWrapper.setAttribute("class", "col-sm-6 col-lg-4 p-2");
+function create_card(profile) {
+  let card_wrapper = document.createElement("div");
+  card_wrapper.setAttribute("class", "col-sm-6 col-lg-4 p-2");
 
   let card = document.createElement("div");
   card.setAttribute("type", "button");
@@ -157,33 +157,31 @@ function createCard(profile) {
   card.setAttribute("data-bs-target", "#info-modal");
   card.setAttribute("class", "card");
 
-  let cardBody = document.createElement("div");
-  cardBody.setAttribute("class", "card-body");
+  let card_body = document.createElement("div");
+  card_body.setAttribute("class", "card-body");
 
-  let cardTitle = document.createElement("h5");
-  cardTitle.innerHTML = `${profile.title}`;
-  cardTitle.setAttribute("class", "card-title");
+  let card_title = document.createElement("h5");
+  card_title.innerHTML = `${profile.title}`;
+  card_title.setAttribute("class", "card-title");
 
-  let cardText = document.createElement("p");
-  cardText.setAttribute("class", "card-text");
-  cardText.innerHTML = `${profile.note}`;
+  let card_text = document.createElement("p");
+  card_text.setAttribute("class", "card-text");
+  card_text.innerHTML = `${profile.note}`;
 
   // can add some btn or other needed elements here
 
   // construct the Card Components here
-  cardBody.appendChild(cardTitle);
-  cardBody.appendChild(cardText);
-  card.appendChild(cardBody);
-  cardWrapper.appendChild(card);
+  card_body.appendChild(card_title);
+  card_body.appendChild(card_text);
+  card.appendChild(card_body);
+  card_wrapper.appendChild(card);
 
   // add a event listener to the component
   // when clicking, update the info modal with its info
-  cardWrapper.addEventListener("click", () => {
-
-    updateInfoModal(profile);
-
+  card_wrapper.addEventListener("click", () => {
+    update_info_modal(profile);
   });
-  return cardWrapper;
+  return card_wrapper;
 }
 
 /**
@@ -198,25 +196,24 @@ function createCard(profile) {
  *
  * @param {Profile} profile an Profile object
  */
-function updateInfoModal(profile) {
+function update_info_modal(profile) {
   let title = document.querySelector("#infoModal-input-title");
   let tag = document.querySelector("#infoModal-input-tag"); // haven't implement yet
-  let expDate = document.querySelector("#infoModal-input-expDate");
-  let serialNum = document.querySelector("#infoModal-input-serialNum");
+  let exp_date = document.querySelector("#infoModal-input-exp_date");
+  let serial_num = document.querySelector("#infoModal-input-serial_num");
   let note = document.querySelector("#infoModal-input-note");
 
   title.value = profile.title;
-  expDate.value = profile.expDate;
-  serialNum.value = profile.serialNum;
+  exp_date.value = profile.exp_date;
+  serial_num.value = profile.serial_num;
   note.value = profile.note;
 
-  
-  let modButton = document.querySelector("#modify-profile");
-  let delButton = document.querySelector("#delete-profile");
-  let cancelButton = document.querySelector("#cancel-profile");
+  let mod_button = document.querySelector("#modify-profile");
+  let del_button = document.querySelector("#delete-profile");
+  let cancel_button = document.querySelector("#cancel-profile");
 
-  modButton.addEventListener("click", function () {
-    
+  mod_button.addEventListener("click", function () {
+
   })
   // tag.value = profile.tag;
 }
@@ -235,24 +232,23 @@ function updateInfoModal(profile) {
  *
  * @param {Profile} profile an Profile object
  */
-function changeInfoModalToEditMode(profile) {
+function change_info_modal_edit_mode(profile) {
   let title = document.querySelector("#infoModal-input-title");
-  //let tag = document.querySelector("#infoModal-input-tag"); // haven't implement yet
-  let expDate = document.querySelector("#infoModal-input-expDate");
-  let serialNum = document.querySelector("#infoModal-input-serialNum");
+  // let tag = document.querySelector("#infoModal-input-tag"); // haven't implement yet
+  let exp_date = document.querySelector("#infoModal-input-exp_date");
+  let serial_num = document.querySelector("#infoModal-input-serial_num");
   let note = document.querySelector("#infoModal-input-note");
-  let sButton = document.querySelector("#modify-profile");
-  let cButtoin = document.querySelector()
+  let s_button = document.querySelector("#modify-profile");
+  let c_button = document.querySelector()
 
   title.value = profile.title;
   title.disabled = false;
-  expDate.value = profile.expDate;
-  expDate.disabled = false;
-  serialNum.value = profile.serialNum;
-  serialNum.disabled = false;
+  exp_date.value = profile.exp_date;
+  exp_date.disabled = false;
+  serial_num.value = profile.serial_num;
+  serial_num.disabled = false;
   note.value = profile.note;
   note.disabled = false;
-
 }
 
 /**
@@ -270,7 +266,7 @@ function changeInfoModalToEditMode(profile) {
  *
  * @param {Profile} profile an Profile object
  */
-function changeInfoModalToDisplayMode(profile) {}
+function change_info_modal_display_mode(profile) {}
 
 /**
  * Delete the passed-in profile. Need to delete
@@ -282,7 +278,7 @@ function changeInfoModalToDisplayMode(profile) {}
  *
  * @param {Profile} profile an Profile object
  */
-function deleteProfile(profile) {}
+function delete_profile(profile) {}
 
 /**
  * display all the cards with the same tag on main page
@@ -296,7 +292,7 @@ function deleteProfile(profile) {}
  *
  * @param {String} tag an tag
  */
-function sortByTag(tag) {}
+function sort_by_tag(tag) {}
 
 /**
  * Search the card by keyword. Display all the cards matching
@@ -311,17 +307,16 @@ function sortByTag(tag) {}
  *
  * @param {String} keyWord a string
  */
-function search(keyWord) {}
-
+function search(key_word) {}
 
 module.exports = {
-  createProfile,
-  createCard,
-  updateInfoModal,
-  changeInfoModalToDisplayMode,
-  changeInfoModalToEditMode,
-  deleteProfile,
-  sortByTag,
+  create_profile: create_profile,
+  create_card: create_card,
+  update_info_modal: update_info_modal,
+  change_info_modal_display_mode: change_info_modal_display_mode,
+  change_info_modal_edit_mode: change_info_modal_edit_mode,
+  delete_profile: delete_profile,
+  ort_by_tag: sort_by_tag,
   search,
   Profile
 };

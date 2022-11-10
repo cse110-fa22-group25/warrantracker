@@ -169,22 +169,22 @@
                 </div>
               </div>
               <div class="mb-3">
-                <label for="new-modal-expDate" class="form-label"
+                <label for="new-modal-exp_date" class="form-label"
                   >Expiration Date:</label
                 >
                 <input
                   type="date"
                   class="form-control"
-                  id="new-modal-expDate"
+                  id="new-modal-exp_date"
                   required
                 />
               </div>
               <div class="mb-3">
-                <label for="serialNum" class="form-label">Serial #:</label>
+                <label for="serial_num" class="form-label">Serial #:</label>
                 <input
                   type="text"
                   class="form-control"
-                  id="new-modal-serialNum"
+                  id="new-modal-serial_num"
                   placeholder="Serial #"
                 />
               </div>
@@ -218,7 +218,7 @@
     <!-- Info Modal -->
     <!-- This modal is used when user clicks a specific card.
     In the event handler, we need to update the info to the corresponding Product
-    More specifically, we need to change title, expDate, SerialNum, tag and note to that product 
+    More specifically, we need to change title, exp_date, SerialNum, tag and note to that product 
     So when user clicks that card, the modal will open with the corresponding info -->
 
     <!-- Hiding/showing the modal is handled by bootstrap, see 
@@ -256,21 +256,21 @@
               />
             </div>
             <div class="mb-3">
-              <label for="expDate" class="form-label">Expiration Date:</label>
-              <p id="infoModal-static-expDate"></p>
+              <label for="exp_date" class="form-label">Expiration Date:</label>
+              <p id="infoModal-static-exp_date"></p>
               <input
                 type="date"
                 class="form-control"
-                id="infoModal-input-expDate"
+                id="infoModal-input-exp_date"
               />
             </div>
             <div class="mb-3">
-              <label for="serialNum" class="form-label">Serial #:</label>
-              <p id="infoModal-static-serialNum"></p>
+              <label for="serial_num" class="form-label">Serial #:</label>
+              <p id="infoModal-static-serial_num"></p>
               <input
                 type="text"
                 class="form-control"
-                id="infoModal-input-serialNum"
+                id="infoModal-input-serial_num"
               />
             </div>
             <div class="mb-3">
@@ -284,14 +284,10 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-tertiary" id="cancel-profile">
-              Cancel
-            </button>
             <button
               type="button"
               class="btn btn-secondary"
               data-bs-dismiss="modal"
-              id="delete-profile"
             >
               Delete
             </button>
