@@ -43,7 +43,7 @@ function init() {
 
   // Delete button and the event listner
   let confirmModal = document.querySelector("#confirm-modal");
-  let deleteBtn = confirmModal.getElementsByClassName('modal-footer')[0].getElementsByClassName('btn btn-primary')[0];
+  let deleteBtn = confirmModal.getElementsByClassName('modal-footer')[0].getElementsByClassName('btn btn-danger')[0];
   deleteBtn.addEventListener('click', ()=> {
     //if(confirm('You are about to delete profile for \n' + selectedProfile.title)){
     deleteProfile(selectedProfile);
