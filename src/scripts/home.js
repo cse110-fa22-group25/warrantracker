@@ -44,7 +44,9 @@ function init() {
   // Delete button and the event listner
   let deleteBtn = infoModal.getElementsByClassName('modal-footer')[0].getElementsByClassName('btn btn-secondary')[0];
   deleteBtn.addEventListener('click', ()=> {
-    deleteProfile(selectedProfile);
+    if(confirm('You are about to delete profile for \n' + selectedProfile.title)){
+      deleteProfile(selectedProfile);
+    }
   });
 
 }
