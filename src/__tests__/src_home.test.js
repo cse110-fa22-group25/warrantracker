@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-const { Profile, create_card } = require('../scripts/home');
+import { Profile, create_card } from '../scripts/home';
 
 let test_profile = new Profile("title1", "tag2", "expDate3", "serialNum", "note");
 
