@@ -331,14 +331,14 @@ function sort_by_tag(tag) {}
  */
 function search(key_word) {}
 
-module.exports = {
+export {
   create_profile,
   create_card,
   update_info_modal,
   change_info_modal_display_mode,
   change_info_modal_edit_mode,
   delete_profile,
-  ort_by_tag: sort_by_tag,
+  sort_by_tag,
   search,
   Profile
 };
