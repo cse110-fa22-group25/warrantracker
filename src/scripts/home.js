@@ -44,12 +44,11 @@ function init() {
   // Delete button and the event listner
   let confirmModal = document.querySelector("#confirm-modal");
   let deleteBtn = confirmModal.getElementsByClassName('modal-footer')[0].getElementsByClassName('btn btn-danger')[0];
-  deleteBtn.addEventListener('click', ()=> {
-    //if(confirm('You are about to delete profile for \n' + selectedProfile.title)){
+  deleteBtn.addEventListener('click', () => {
+    // if(confirm('You are about to delete profile for \n' + selectedProfile.title)){
     deleteProfile(selectedProfile);
-    //}
+    // }
   });
-
 }
 
 /**
@@ -268,14 +267,14 @@ function changeInfoModalToDisplayMode(profile) {}
  * @param {Profile} profile an Profile object
  */
 function deleteProfile(profile) {
-  if(!profile) return;
- 
+  if (!profile) return;
+
   let name = profile.title;
   // Get the card and remove the element
   let reqCard = document.getElementById(name);
   reqCard.remove();
   // Remove profile from list and save list
-  profileList = profileList.filter(currProf => currProf.title != profile.title);
+  profileList = profileList.filter(currProf => currProf.title !== profile.title);
   saveProfileToStorage();
 }
 
