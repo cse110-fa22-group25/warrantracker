@@ -209,11 +209,11 @@ function create_card(profile) {
  * @param {Profile} profile an Profile object
  */
 function update_info_modal(profile) {
-  const title = document.querySelector("#info_modal-input-title");
-  const tag = document.querySelector("#info_modal-input-tag"); // haven't implement yet
-  const exp_date = document.querySelector("#info_modal-input-exp_date");
-  const serial_num = document.querySelector("#info_modal-input-serial_num");
-  const note = document.querySelector("#info_modal-input-note");
+  const title = document.querySelector("#info-modal-input-title");
+  const tag = document.querySelector("#info-modal-input-tag"); // haven't implement yet
+  const exp_date = document.querySelector("#info-modal-input-exp_date");
+  const serial_num = document.querySelector("#info-modal-input-serial_num");
+  const note = document.querySelector("#info-modal-input-note");
 
   title.value = profile.title;
   exp_date.value = profile.exp_date;
@@ -245,11 +245,11 @@ function update_info_modal(profile) {
  * @param {Profile} profile an Profile object
  */
 function change_info_modal_edit_mode(profile) {
-  const title = document.querySelector("#info_modal-input-title");
+  const title = document.querySelector("#info-modal-input-title");
   // let tag = document.querySelector("#info_modal-input-tag"); // haven't implement yet
-  const exp_date = document.querySelector("#info_modal-input-exp_date");
-  const serial_num = document.querySelector("#info_modal-input-serial_num");
-  const note = document.querySelector("#info_modal-input-note");
+  const exp_date = document.querySelector("#info-modal-input-exp_date");
+  const serial_num = document.querySelector("#info-modal-input-serial_num");
+  const note = document.querySelector("#info-modal-input-note");
   const s_button = document.querySelector("#modify-profile");
   const c_button = document.querySelector()
 
