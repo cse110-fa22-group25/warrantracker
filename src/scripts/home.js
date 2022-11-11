@@ -47,7 +47,7 @@ function init() {
   let delete_btn = confirm_modal.getElementsByClassName('modal-footer')[0].getElementsByClassName('btn btn-danger')[0];
   delete_btn.addEventListener('click', () => {
     // if(confirm('You are about to delete profile for \n' + selectedProfile.title)){
-    deleteProfile(selected_profile);
+    delete_profile(selected_profile);
     // }
   });
 }
