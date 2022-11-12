@@ -71,7 +71,7 @@ function init() {
   new_profile_form.addEventListener("submit", create_profile);
 
   // Delete button and the event listner
-  let confirm_modal = document.querySelector("#confirm-modal");
+  let confirm_modal = document.querySelector("#confirm-delete-modal");
   let delete_btn = confirm_modal.getElementsByClassName('modal-footer')[0].getElementsByClassName('btn btn-danger')[0];
   delete_btn.addEventListener('click', () => {
     // if(confirm('You are about to delete profile for \n' + selectedProfile.title)){
