@@ -43,17 +43,17 @@ function init() {
   new_profile_form.addEventListener("submit", create_profile);
 
   // Delete button and the event listner
-  let confirm_delete_modal = document.querySelector("#confirm-delete-modal");
-  
-  let confirm_delete_btn = confirm_delete_modal.getElementsByClassName('modal-footer')[0].getElementsByClassName('btn btn-danger')[0];
+  const confirm_delete_modal = document.querySelector("#confirm-delete-modal");
+
+  const confirm_delete_btn = confirm_delete_modal.getElementsByClassName('modal-footer')[0].getElementsByClassName('btn btn-danger')[0];
   confirm_delete_btn.addEventListener('click', () => {
     // if(confirm('You are about to delete profile for \n' + selectedProfile.title)){
     delete_profile(selected_profile);
     // }
   });
 
-  let confirm_cancel_modify_modal = document.querySelector("#confirm-cancel-modify-modal");
-  let confirm_cancel_modify_btn = confirm_delete_modal.getElementsByClassName('modal-footer')[0].getElementsByClassName('btn btn-danger')[0];
+  const confirm_cancel_modify_modal = document.querySelector("#confirm-cancel-modify-modal");
+  const confirm_cancel_modify_btn = confirm_delete_modal.getElementsByClassName('modal-footer')[0].getElementsByClassName('btn btn-danger')[0];
   confirm_cancel_modify_btn.addEventListener('click', () => {
     console.log("hi");
   });
@@ -165,7 +165,7 @@ function create_profile() {
  * @returns {HTMLDivElement} card wrapper
  */
 function create_card(profile) {
-  let card_wrapper = document.createElement("div");
+  const card_wrapper = document.createElement("div");
   card_wrapper.setAttribute("class", "col-sm-6 col-lg-4 p-2");
   card_wrapper.setAttribute("id", `${profile.title}`);
 
@@ -233,10 +233,10 @@ function update_info_modal(profile) {
   const cancel_button = document.querySelector("#cancel-profile");
 
   mod_button.addEventListener("click", function () {
-    let req_card = document.getElementById(profile.title);
-    let card_title = req_card.querySelector(".card-title")
+    const req_card = document.getElementById(profile.title);
+    const card_title = req_card.querySelector(".card-title")
     card_title.innerHTML = title.value;
-    let card_text = req_card.querySelector(".card-text");
+    const card_text = req_card.querySelector(".card-text");
     card_text.innerHTML = note.value;
     req_card.setAttribute("id", title.value);
 
@@ -315,9 +315,9 @@ function change_info_modal_display_mode(profile) {}
 function delete_profile(profile) {
   if (!profile) return;
 
-  let name = profile.title;
+  const name = profile.title;
   // Get the card and remove the element
-  let req_card = document.getElementById(name);
+  const req_card = document.getElementById(name);
   req_card.remove();
   // Remove profile from list and save list
   profile_list = profile_list.filter(curr_prof => curr_prof.title !== profile.title);
