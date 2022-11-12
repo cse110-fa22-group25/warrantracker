@@ -219,11 +219,13 @@
     <!-- This modal is used when the user clicks the delete button - it confirms whether or not to continue with the deletion.-->
     <div class="modal fade" 
         id="confirm-modal"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
         tabindex="-1"
         role="dialog" 
         aria-labelledby="confirmModalLabel" 
         aria-hidden="true">
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <!-- Change the modal's header -->
             <div class="modal-header">
