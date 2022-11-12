@@ -9,6 +9,7 @@ let new_profile_modal; // the modal showing up when clicking the new-profile-btn
 let new_profile_form;
 let new_modal_instance; // bootstrap modal instance for newPorifleModal;
 let info_modal_instance; // boostrap modal instance for inforModal;
+let selected_profile; // Profile selected for editing and deleting
 const modify_on = false;
 // add more below
 
@@ -40,6 +41,15 @@ function init() {
   // add event listeners below
   // handle when user click save-btn in new profile modal
   new_profile_form.addEventListener("submit", create_profile);
+
+  // Delete button and the event listner
+  let confirm_modal = document.querySelector("#confirm-modal");
+  let delete_btn = confirm_modal.getElementsByClassName('modal-footer')[0].getElementsByClassName('btn btn-danger')[0];
+  delete_btn.addEventListener('click', () => {
+    // if(confirm('You are about to delete profile for \n' + selectedProfile.title)){
+    delete_profile(selected_profile);
+    // }
+  });
 }
 
 /**
@@ -148,8 +158,9 @@ function create_profile() {
  * @returns {HTMLDivElement} card wrapper
  */
 function create_card(profile) {
-  const card_wrapper = document.createElement("div");
+  let card_wrapper = document.createElement("div");
   card_wrapper.setAttribute("class", "col-sm-6 col-lg-4 p-2");
+  card_wrapper.setAttribute("id", `${profile.title}`);
 
   const card = document.createElement("div");
   card.setAttribute("type", "button");
@@ -180,6 +191,7 @@ function create_card(profile) {
   // when clicking, update the info modal with its info
   card_wrapper.addEventListener("click", () => {
     update_info_modal(profile);
+    selected_profile = profile;
   });
   return card_wrapper;
 }
@@ -197,6 +209,8 @@ function create_card(profile) {
  * @param {Profile} profile an Profile object
  */
 function update_info_modal(profile) {
+  if (!profile) return;
+
   const title = document.querySelector("#info-modal-input-title");
   const tag = document.querySelector("#info-modal-input-tag"); // haven't implement yet
   const exp_date = document.querySelector("#info-modal-input-exp_date");
@@ -209,11 +223,23 @@ function update_info_modal(profile) {
   note.value = profile.note;
 
   const mod_button = document.querySelector("#modify-profile");
-  const del_button = document.querySelector("#delete-profile");
   const cancel_button = document.querySelector("#cancel-profile");
 
   mod_button.addEventListener("click", function () {
+    let req_card = document.getElementById(profile.title);
+    let card_title = req_card.querySelector(".card-title")
+    card_title.innerHTML = title.value;
+    let card_text = req_card.querySelector(".card-text");
+    card_text.innerHTML = note.value;
+    req_card.setAttribute("id", title.value);
 
+    profile.title = title.value;
+    // profile.tag = tag.value;
+    profile.exp_date = exp_date.value;
+    profile.serial_num = serial_num.value;
+    profile.note = note.value;
+    save_profile_to_storage();
+    // TODO: Notification for unsaved changes on cancel
   })
   // tag.value = profile.tag;
 }
@@ -233,11 +259,11 @@ function update_info_modal(profile) {
  * @param {Profile} profile an Profile object
  */
 function change_info_modal_edit_mode(profile) {
-  const title = document.querySelector("#info_modal-input-title");
+  const title = document.querySelector("#info-modal-input-title");
   // let tag = document.querySelector("#info_modal-input-tag"); // haven't implement yet
-  const exp_date = document.querySelector("#info_modal-input-exp_date");
-  const serial_num = document.querySelector("#info_modal-input-serial_num");
-  const note = document.querySelector("#info_modal-input-note");
+  const exp_date = document.querySelector("#info-modal-input-exp_date");
+  const serial_num = document.querySelector("#info-modal-input-serial_num");
+  const note = document.querySelector("#info-modal-input-note");
   const s_button = document.querySelector("#modify-profile");
   const c_button = document.querySelector()
 
@@ -278,7 +304,17 @@ function change_info_modal_display_mode(profile) {}
  *
  * @param {Profile} profile an Profile object
  */
-function delete_profile(profile) {}
+function delete_profile(profile) {
+  if (!profile) return;
+
+  let name = profile.title;
+  // Get the card and remove the element
+  let req_card = document.getElementById(name);
+  req_card.remove();
+  // Remove profile from list and save list
+  profile_list = profile_list.filter(curr_prof => curr_prof.title !== profile.title);
+  save_profile_to_storage();
+}
 
 /**
  * display all the cards with the same tag on main page
