@@ -4,7 +4,7 @@
 
 import { Profile, create_card } from '../scripts/home';
 
-let test_profile = new Profile("title1", "tag2", "expDate3", "serialNum", "note");
+let test_profile = new Profile(0, "title1", "tag2", "expDate3", "serialNum", "note");
 
 /**
  * Tests profile object constructor to see if an object with
@@ -20,7 +20,8 @@ describe('Test Profile constructor', () => {
   });
 
   test('create with null', () => {
-    expect(new Profile("title1", null, "someDate", "1234abcd", "this is a note")).toEqual({
+    expect(new Profile(0, "title1", null, "someDate", "1234abcd", "this is a note")).toEqual({
+      id: 0,
       title: "title1",
       tag: null,
       exp_date: "someDate",

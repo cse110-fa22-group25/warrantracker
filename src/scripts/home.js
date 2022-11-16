@@ -10,8 +10,8 @@ let new_profile_form;
 let new_modal_instance; // bootstrap modal instance for new_profile_modal;
 let info_modal_instance; // boostrap modal instance for inforModal;
 let selected_profile; // Profile selected for editing and deleting
+const ID_SET = new Set(); // all id's in existence
 const modify_on = false;
-// add more below
 
 window.addEventListener('DOMContentLoaded', init);
 
@@ -68,7 +68,8 @@ function init() {
  * @param {string} serial_num - the serial number of the product
  * @param {string} note - the additional notes for the product
  */
-function Profile(title, tag, exp_date, serial_num, note) {
+function Profile(id, title, tag, exp_date, serial_num, note) {
+  this.id = id;
   this.title = title;
   this.tag = tag;
   this.exp_date = exp_date;
@@ -101,8 +102,10 @@ function save_profile_to_storage() {
  * @param {Profile[]} profiles an array contains profile objects
  */
 function add_profiles_to_doc(profiles) {
+  ID_SET.clear();
   profiles.forEach((profile) => {
     const curr_col = create_card(profile);
+    ID_SET.add(profile.id);
     grid.append(curr_col);
   });
 }
@@ -123,8 +126,14 @@ function create_profile() {
   const serial_num = new_profile_modal.querySelector("#new-modal-serial_num");
   const note = new_profile_modal.querySelector("#new-modal-note");
 
+  let id; // generate unique ID for profile
+  do {
+    id = Math.floor(Math.random() * Date.now());
+  } while (ID_SET.has(id));
+
   // create a new profile object
   const new_profile = new Profile(
+    id,
     title.value,
     null,
     exp_date.value,
@@ -167,7 +176,7 @@ function create_profile() {
 function create_card(profile) {
   const card_wrapper = document.createElement("div");
   card_wrapper.setAttribute("class", "col-sm-6 col-lg-4 p-2");
-  card_wrapper.setAttribute("id", `${profile.title}`);
+  card_wrapper.setAttribute("id", `${profile.id}`);
 
   const card = document.createElement("div");
   card.setAttribute("type", "button");
@@ -233,12 +242,11 @@ function update_info_modal(profile) {
   const cancel_button = document.querySelector("#cancel-profile");
 
   mod_button.addEventListener("click", function () {
-    const req_card = document.getElementById(profile.title);
+    const req_card = document.getElementById(profile.id);
     const card_title = req_card.querySelector(".card-title")
     card_title.innerHTML = title.value;
     const card_text = req_card.querySelector(".card-text");
     card_text.innerHTML = note.value;
-    req_card.setAttribute("id", title.value);
 
     profile.title = title.value;
     // profile.tag = tag.value;
@@ -315,12 +323,12 @@ function change_info_modal_display_mode(profile) {}
 function delete_profile(profile) {
   if (!profile) return;
 
-  const name = profile.title;
+  const id = profile.id;
   // Get the card and remove the element
-  const req_card = document.getElementById(name);
+  const req_card = document.getElementById(id);
   req_card.remove();
   // Remove profile from list and save list
-  profile_list = profile_list.filter(curr_prof => curr_prof.title !== profile.title);
+  profile_list = profile_list.filter(curr_prof => curr_prof.id !== profile.id);
   save_profile_to_storage();
 }
 
