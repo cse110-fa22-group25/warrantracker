@@ -1,5 +1,7 @@
-// home.js
-
+import { setup_modify, setup_delete } from './setup.js'
+/**
+ * Main file containing main functions of Warrantracker
+ */
 /** Global Variables */
 let profile_list = []; // store all profile object
 let grid; // the html element which is the parent for all profile cards
@@ -40,21 +42,17 @@ function init() {
     add_profiles_to_doc(stored_profiles);
   }
 
-  // add more opeartions below
+  // add more opeartions if needed below
 
   // add event listeners below
+
   // handle when user click save-btn in new profile modal
   new_profile_form.addEventListener("submit", create_profile);
 
-  // Delete button and the event listner
-  const confirm_delete_modal = document.querySelector("#confirm-delete-modal");
+  // Set up action listeners for modals.
+  setup_delete();
 
-  const confirm_delete_btn = confirm_delete_modal.getElementsByClassName('modal-footer')[0].getElementsByClassName('btn btn-danger')[0];
-  confirm_delete_btn.addEventListener('click', () => {
-    // if(confirm('You are about to delete profile for \n' + selectedProfile.title)){
-    delete_profile(selected_profile);
-    // }
-  });
+  setup_modify();
 }
 
 /**
@@ -153,7 +151,7 @@ function create_profile() {
   exp_date.value = "";
   serial_num.value = "";
   note.value = "";
-  // tag.value = "bedroom1";
+  // tag.value = "bedroom1"; DO LATER WHEN MERGING TAGS
 
   // hide bootstrap modal
   new_modal_instance.hide();
@@ -216,9 +214,6 @@ function create_card(profile) {
  * 2. select the elements we need to update in the info_modal
  * 3. change its value (innerHTML) to the corresponding param
  *    in the passed-in profile object
- * 4. add event listener to the modify and delete button, which should
- *    change the displayed info to a input box so that user
- *    can modify them.
  *
  * @param {Profile} profile an Profile object
  */
@@ -238,35 +233,6 @@ function update_info_modal(profile) {
 
   const mod_button = document.querySelector("#modify-profile");
   const cancel_button = document.querySelector("#cancel-profile");
-
-  const confirm_cancel_btn = document.querySelector("#info-modal").querySelector(".btn-close")
-  confirm_cancel_btn.addEventListener('click', () => {
-    // Show confirm cancel modal if there was an unsaved change
-    info_modal_instance.hide();
-    if ((title.value !== profile.title) || (exp_date.value !== profile.exp_date) ||
-      (serial_num.value !== profile.serial_num) || (note.value !== profile.note)) {
-      confirm_cancel_modify_instance.show();
-    }
-  });
-  // actually do the updating
-  let handle_modify = function() {
-    const req_card = document.getElementById(profile.id);
-    const card_title = req_card.querySelector(".card-title")
-    card_title.innerHTML = title.value;
-    const card_text = req_card.querySelector(".card-text");
-    card_text.innerHTML = note.value;
-
-    profile.title = title.value;
-    // profile.tag = tag.value;
-    profile.exp_date = exp_date.value;
-    profile.serial_num = serial_num.value;
-    profile.note = note.value;
-    save_profile_to_storage();
-    info_modal_instance.hide();
-    mod_button.removeEventListener('click', handle_modify);
-  }
-  mod_button.addEventListener("click", handle_modify);
-  // tag.value = profile.tag;
 }
 
 /**
@@ -371,6 +337,10 @@ function sort_by_tag(tag) {}
 function search(key_word) {}
 
 export {
+  selected_profile,
+  info_modal_instance,
+  confirm_cancel_modify_instance,
+  save_profile_to_storage,
   create_profile,
   create_card,
   update_info_modal,
