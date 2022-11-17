@@ -249,7 +249,7 @@ function update_info_modal(profile) {
     }
   });
   // actually do the updating
-  mod_button.addEventListener("click", function () {
+  let handle_modify = function() {
     const req_card = document.getElementById(profile.id);
     const card_title = req_card.querySelector(".card-title")
     card_title.innerHTML = title.value;
@@ -263,8 +263,9 @@ function update_info_modal(profile) {
     profile.note = note.value;
     save_profile_to_storage();
     info_modal_instance.hide();
-    // TODO: Notification for unsaved changes on cancel
-  })
+    mod_button.removeEventListener('click', handle_modify);
+  }
+  mod_button.addEventListener("click", handle_modify);
   // tag.value = profile.tag;
 }
 
