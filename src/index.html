@@ -61,17 +61,11 @@
           >
             All
           </button>
-          <!-- <button type="button" class="btn btn-light" data-bs-toggle="button">
-            Label 1
-          </button> -->
         </div>
-        <!-- <div class="btn-add-label">
-            <button type="button" class="btn btn-lg btn-light">+</button>
-          </div> -->
       </section>
 
       <section class="row" id="info-section">
-        <!-- div for profile cards, add shadow doms later -->
+        <!-- div for profile cards -->
         <div class="col-lg-9">
           <div class="row" id="grid">
             <div class="col-sm-6 col-lg-4 p-2" id="new-profile-btn">
@@ -124,6 +118,8 @@
       tabindex="-1"
       aria-labelledby="new-modal-label"
       aria-hidden="true"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
     >
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
@@ -164,7 +160,6 @@
                     id="new-modal-tag"
                   />
                   <ul class="dropdown-menu">
-                    <!-- <li><a class="dropdown-item" href="#">tag1</a></li> -->
                   </ul>
                 </div>
               </div>
@@ -215,10 +210,10 @@
       </div>
     </div>
 
-    <!-- Confirmation modal-->
+    <!-- Confirm Delete modal-->
     <!-- This modal is used when the user clicks the delete button - it confirms whether or not to continue with the deletion.-->
     <div class="modal fade" 
-        id="confirm-modal"
+        id="confirm-delete-modal"
         data-bs-backdrop="static"
         data-bs-keyboard="false"
         tabindex="-1"
@@ -229,19 +224,14 @@
           <div class="modal-content">
             <!-- Change the modal's header -->
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="confirm-modal-label">Are You Sure?</h1>
-                <button type="button" 
-                    class="btn-close"
-                    data-bs-dismiss="modal"
-                    aria-label="Close">
-                </button>
+                <h1 class="modal-title fs-5" id="confirm-delete-modal-label">Are You Sure?</h1>
             </div>
             <div class="modal-body">
               Deletion will permanently remove the product profile.
             </div>
             <div class="modal-footer">
                 <button type="button" 
-                        id="closebtn"
+                        id="close-deletion-btn"
                         class="btn btn-secondary" 
                         data-bs-toggle="modal"
                         data-bs-target="#info-modal">
@@ -252,6 +242,42 @@
                         class="btn btn-danger"
                         data-bs-dismiss="modal">
                   Confirm Deletion
+              </button>
+            </div>
+          </div>
+      </div>
+    </div>
+    <!-- Confirm Cancel modal on modif -->
+    <div class="modal fade" 
+        id="confirm-cancel-modify-modal"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        tabindex="-1"
+        role="dialog" 
+        aria-labelledby="confirmModalLabel" 
+        aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <!-- Change the modal's header -->
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="confirm-cancel-modify-modal-label">Are You Sure?</h1>
+            </div>
+            <div class="modal-body">
+              Exiting will cancel your changes to the profile.
+            </div>
+            <div class="modal-footer">
+                <button type="button" 
+                        id="cancel-cancel-modify-btn"
+                        class="btn btn-secondary" 
+                        data-bs-toggle="modal"
+                        data-bs-target="#info-modal">
+                  Go back
+              </button>
+                <button type="button" 
+                        id="cancelbtn" 
+                        class="btn btn-danger"
+                        data-bs-dismiss="modal">
+                  Confirm
               </button>
             </div>
           </div>
@@ -272,6 +298,8 @@
       tabindex="-1"
       aria-labelledby="info_modal_label"
       aria-hidden="true"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
     >
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
@@ -281,7 +309,7 @@
             <button
               type="button"
               class="btn-close"
-              data-bs-dismiss="modal"
+
               aria-label="Close"
             ></button>
           </div>
@@ -331,7 +359,7 @@
               type="button"
               class="btn btn-danger"
               data-bs-toggle="modal" 
-              data-bs-target="#confirm-modal"
+              data-bs-target="#confirm-delete-modal"
             >
               Delete
             </button>

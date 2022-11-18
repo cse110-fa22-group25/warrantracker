@@ -26,8 +26,10 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>// home.js
-
+            <pre class="prettyprint source linenums"><code>import { setup_modify, setup_delete } from './setup.js'
+/**
+ * Main file containing main functions of Warrantracker
+ */
 /** Global Variables */
 let profile_list = []; // store all profile object
 let grid; // the html element which is the parent for all profile cards
@@ -35,11 +37,13 @@ let new_profile_btn; // the first element in the grid (the card with a "+" sign)
 let info_modal; // the modal showing up when clicking a profile card
 let new_profile_modal; // the modal showing up when clicking the new-profile-btn
 let new_profile_form;
-let new_modal_instance; // bootstrap modal instance for newPorifleModal;
-let info_modal_instance; // boostrap modal instance for inforModal;
+let new_modal_instance; // bootstrap modal instance for new_profile_modal;
+let info_modal_instance; // boostrap modal instance for infoModal;
+let confirm_cancel_modal;
+let confirm_cancel_modify_instance;
 let selected_profile; // Profile selected for editing and deleting
+const ID_SET = new Set(); // all id's in existence
 const modify_on = false;
-// add more below
 
 window.addEventListener('DOMContentLoaded', init);
 
@@ -55,6 +59,8 @@ function init() {
   new_profile_form = document.querySelector('#new-modal-form');
   new_modal_instance = new window.bootstrap.Modal(new_profile_modal);
   info_modal_instance = new window.bootstrap.Modal(info_modal);
+  confirm_cancel_modal = document.querySelector("#confirm-cancel-modify-modal");
+  confirm_cancel_modify_instance = new window.bootstrap.Modal(confirm_cancel_modal);
 
   // get existing profiles from localStorage
   // generate card component and display them
@@ -64,20 +70,17 @@ function init() {
     add_profiles_to_doc(stored_profiles);
   }
 
-  // add more opeartions below
+  // add more opeartions if needed below
 
   // add event listeners below
+
   // handle when user click save-btn in new profile modal
   new_profile_form.addEventListener("submit", create_profile);
 
-  // Delete button and the event listner
-  let confirm_modal = document.querySelector("#confirm-modal");
-  let delete_btn = confirm_modal.getElementsByClassName('modal-footer')[0].getElementsByClassName('btn btn-danger')[0];
-  delete_btn.addEventListener('click', () => {
-    // if(confirm('You are about to delete profile for \n' + selectedProfile.title)){
-    delete_profile(selected_profile);
-    // }
-  });
+  // Set up action listeners for modals.
+  setup_delete();
+
+  setup_modify();
 }
 
 /**
@@ -89,7 +92,8 @@ function init() {
  * @param {string} serial_num - the serial number of the product
  * @param {string} note - the additional notes for the product
  */
-function Profile(title, tag, exp_date, serial_num, note) {
+function Profile(id, title, tag, exp_date, serial_num, note) {
+  this.id = id;
   this.title = title;
   this.tag = tag;
   this.exp_date = exp_date;
@@ -122,8 +126,10 @@ function save_profile_to_storage() {
  * @param {Profile[]} profiles an array contains profile objects
  */
 function add_profiles_to_doc(profiles) {
+  ID_SET.clear();
   profiles.forEach((profile) => {
     const curr_col = create_card(profile);
+    ID_SET.add(profile.id);
     grid.append(curr_col);
   });
 }
@@ -144,8 +150,14 @@ function create_profile() {
   const serial_num = new_profile_modal.querySelector("#new-modal-serial_num");
   const note = new_profile_modal.querySelector("#new-modal-note");
 
+  let id; // generate unique ID for profile
+  do {
+    id = Math.floor(Math.random() * Date.now());
+  } while (ID_SET.has(id));
+
   // create a new profile object
   const new_profile = new Profile(
+    id,
     title.value,
     null,
     exp_date.value,
@@ -167,7 +179,7 @@ function create_profile() {
   exp_date.value = "";
   serial_num.value = "";
   note.value = "";
-  // tag.value = "bedroom1";
+  // tag.value = "bedroom1"; DO LATER WHEN MERGING TAGS
 
   // hide bootstrap modal
   new_modal_instance.hide();
@@ -186,9 +198,9 @@ function create_profile() {
  * @returns {HTMLDivElement} card wrapper
  */
 function create_card(profile) {
-  let card_wrapper = document.createElement("div");
+  const card_wrapper = document.createElement("div");
   card_wrapper.setAttribute("class", "col-sm-6 col-lg-4 p-2");
-  card_wrapper.setAttribute("id", `${profile.title}`);
+  card_wrapper.setAttribute("id", `${profile.id}`);
 
   const card = document.createElement("div");
   card.setAttribute("type", "button");
@@ -230,13 +242,12 @@ function create_card(profile) {
  * 2. select the elements we need to update in the info_modal
  * 3. change its value (innerHTML) to the corresponding param
  *    in the passed-in profile object
- * 4. add event listener to the modify and delete button, which should
- *    change the displayed info to a input box so that user
- *    can modify them.
  *
  * @param {Profile} profile an Profile object
  */
 function update_info_modal(profile) {
+  if (!profile) return;
+
   const title = document.querySelector("#info-modal-input-title");
   const tag = document.querySelector("#info-modal-input-tag"); // haven't implement yet
   const exp_date = document.querySelector("#info-modal-input-exp_date");
@@ -249,13 +260,7 @@ function update_info_modal(profile) {
   note.value = profile.note;
 
   const mod_button = document.querySelector("#modify-profile");
-  const del_button = document.querySelector("#delete-profile");
   const cancel_button = document.querySelector("#cancel-profile");
-
-  mod_button.addEventListener("click", function () {
-
-  })
-  // tag.value = profile.tag;
 }
 
 /**
@@ -321,12 +326,12 @@ function change_info_modal_display_mode(profile) {}
 function delete_profile(profile) {
   if (!profile) return;
 
-  let name = profile.title;
+  const id = profile.id;
   // Get the card and remove the element
-  let req_card = document.getElementById(name);
+  const req_card = document.getElementById(id);
   req_card.remove();
   // Remove profile from list and save list
-  profile_list = profile_list.filter(curr_prof => curr_prof.title !== profile.title);
+  profile_list = profile_list.filter(curr_prof => curr_prof.id !== profile.id);
   save_profile_to_storage();
 }
 
@@ -360,6 +365,10 @@ function sort_by_tag(tag) {}
 function search(key_word) {}
 
 export {
+  selected_profile,
+  info_modal_instance,
+  confirm_cancel_modify_instance,
+  save_profile_to_storage,
   create_profile,
   create_card,
   update_info_modal,
@@ -380,13 +389,13 @@ export {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Profile.html">Profile</a></li></ul><h3>Global</h3><ul><li><a href="global.html#add_profiles_to_doc">add_profiles_to_doc</a></li><li><a href="global.html#change_info_modal_display_mode">change_info_modal_display_mode</a></li><li><a href="global.html#change_info_modal_edit_mode">change_info_modal_edit_mode</a></li><li><a href="global.html#create_card">create_card</a></li><li><a href="global.html#create_profile">create_profile</a></li><li><a href="global.html#delete_profile">delete_profile</a></li><li><a href="global.html#get_profile_from_storage">get_profile_from_storage</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#profile_list">profile_list</a></li><li><a href="global.html#save_profile_to_storage">save_profile_to_storage</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#sort_by_tag">sort_by_tag</a></li><li><a href="global.html#update_info_modal">update_info_modal</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Profile.html">Profile</a></li></ul><h3>Global</h3><ul><li><a href="global.html#add_profiles_to_doc">add_profiles_to_doc</a></li><li><a href="global.html#change_info_modal_display_mode">change_info_modal_display_mode</a></li><li><a href="global.html#change_info_modal_edit_mode">change_info_modal_edit_mode</a></li><li><a href="global.html#create_card">create_card</a></li><li><a href="global.html#create_profile">create_profile</a></li><li><a href="global.html#delete_profile">delete_profile</a></li><li><a href="global.html#get_profile_from_storage">get_profile_from_storage</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#profile_list">profile_list</a></li><li><a href="global.html#save_profile_to_storage">save_profile_to_storage</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#setup_delete">setup_delete</a></li><li><a href="global.html#setup_modify">setup_modify</a></li><li><a href="global.html#sort_by_tag">sort_by_tag</a></li><li><a href="global.html#update_info_modal">update_info_modal</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a> on Sat Nov 12 2022 07:00:18 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a> on Thu Nov 17 2022 08:08:19 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>
