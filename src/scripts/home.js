@@ -405,7 +405,6 @@ function display_selected_profile(profiles) {
   profiles.forEach((profile) => {
     const curr_card_wrapper = create_card(profile);
     grid.appendChild(curr_card_wrapper);
-    TAG_MAP.set(profile.tag, TAG_MAP.get(profile.tag) + 1 || 1);
   });
 }
 
