@@ -68,6 +68,10 @@ export function setup_delete() {
   });
 }
 
+/**
+ * Add action listeners for tag edit boxes in create/info modals
+ * @param {function} search_tag Search tag function, might remove from params later
+ */
 export function setup_tag_recommend(search_tag) {
   // set up listener for new_modal
   const new_modal_tag = document.querySelector('#new-modal-tag');
@@ -82,6 +86,12 @@ export function setup_tag_recommend(search_tag) {
   });
 }
 
+/**
+ * Update tag suggestion list that appears in new profile/info modal
+ * @param {function} search_tag Search tag function, might remove from params later
+ * @param {HTMLInputElement} tag_input HTML input element currently being edited by user
+ * @param {String} type New modal 'new' or info modal 'info'
+ */
 function handle_tag_input_change(search_tag, tag_input, type) {
   // find all matched tag names
   const match_list = search_tag(tag_input.value);

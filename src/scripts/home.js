@@ -275,6 +275,11 @@ function delete_profile(profile) {
   save_profile_to_storage();
 }
 
+/**
+ * Returns a subset of profile_list of elements that match the given tag
+ * @param {String} tag tag to search for in profile_list
+ * @returns {Profile[]} List of profiles that match the given tag
+ */
 function search_tag(tag) {
   const match_list = [];
   profile_list.forEach((profile) => {
@@ -289,6 +294,9 @@ function search_tag(tag) {
   return match_list;
 }
 
+/**
+ * Adds the tag button
+ */
 function create_tag_btn() {
   const tag_html_list = document.querySelector("#tag-btn-div");
   const is_visited = new Set();
@@ -349,14 +357,20 @@ function create_tag_btn() {
   }
 }
 
+/**
+ * Handle user-click on tag filters
+ * @param {HTMLButtonElement} curr_tag_btn Tag button clicked
+ * @param {Profile | String} profile tag (or profile associated with tag) to filter by
+ */
 function handle_tag_btn_click(curr_tag_btn, profile) {
-  // remove active in all-btn class
+  // Set all tag button filters as inactive
   const tag_btn_div = document.querySelector("#tag-btn-div");
   for (let i = 0; i < tag_btn_div.childElementCount; i++) {
     if (tag_btn_div.children[i] !== curr_tag_btn) {
       tag_btn_div.children[i].classList.remove("active");
     }
   }
+  // Filter profile list
   if (curr_tag_btn.classList.contains("active")) {
     const profile_list_tag = [];
     profile_list.forEach((profile_temp) => {
@@ -371,19 +385,19 @@ function handle_tag_btn_click(curr_tag_btn, profile) {
 function display_selected_profile(profiles) {
   // remove curr cards in grid
   grid.innerHTML = `
-          <div class="col-sm-6 col-lg-4 p-2" id="new-profile-btn">
-            <div
-              type="button"
-              data-bs-toggle="modal"
-              data-bs-target="#new-modal"
-              class="card"
-            >
-              <h5 class="position-absolute top-50 start-50 translate-middle">
-                +
-              </h5>
-            </div>
-          </div>
-        `;
+    <div class="col-sm-6 col-lg-4 p-2" id="new-profile-btn">
+      <div
+        type="button"
+        data-bs-toggle="modal"
+        data-bs-target="#new-modal"
+        class="card"
+      >
+        <h5 class="position-absolute top-50 start-50 translate-middle">
+          +
+        </h5>
+      </div>
+    </div>
+  `;
 
   // add selected profiles
   profiles.forEach((profile) => {
