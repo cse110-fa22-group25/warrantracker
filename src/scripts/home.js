@@ -15,6 +15,8 @@ let confirm_cancel_modal;
 let confirm_cancel_modify_instance;
 let selected_profile; // Profile selected for editing and deleting
 const ID_SET = new Set(); // all id's in existence
+const TAG_MAP = new Map();
+let FIRST_LOAD = true;
 const modify_on = false;
 
 window.addEventListener('DOMContentLoaded', init);
@@ -40,8 +42,10 @@ function init() {
   if (stored_profiles) {
     profile_list.push(...stored_profiles);
     add_profiles_to_doc(stored_profiles);
+    FIRST_LOAD = false;
   }
 
+  create_tag_btn();
   // add more opeartions if needed below
 
   // add event listeners below
@@ -53,6 +57,26 @@ function init() {
   setup_delete();
 
   setup_modify();
+
+  const tag = new_profile_form.querySelector('#new-modal-tag');
+  tag.addEventListener('input', () => {
+    // find all matched tag names
+    const match_list = search_tag(tag.value);
+    console.log(match_list)
+    const tag_html_list = document.querySelector('#new-modal-tag-list');
+    // clear the html <li></li>
+    tag_html_list.innerHTML = ``;
+
+    // update html <li></li>
+    match_list.forEach((tag_name) => {
+      let curr_li = document.createElement('li');
+      curr_li.innerHTML = `<a class="dropdown-item" href="#">${tag_name}</a>`
+      tag_html_list.appendChild(curr_li);
+      curr_li.addEventListener('click', () => {
+        tag.value = tag_name;
+      })
+    })
+  });
 }
 
 /**
@@ -95,6 +119,7 @@ function save_profile_to_storage() {
 /**
  * Create bootstrap card component to display the
  * stored profile_list in the localStorage
+ * Only call this function in init()
  * @param {Profile[]} profiles an array contains profile objects
  */
 function add_profiles_to_doc(profiles) {
@@ -102,7 +127,10 @@ function add_profiles_to_doc(profiles) {
   profiles.forEach((profile) => {
     const curr_col = create_card(profile);
     ID_SET.add(profile.id);
-    grid.append(curr_col);
+    grid.appendChild(curr_col);
+    if (FIRST_LOAD && profile.tag) {
+      TAG_MAP.set(profile.tag, TAG_MAP.get(profile.tag) + 1 || 1);
+    }
   });
 }
 
@@ -131,7 +159,7 @@ function create_profile() {
   const new_profile = new Profile(
     id,
     title.value,
-    null,
+    tag.value,
     exp_date.value,
     serial_num.value,
     note.value
@@ -144,6 +172,10 @@ function create_profile() {
   // create a card component to display
   const curr_col = create_card(new_profile);
   grid.insertBefore(curr_col, new_profile_btn.nextSibling);
+
+  // if tag value not exist, create a new tag btn
+  TAG_MAP.set(new_profile.tag, TAG_MAP.get(new_profile.tag) + 1 || 1);
+  create_tag_btn();
 
   // clear input value of the form
   title.value = "";
@@ -236,56 +268,6 @@ function update_info_modal(profile) {
 }
 
 /**
- * Change the info_modal to editing mode. Change the corresponding
- * elements to <input></input> element; set the value of that input
- * with the corresponding profile.param
- *
- * 1. select the elements we need to update in the info_modal
- * 2. hide these elements
- * 3. show the input elements and update their value with profile.param
- * 4. add event listener to the save button and cancel button
- *    when clicking save or cancel btn, modal need to be changed back
- *    to the display mode (no input boxes)
- *
- * @param {Profile} profile an Profile object
- */
-function change_info_modal_edit_mode(profile) {
-  const title = document.querySelector("#info-modal-input-title");
-  // let tag = document.querySelector("#info_modal-input-tag"); // haven't implement yet
-  const exp_date = document.querySelector("#info-modal-input-exp_date");
-  const serial_num = document.querySelector("#info-modal-input-serial_num");
-  const note = document.querySelector("#info-modal-input-note");
-  const s_button = document.querySelector("#modify-profile");
-  const c_button = document.querySelector()
-
-  title.value = profile.title;
-  title.disabled = false;
-  exp_date.value = profile.exp_date;
-  exp_date.disabled = false;
-  serial_num.value = profile.serial_num;
-  serial_num.disabled = false;
-  note.value = profile.note;
-  note.disabled = false;
-}
-
-/**
- * Change the info_modal to display mode. Remove/hide (depends on your
- * implementation) <input> elements; create/display the non-input elements
- * (like <p></p> or others you choose to use)
- *
- * 1. select the input elements we need to update in the info_modal
- * 2. hide these elements
- * 3. show the non-input elements and update their value with profile.param
- * 4. add event listener to the modify button, which should
- *    change the displayed info to a input box so that user
- *    can modify them.
- * 5. add event listener to the delete button (should pop up a notification)
- *
- * @param {Profile} profile an Profile object
- */
-function change_info_modal_display_mode(profile) {}
-
-/**
  * Delete the passed-in profile. Need to delete
  * the corresponding card component, profile object, etc.
  *
@@ -304,6 +286,14 @@ function delete_profile(profile) {
   req_card.remove();
   // Remove profile from list and save list
   profile_list = profile_list.filter(curr_prof => curr_prof.id !== profile.id);
+  TAG_MAP.set(profile.tag, TAG_MAP.get(profile.tag) - 1);
+  if (TAG_MAP.get(profile.tag) === 0) {
+    TAG_MAP.delete(profile.tag)
+    create_tag_btn();
+    // const all_btn = document.querySelector('#all-btn');
+    // all_btn.click();
+    // all_btn.click();
+  }
   save_profile_to_storage();
 }
 
@@ -320,6 +310,104 @@ function delete_profile(profile) {
  * @param {String} tag an tag
  */
 function sort_by_tag(tag) {}
+
+function search_tag(tag) {
+  const match_list = [];
+  profile_list.forEach((profile) => {
+    if (
+      profile.tag &&
+      !match_list.includes(profile.tag) &&
+      profile.tag.includes(tag)
+    ) {
+      match_list.push(profile.tag);
+    }
+  });
+  return match_list;
+}
+
+function create_tag_btn() {
+  const tag_html_list = document.querySelector("#tag-btn-div");
+  const is_visited = new Set();
+
+  // all-btn
+  tag_html_list.innerHTML = `
+  <button
+    type="button"
+    class="btn btn-light active"
+    data-bs-toggle="button"
+    id="all-btn"
+  >
+    All
+  </button>
+  `;
+  let all_btn = document.querySelector('#all-btn');
+  all_btn.addEventListener('click', () => {
+    handle_tag_btn_click(all_btn, 'all');
+  })
+
+  profile_list.forEach((profile) => {
+    if (profile.tag && !is_visited.has(profile.tag)) {
+      let curr_tag_btn = document.createElement("button");
+      curr_tag_btn.setAttribute("type", "button");
+      curr_tag_btn.setAttribute("class", "btn btn-light");
+      curr_tag_btn.setAttribute("data-bs-toggle", "button");
+      curr_tag_btn.setAttribute("id", profile.tag);
+      curr_tag_btn.innerHTML = `${profile.tag}`;
+
+      // event listener for the btn
+      curr_tag_btn.addEventListener("click", () => {
+        handle_tag_btn_click(curr_tag_btn, profile);
+      });
+
+      tag_html_list.append(curr_tag_btn);
+      is_visited.add(profile.tag);
+    }
+  });
+}
+
+function handle_tag_btn_click(curr_tag_btn, profile) {
+  // remove active in all-btn class
+  const tag_btn_div = document.querySelector("#tag-btn-div");
+  for (let i = 0; i < tag_btn_div.childElementCount; i++) {
+    if (tag_btn_div.children[i] !== curr_tag_btn) {
+      tag_btn_div.children[i].classList.remove("active");
+    }
+  }
+  if (curr_tag_btn.classList.contains("active")) {
+    const profile_list_tag = [];
+    profile_list.forEach((profile_temp) => {
+      if (profile === 'all' || (profile_temp.tag && profile_temp.tag === profile.tag)) {
+        profile_list_tag.push(profile_temp);
+      }
+    });
+    display_selected_profile(profile_list_tag);
+  }
+}
+
+function display_selected_profile(profiles) {
+  // remove curr cards in grid
+  grid.innerHTML = `
+          <div class="col-sm-6 col-lg-4 p-2" id="new-profile-btn">
+            <div
+              type="button"
+              data-bs-toggle="modal"
+              data-bs-target="#new-modal"
+              class="card"
+            >
+              <h5 class="position-absolute top-50 start-50 translate-middle">
+                +
+              </h5>
+            </div>
+          </div>
+        `;
+
+  // add selected profiles
+  profiles.forEach((profile) => {
+    const curr_card_wrapper = create_card(profile);
+    grid.appendChild(curr_card_wrapper);
+    TAG_MAP.set(profile.tag, TAG_MAP.get(profile.tag) + 1 || 1);
+  });
+}
 
 /**
  * Search the card by keyword. Display all the cards matching
@@ -344,8 +432,6 @@ export {
   create_profile,
   create_card,
   update_info_modal,
-  change_info_modal_display_mode,
-  change_info_modal_edit_mode,
   delete_profile,
   sort_by_tag,
   search,
