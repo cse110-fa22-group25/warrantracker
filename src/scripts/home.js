@@ -1,4 +1,4 @@
-import { setup_modify, setup_delete } from './setup.js'
+import { setup_modify, setup_delete, setup_tag_recommend } from './setup.js'
 /**
  * Main file containing main functions of Warrantracker
  */
@@ -17,7 +17,6 @@ let selected_profile; // Profile selected for editing and deleting
 const ID_SET = new Set(); // all id's in existence
 const TAG_MAP = new Map();
 let FIRST_LOAD = true;
-const modify_on = false;
 
 window.addEventListener('DOMContentLoaded', init);
 
@@ -55,28 +54,8 @@ function init() {
 
   // Set up action listeners for modals.
   setup_delete();
-
   setup_modify();
-
-  const tag = new_profile_form.querySelector('#new-modal-tag');
-  tag.addEventListener('input', () => {
-    // find all matched tag names
-    const match_list = search_tag(tag.value);
-    console.log(match_list)
-    const tag_html_list = document.querySelector('#new-modal-tag-list');
-    // clear the html <li></li>
-    tag_html_list.innerHTML = ``;
-
-    // update html <li></li>
-    match_list.forEach((tag_name) => {
-      let curr_li = document.createElement('li');
-      curr_li.innerHTML = `<a class="dropdown-item" href="#">${tag_name}</a>`
-      tag_html_list.appendChild(curr_li);
-      curr_li.addEventListener('click', () => {
-        tag.value = tag_name;
-      })
-    })
-  });
+  setup_tag_recommend(search_tag);
 }
 
 /**
@@ -179,7 +158,7 @@ function create_profile() {
 
   // clear input value of the form
   title.value = "";
-  exp_date.value = "";
+  tag.value = "";
   exp_date.value = "";
   serial_num.value = "";
   note.value = "";
@@ -259,6 +238,7 @@ function update_info_modal(profile) {
   const note = document.querySelector("#info-modal-input-note");
 
   title.value = profile.title;
+  tag.value = profile.tag;
   exp_date.value = profile.exp_date;
   serial_num.value = profile.serial_num;
   note.value = profile.note;
@@ -290,26 +270,10 @@ function delete_profile(profile) {
   if (TAG_MAP.get(profile.tag) === 0) {
     TAG_MAP.delete(profile.tag)
     create_tag_btn();
-    // const all_btn = document.querySelector('#all-btn');
-    // all_btn.click();
-    // all_btn.click();
   }
+  console.log(TAG_MAP)
   save_profile_to_storage();
 }
-
-/**
- * display all the cards with the same tag on main page
- *
- * 1. for each profile in profile_list, check if it has
- *    such a tag. if it has, add this profile object to a
- *    temp list.
- * 2. remove all card components in grid
- * 3. call add_profiles_to_doc(profiles) to display the
- *    profile we just added to the temp list
- *
- * @param {String} tag an tag
- */
-function sort_by_tag(tag) {}
 
 function search_tag(tag) {
   const match_list = [];
@@ -328,26 +292,33 @@ function search_tag(tag) {
 function create_tag_btn() {
   const tag_html_list = document.querySelector("#tag-btn-div");
   const is_visited = new Set();
+  let previous_btn_active = 'All'
+  // find active btn
+  for (const tag_btn of tag_html_list.children) {
+    if (tag_btn.classList.contains('active')) {
+      previous_btn_active = tag_btn.innerHTML.replace(/\s+/g, '');
+    }
+  }
 
   // all-btn
   tag_html_list.innerHTML = `
   <button
     type="button"
-    class="btn btn-light active"
+    class="btn btn-light"
     data-bs-toggle="button"
     id="all-btn"
   >
     All
   </button>
   `;
-  let all_btn = document.querySelector('#all-btn');
+  const all_btn = document.querySelector('#all-btn');
   all_btn.addEventListener('click', () => {
     handle_tag_btn_click(all_btn, 'all');
   })
 
   profile_list.forEach((profile) => {
     if (profile.tag && !is_visited.has(profile.tag)) {
-      let curr_tag_btn = document.createElement("button");
+      const curr_tag_btn = document.createElement("button");
       curr_tag_btn.setAttribute("type", "button");
       curr_tag_btn.setAttribute("class", "btn btn-light");
       curr_tag_btn.setAttribute("data-bs-toggle", "button");
@@ -363,6 +334,19 @@ function create_tag_btn() {
       is_visited.add(profile.tag);
     }
   });
+
+  // select the previous active btn
+  let is_find = false;
+  for (const tag_btn of tag_html_list.children) {
+    if (tag_btn.innerHTML.replace(/\s+/g, '') === previous_btn_active) {
+      tag_btn.click();
+      is_find = true;
+    }
+  }
+  if (!is_find) {
+    console.log('zzz')
+    all_btn.click();
+  }
 }
 
 function handle_tag_btn_click(curr_tag_btn, profile) {
@@ -432,7 +416,8 @@ export {
   create_card,
   update_info_modal,
   delete_profile,
-  sort_by_tag,
   search,
-  Profile
+  Profile,
+  TAG_MAP,
+  create_tag_btn
 };
