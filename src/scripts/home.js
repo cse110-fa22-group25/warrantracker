@@ -17,6 +17,7 @@ let selected_profile; // Profile selected for editing and deleting
 const ID_SET = new Set(); // all id's in existence
 const TAG_MAP = new Map();
 let FIRST_LOAD = true;
+let active_tags = new Set(); // active tags for filtering by multiple tags
 
 window.addEventListener("DOMContentLoaded", init);
 
@@ -378,29 +379,45 @@ function create_tag_btn() {
 function handle_tag_btn_click(curr_tag_btn, tag) {
   console.log(tag);
   // Set all tag button filters as inactive except the curr_tag_btn (being clicked)
-  if (tag === "all") {
-    console.log("yep");
-  }
+  // TODO: fix suggestions for tags
   const tag_btn_div = document.querySelector("#tag-btn-div");
-  for (let i = 0; i < tag_btn_div.childElementCount; i++) {
-    if (tag_btn_div.children[i] !== curr_tag_btn) {
+  // if tag is all, disable all other filters
+  if (tag === "all") {
+    active_tags.clear();
+  } else if (active_tags.has(tag)) {
+    // if tag was previously active, set as inactive
+    active_tags.delete(tag);
+    // if no active tags, set all as true
+    if (active_tags.size === 0) {
+      tag_btn_div.children[0].classList.add("active");
+    }
+  } else {
+    active_tags.add(tag);
+  }
+
+  let i = active_tags.size === 0 ? 1 : 0;
+  for (; i < tag_btn_div.childElementCount; i++) {
+    // Remove "active" class from buttons of inactive tags
+    if (!active_tags.has(tag_btn_div.children[i].innerHTML)) {
       tag_btn_div.children[i].classList.remove("active");
     }
   }
 
   // if curr_tag_btn is active, display the selected cards
-  if (curr_tag_btn.classList.contains("active")) {
-    const profile_list_tag = []; // store all profiles with this tag
-
-    // find every Profile with the same tag as the curr_tag_btn
-    profile_list.forEach((profile_temp) => {
-      let cur_profile_tag_list = profile_temp.tag.split(",");
-      if (tag === "all" || (profile_temp.tag && cur_profile_tag_list.includes(tag))) {
-        profile_list_tag.push(profile_temp); // add the profile to a temp list
+  const profile_list_tag = []; // store all profiles with this tag
+  for (i = 0; i < profile_list.length; i++) {
+    let cur_profile_tag_list = profile_list[i].tag.split(",");
+    profile_list_tag.push(profile_list[i]);
+    for (let t of active_tags) {
+      if (cur_profile_tag_list.indexOf(t) === -1) {
+        profile_list_tag.pop();
+        break;
       }
-    });
-
-    // display the selected profile's card on main page
+    }
+  }
+  if (active_tags.size === 0) {
+    display_selected_profile(profile_list);
+  } else {
     display_selected_profile(profile_list_tag);
   }
 }
