@@ -281,7 +281,7 @@ function delete_profile(profile) {
 /**
  * Returns a subset of tag of elements that match the given input
  * @param {string} tag tag to search for in existing tags
- * @returns {Profile[]} array of tags that match the given tag
+ * @returns {string[]} array of tags that match the given tag
  */
 export function search_tag(tag) {
   const match_list = [];
