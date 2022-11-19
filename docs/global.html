@@ -273,7 +273,7 @@ Only call this function in init()
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="home.js.html">home.js</a>, <a href="home.js.html#line104">line 104</a>
+        <a href="home.js.html">home.js</a>, <a href="home.js.html#line106">line 106</a>
     </li></ul></dd>
     
 
@@ -417,7 +417,7 @@ Only call this function in init()
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="home.js.html">home.js</a>, <a href="home.js.html#line183">line 183</a>
+        <a href="home.js.html">home.js</a>, <a href="home.js.html#line186">line 186</a>
     </li></ul></dd>
     
 
@@ -532,7 +532,7 @@ Only call this function in init()
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="home.js.html">home.js</a>, <a href="home.js.html#line124">line 124</a>
+        <a href="home.js.html">home.js</a>, <a href="home.js.html#line128">line 128</a>
     </li></ul></dd>
     
 
@@ -576,7 +576,8 @@ Only call this function in init()
 
 
 <div class="description">
-    Adds the tag button
+    Remove curr tag btn filters and re-create
+all tag btn filters again
 </div>
 
 
@@ -620,7 +621,7 @@ Only call this function in init()
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="home.js.html">home.js</a>, <a href="home.js.html#line300">line 300</a>
+        <a href="home.js.html">home.js</a>, <a href="home.js.html#line303">line 303</a>
     </li></ul></dd>
     
 
@@ -665,11 +666,8 @@ Only call this function in init()
 
 <div class="description">
     Delete the passed-in profile. Need to delete
-the corresponding card component, profile object, etc.
-
-1. remove the profile from profile_list
-2. save the new profile_list to localStorage
-3. remove corresponding card component
+the corresponding card component, profile object
+and associated tag
 </div>
 
 
@@ -762,7 +760,145 @@ the corresponding card component, profile object, etc.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="home.js.html">home.js</a>, <a href="home.js.html#line260">line 260</a>
+        <a href="home.js.html">home.js</a>, <a href="home.js.html#line253">line 253</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="display_selected_profile"><span class="type-signature"></span>display_selected_profile<span class="signature">(profiles)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Given an array contains some Profile Object,
+display all the profile cards in the grid
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>profiles</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="home.js.html">home.js</a>, <a href="home.js.html#line403">line 403</a>
     </li></ul></dd>
     
 
@@ -852,7 +988,7 @@ object. If nothing in the localStorage, return nothing.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="home.js.html">home.js</a>, <a href="home.js.html#line85">line 85</a>
+        <a href="home.js.html">home.js</a>, <a href="home.js.html#line87">line 87</a>
     </li></ul></dd>
     
 
@@ -910,7 +1046,7 @@ object. If nothing in the localStorage, return nothing.
     
 
     
-    <h4 class="name" id="handle_tag_btn_click"><span class="type-signature"></span>handle_tag_btn_click<span class="signature">(curr_tag_btn, profile)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="handle_tag_btn_click"><span class="type-signature"></span>handle_tag_btn_click<span class="signature">(curr_tag_btn, tag)</span><span class="type-signature"></span></h4>
     
 
     
@@ -977,15 +1113,12 @@ object. If nothing in the localStorage, return nothing.
 
         <tr>
             
-                <td class="name"><code>profile</code></td>
+                <td class="name"><code>tag</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="Profile.html">Profile</a></span>
-|
-
 <span class="param-type">String</span>
 
 
@@ -996,7 +1129,7 @@ object. If nothing in the localStorage, return nothing.
 
             
 
-            <td class="description last">tag (or profile associated with tag) to filter by</td>
+            <td class="description last">the tag associated with the btn</td>
         </tr>
 
     
@@ -1037,7 +1170,7 @@ object. If nothing in the localStorage, return nothing.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="home.js.html">home.js</a>, <a href="home.js.html#line365">line 365</a>
+        <a href="home.js.html">home.js</a>, <a href="home.js.html#line373">line 373</a>
     </li></ul></dd>
     
 
@@ -1073,7 +1206,7 @@ object. If nothing in the localStorage, return nothing.
     
 
     
-    <h4 class="name" id="handle_tag_input_change"><span class="type-signature"></span>handle_tag_input_change<span class="signature">(search_tag, tag_input, type)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="handle_tag_input_change"><span class="type-signature"></span>handle_tag_input_change<span class="signature">(tag_input, type)</span><span class="type-signature"></span></h4>
     
 
     
@@ -1113,29 +1246,6 @@ object. If nothing in the localStorage, return nothing.
     </thead>
 
     <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>search_tag</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Search tag function, might remove from params later</td>
-        </tr>
-
     
 
         <tr>
@@ -1220,7 +1330,7 @@ object. If nothing in the localStorage, return nothing.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="setup.js.html">setup.js</a>, <a href="setup.js.html#line95">line 95</a>
+        <a href="setup.js.html">setup.js</a>, <a href="setup.js.html#line113">line 113</a>
     </li></ul></dd>
     
 
@@ -1396,7 +1506,7 @@ object. If nothing in the localStorage, return nothing.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="home.js.html">home.js</a>, <a href="home.js.html#line94">line 94</a>
+        <a href="home.js.html">home.js</a>, <a href="home.js.html#line96">line 96</a>
     </li></ul></dd>
     
 
@@ -1541,7 +1651,7 @@ that keyword (or sentence).
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="home.js.html">home.js</a>, <a href="home.js.html#line422">line 422</a>
+        <a href="home.js.html">home.js</a>, <a href="home.js.html#line440">line 440</a>
     </li></ul></dd>
     
 
@@ -1678,7 +1788,7 @@ that keyword (or sentence).
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="home.js.html">home.js</a>, <a href="home.js.html#line283">line 283</a>
+        <a href="home.js.html">home.js</a>, <a href="home.js.html#line285">line 285</a>
     </li></ul></dd>
     
 
@@ -1707,7 +1817,7 @@ that keyword (or sentence).
 
         
 <div class="param-desc">
-    List of profiles that match the given tag
+    array of profiles that match the given tag
 </div>
 
 
@@ -1789,7 +1899,7 @@ Delete button is part of info modal.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="setup.js.html">setup.js</a>, <a href="setup.js.html#line62">line 62</a>
+        <a href="setup.js.html">setup.js</a>, <a href="setup.js.html#line80">line 80</a>
     </li></ul></dd>
     
 
@@ -1877,7 +1987,7 @@ Delete button is part of info modal.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="setup.js.html">setup.js</a>, <a href="setup.js.html#line10">line 10</a>
+        <a href="setup.js.html">setup.js</a>, <a href="setup.js.html#line19">line 19</a>
     </li></ul></dd>
     
 
@@ -1913,7 +2023,7 @@ Delete button is part of info modal.
     
 
     
-    <h4 class="name" id="setup_tag_recommend"><span class="type-signature"></span>setup_tag_recommend<span class="signature">(search_tag)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="setup_tag_recommend"><span class="type-signature"></span>setup_tag_recommend<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -1930,55 +2040,6 @@ Delete button is part of info modal.
 
 
 
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>search_tag</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Search tag function, might remove from params later</td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -2014,7 +2075,7 @@ Delete button is part of info modal.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="setup.js.html">setup.js</a>, <a href="setup.js.html#line75">line 75</a>
+        <a href="setup.js.html">setup.js</a>, <a href="setup.js.html#line94">line 94</a>
     </li></ul></dd>
     
 
@@ -2058,11 +2119,9 @@ Delete button is part of info modal.
 
 
 <div class="description">
-    update info_modal with corresponding profile info
-1. hide all the input element (<input>, <textarea>)
-2. select the elements we need to update in the info_modal
-3. change its value (innerHTML) to the corresponding param
-   in the passed-in profile object
+    Update info_modal with corresponding profile info
+by changing each <input> value to the corresponding
+value of the profile
 </div>
 
 
@@ -2201,13 +2260,13 @@ Delete button is part of info modal.
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Profile.html">Profile</a></li></ul><h3>Global</h3><ul><li><a href="global.html#add_profiles_to_doc">add_profiles_to_doc</a></li><li><a href="global.html#create_card">create_card</a></li><li><a href="global.html#create_profile">create_profile</a></li><li><a href="global.html#create_tag_btn">create_tag_btn</a></li><li><a href="global.html#delete_profile">delete_profile</a></li><li><a href="global.html#get_profile_from_storage">get_profile_from_storage</a></li><li><a href="global.html#handle_tag_btn_click">handle_tag_btn_click</a></li><li><a href="global.html#handle_tag_input_change">handle_tag_input_change</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#profile_list">profile_list</a></li><li><a href="global.html#save_profile_to_storage">save_profile_to_storage</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#search_tag">search_tag</a></li><li><a href="global.html#setup_delete">setup_delete</a></li><li><a href="global.html#setup_modify">setup_modify</a></li><li><a href="global.html#setup_tag_recommend">setup_tag_recommend</a></li><li><a href="global.html#update_info_modal">update_info_modal</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Profile.html">Profile</a></li></ul><h3>Global</h3><ul><li><a href="global.html#add_profiles_to_doc">add_profiles_to_doc</a></li><li><a href="global.html#create_card">create_card</a></li><li><a href="global.html#create_profile">create_profile</a></li><li><a href="global.html#create_tag_btn">create_tag_btn</a></li><li><a href="global.html#delete_profile">delete_profile</a></li><li><a href="global.html#display_selected_profile">display_selected_profile</a></li><li><a href="global.html#get_profile_from_storage">get_profile_from_storage</a></li><li><a href="global.html#handle_tag_btn_click">handle_tag_btn_click</a></li><li><a href="global.html#handle_tag_input_change">handle_tag_input_change</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#profile_list">profile_list</a></li><li><a href="global.html#save_profile_to_storage">save_profile_to_storage</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#search_tag">search_tag</a></li><li><a href="global.html#setup_delete">setup_delete</a></li><li><a href="global.html#setup_modify">setup_modify</a></li><li><a href="global.html#setup_tag_recommend">setup_tag_recommend</a></li><li><a href="global.html#update_info_modal">update_info_modal</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a> on Fri Nov 18 2022 08:20:43 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a> on Sat Nov 19 2022 07:37:14 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>
