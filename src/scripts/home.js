@@ -278,20 +278,23 @@ function delete_profile(profile) {
 }
 
 /**
- * Returns a subset of profile_list of elements that match the given tag
- * @param {String} tag tag to search for in profile_list
- * @returns {Profile[]} array of profiles that match the given tag
+ * Returns a subset of tag of elements that match the given input
+ * @param {string} tag tag to search for in existing tags
+ * @returns {Profile[]} array of tags that match the given tag
  */
 export function search_tag(tag) {
   const match_list = [];
   profile_list.forEach((profile) => {
-    if (
-      profile.tag &&
-      !match_list.includes(profile.tag) &&
-      profile.tag.includes(tag)
-    ) {
-      match_list.push(profile.tag);
-    }
+    let cur_profile_tag_list = profile.tag.split(",");
+    cur_profile_tag_list.forEach((cur_tag) => {
+      if (
+        profile.tag &&
+        !match_list.includes(cur_tag) &&
+        profile.tag.includes(cur_tag)
+      ) {
+        match_list.push(cur_tag);
+      }
+    })
   });
   return match_list;
 }
@@ -302,7 +305,7 @@ export function search_tag(tag) {
  */
 function create_tag_btn() {
   const tag_html_list = document.querySelector("#tag-btn-div"); // div element store all tag btn element
-  const is_visited = new Set();
+  const is_visited = new Set(); // set of profile tags
   let previous_btn_active = "All"; // set default active btn to all-btn
 
   // find active btn
@@ -331,24 +334,26 @@ function create_tag_btn() {
 
   // set up event listener for other tag-btn
   profile_list.forEach((profile) => {
-    if (profile.tag && !is_visited.has(profile.tag)) {
-      // if encounter a new tag, create the html element for the btn
-      const curr_tag_btn = document.createElement("button");
-      curr_tag_btn.setAttribute("type", "button");
-      curr_tag_btn.setAttribute("class", "btn btn-light");
-      curr_tag_btn.setAttribute("data-bs-toggle", "button");
-      curr_tag_btn.setAttribute("id", profile.tag);
-      curr_tag_btn.innerHTML = `${profile.tag}`;
+    let cur_profile_tag_list = profile.tag.split(",");
+    cur_profile_tag_list.forEach((tag) => {
+      if (tag && !is_visited.has(tag)) {
+        // if encounter a new tag, create the html element for the btn
+        const curr_tag_btn = document.createElement("button");
+        curr_tag_btn.setAttribute("type", "button");
+        curr_tag_btn.setAttribute("class", "btn btn-light");
+        curr_tag_btn.setAttribute("data-bs-toggle", "button");
+        curr_tag_btn.setAttribute("id", tag);
+        curr_tag_btn.innerHTML = `${tag}`;
 
-      // event listener for the btn
-      curr_tag_btn.addEventListener("click", () => {
-        handle_tag_btn_click(curr_tag_btn, profile.tag);
-      });
-
-      // display the btn by actually adding it to html
-      tag_html_list.append(curr_tag_btn);
-      is_visited.add(profile.tag);
-    }
+        // event listener for the btn
+        curr_tag_btn.addEventListener("click", () => {
+          handle_tag_btn_click(curr_tag_btn, tag);
+        });
+        // display the btn by actually adding it to html
+        tag_html_list.append(curr_tag_btn);
+        is_visited.add(tag);
+      }
+    });
   });
 
   // re-select the previous active btn
@@ -368,10 +373,14 @@ function create_tag_btn() {
 /**
  * Handle user-click on tag filters
  * @param {HTMLButtonElement} curr_tag_btn - Tag button clicked
- * @param {String} tag - the tag associated with the btn
+ * @param {string} tag - the tag associated with the btn
  */
 function handle_tag_btn_click(curr_tag_btn, tag) {
+  console.log(tag);
   // Set all tag button filters as inactive except the curr_tag_btn (being clicked)
+  if (tag === "all") {
+    console.log("yep");
+  }
   const tag_btn_div = document.querySelector("#tag-btn-div");
   for (let i = 0; i < tag_btn_div.childElementCount; i++) {
     if (tag_btn_div.children[i] !== curr_tag_btn) {
@@ -385,7 +394,8 @@ function handle_tag_btn_click(curr_tag_btn, tag) {
 
     // find every Profile with the same tag as the curr_tag_btn
     profile_list.forEach((profile_temp) => {
-      if (tag === "all" || (profile_temp.tag && profile_temp.tag === tag)) {
+      let cur_profile_tag_list = profile_temp.tag.split(",");
+      if (tag === "all" || (profile_temp.tag && cur_profile_tag_list.includes(tag))) {
         profile_list_tag.push(profile_temp); // add the profile to a temp list
       }
     });
@@ -435,7 +445,7 @@ function display_selected_profile(profiles) {
  * 3. call add_profiles_to_doc(profiles) to display the
  *    profile we just added to the temp list
  *
- * @param {String} keyWord a string
+ * @param {string} keyWord a string
  */
 function search(key_word) {}
 

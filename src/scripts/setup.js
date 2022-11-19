@@ -108,7 +108,7 @@ export function setup_tag_recommend() {
 /**
  * Update tag suggestion list that appears in new profile/info modal
  * @param {HTMLInputElement} tag_input HTML input element currently being edited by user
- * @param {String} type New modal 'new' or info modal 'info'
+ * @param {string} type New modal 'new' or info modal 'info'
  */
 function handle_tag_input_change(tag_input, type) {
   // find all matched tag names
