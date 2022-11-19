@@ -475,7 +475,7 @@ function display_selected_profile(profiles) {
  * 3. call add_profiles_to_doc(profiles) to display the
  *    profile we just added to the temp list
  *
- * @param {string} keyWord a string
+ * @param {string} key_word a string
  */
 function search(key_word) {}
 
