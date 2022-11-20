@@ -143,7 +143,7 @@ function create_profile() {
   const new_profile = new Profile(
     id,
     title.value,
-    tag.value,
+    rm_dupe_tags(tag.value),
     exp_date.value,
     serial_num.value,
     note.value
@@ -436,6 +436,25 @@ function parse_profile_tags(profile) {
 }
 
 /**
+ * Given a tag list string, returns a copy without duplicate tags
+ * @param {string} tag_list original tag list with potential duplicates
+ * @returns {string} original string without duplicates
+ */
+function rm_dupe_tags(tag_list) {
+  let orig = tag_list.split(","); // tag_list
+  let tags = new Set(); // tags already added to out
+  let no_dupe = [];
+  for (let i = 0; i < orig.length; i++) {
+    orig[i] = orig[i].trim();
+    if (!tags.has(orig[i])) {
+      tags.add(orig[i]);
+      no_dupe.push(orig[i]);
+    }
+  }
+  return no_dupe.join(",");
+}
+
+/**
  * Given an array contains some Profile Object,
  * display all the profile cards in the grid
  * @param {Array} profiles
@@ -488,6 +507,7 @@ export {
   create_card,
   update_info_modal,
   delete_profile,
+  rm_dupe_tags,
   search,
   Profile,
   TAG_MAP,

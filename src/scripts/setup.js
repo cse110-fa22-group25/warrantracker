@@ -6,6 +6,7 @@ import {
   info_modal_instance,
   confirm_cancel_modify_instance,
   delete_profile,
+  rm_dupe_tags,
   search_tag
 } from "./home.js";
 /**
@@ -57,6 +58,7 @@ export function setup_modify() {
       TAG_MAP.delete(selected_profile.tag);
     }
     // update the profile's tag value with user input
+    tag.value = rm_dupe_tags(tag.value);
     selected_profile.tag = tag.value;
     // update tag count
     TAG_MAP.set(tag.value, TAG_MAP.get(tag.value) + 1 || 1);
