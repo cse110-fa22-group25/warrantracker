@@ -18,6 +18,7 @@ const ID_SET = new Set(); // all id's in existence
 const TAG_MAP = new Map();
 let FIRST_LOAD = true;
 let active_tags = new Set(); // active tags for filtering by multiple tags
+let active_profiles = []; // All profiles currently being shown
 
 window.addEventListener("DOMContentLoaded", init);
 
@@ -399,24 +400,32 @@ function handle_tag_btn_click(tag) {
     }
   }
 
+  tag_filter();
+  display_selected_profile(active_profiles);
+}
+
+/**
+ * Takes active tags and sets active_profiles to only matching profiles
+ */
+function tag_filter() {
   // display all profiles if all is active
   if (active_tags.size === 0) {
-    display_selected_profile(profile_list);
+    active_profiles = profile_list
   } else {
     // display the matching profiles of active tags
-    const profile_list_tag = []; // store all profiles with this tag
+    active_profiles = []; // store all profiles with this tag
     for (let i = 0; i < profile_list.length; i++) {
       let cur_profile_tag_list = parse_profile_tags(profile_list[i]);
-      profile_list_tag.push(profile_list[i]);
+      active_profiles.push(profile_list[i]);
+      // check profile against each active tag
       for (let t of active_tags) {
         if (cur_profile_tag_list.indexOf(t) === -1) {
-          profile_list_tag.pop();
+          active_profiles.pop();
           break;
         }
       }
     }
     // display filtered profiles
-    display_selected_profile(profile_list_tag);
   }
 }
 
@@ -482,19 +491,30 @@ function display_selected_profile(profiles) {
 }
 
 /**
+ * **PRECONDITION: CALL AFTER USING tag_filter()**
+ *
  * Search the card by keyword. Display all the cards matching
  * that keyword (or sentence).
  *
- * 1. for each profile in profile_list, check all the params if
- *    there are strings matches the keyword. If there is, add the
- *    profile to a temp list
- * 2. remove all card components in grid
- * 3. call add_profiles_to_doc(profiles) to display the
- *    profile we just added to the temp list
+ * Given active_profiles, filters the array to only contain profiles
+ * matching the search query
  *
- * @param {string} key_word a string
+ * @param {string} query a string
  */
-function search(key_word) {}
+function search(query) {
+  // split search query into array of words
+  let query_arr = query.split(" ");
+  // algorithm: convert each profile into set of key words
+  // each element of query_arr must be within that set for the profile to match
+  let keyword_set = new Set(); // keywords in current profile
+  let search_match = []; // list of profiles that match search
+  for (let i = 0; i < active_profiles.length; i++) {
+    keyword_set.clear();
+    let curr = active_profiles[i];
+
+    let tmp = new Profile("id", "title", "tag", "exp_date", "serial_num", "note");
+  }
+}
 
 export {
   selected_profile,
