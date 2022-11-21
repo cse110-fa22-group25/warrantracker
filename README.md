@@ -1,5 +1,7 @@
 # warrantracker
 
+[![Maintainability](https://api.codeclimate.com/v1/badges/a9822f1d8f989e320345/maintainability)](https://codeclimate.com/github/cse110-fa22-group25/warrantracker/maintainability)
+
 ## Development: Getting Started
 
 warrantracker uses npm packages as part of the development process, so ensure you have

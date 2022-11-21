@@ -330,7 +330,7 @@ function create_tag_btn() {
   const all_btn = document.querySelector("#all-btn"); // all-btn element
   // display all cards if user clicks all-btn
   all_btn.addEventListener("click", () => {
-    handle_tag_btn_click(all_btn, "all");
+    handle_tag_btn_click("all");
   });
 
   // set up event listener for other tag-btn
@@ -348,7 +348,7 @@ function create_tag_btn() {
 
         // event listener for the btn
         curr_tag_btn.addEventListener("click", () => {
-          handle_tag_btn_click(curr_tag_btn, tag);
+          handle_tag_btn_click(tag);
         });
         // display the btn by actually adding it to html
         tag_html_list.append(curr_tag_btn);
@@ -373,10 +373,9 @@ function create_tag_btn() {
 
 /**
  * Handle user-click on tag filters
- * @param {HTMLButtonElement} curr_tag_btn - Tag button clicked
  * @param {string} tag - the tag associated with the btn
  */
-function handle_tag_btn_click(curr_tag_btn, tag) {
+function handle_tag_btn_click(tag) {
   const tag_btn_div = document.querySelector("#tag-btn-div");
   // if tag is all, disable all other filters
   if (tag === "all") {
@@ -403,23 +402,22 @@ function handle_tag_btn_click(curr_tag_btn, tag) {
   // display all profiles if all is active
   if (active_tags.size === 0) {
     display_selected_profile(profile_list);
-    return;
-  }
-
-  // display the matching profiles of active tags
-  const profile_list_tag = []; // store all profiles with this tag
-  for (let i = 0; i < profile_list.length; i++) {
-    let cur_profile_tag_list = parse_profile_tags(profile_list[i]);
-    profile_list_tag.push(profile_list[i]);
-    for (let t of active_tags) {
-      if (cur_profile_tag_list.indexOf(t) === -1) {
-        profile_list_tag.pop();
-        break;
+  } else {
+    // display the matching profiles of active tags
+    const profile_list_tag = []; // store all profiles with this tag
+    for (let i = 0; i < profile_list.length; i++) {
+      let cur_profile_tag_list = parse_profile_tags(profile_list[i]);
+      profile_list_tag.push(profile_list[i]);
+      for (let t of active_tags) {
+        if (cur_profile_tag_list.indexOf(t) === -1) {
+          profile_list_tag.pop();
+          break;
+        }
       }
     }
+    // display filtered profiles
+    display_selected_profile(profile_list_tag);
   }
-  // display filtered profiles
-  display_selected_profile(profile_list_tag);
 }
 
 /**
