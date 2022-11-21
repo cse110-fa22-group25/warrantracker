@@ -30,7 +30,6 @@ describe('Test Profile constructor', () => {
     });
   });
 })
-// TODO: my lab hrs about to start, add more unit tests
 
 describe('Test createCard()', () => {
   const new_card = create_card(test_profile);

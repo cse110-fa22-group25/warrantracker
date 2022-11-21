@@ -52,7 +52,7 @@
 
       <!-- section for label bar -->
       <section class="d-flex justify-content-center mt-3 mb-3">
-        <div class="btn-labels">
+        <div class="btn-labels" id="tag-btn-div">
           <button
             type="button"
             class="btn btn-light active"
@@ -158,9 +158,9 @@
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                     id="new-modal-tag"
+                    placeholder="tag1, tag2, ..."
                   />
-                  <ul class="dropdown-menu">
-                  </ul>
+                  <ul class="dropdown-menu" id="new-modal-tag-list"></ul>
                 </div>
               </div>
               <div class="mb-3">
@@ -212,75 +212,91 @@
 
     <!-- Confirm Delete modal-->
     <!-- This modal is used when the user clicks the delete button - it confirms whether or not to continue with the deletion.-->
-    <div class="modal fade" 
-        id="confirm-delete-modal"
-        data-bs-backdrop="static"
-        data-bs-keyboard="false"
-        tabindex="-1"
-        role="dialog" 
-        aria-labelledby="confirmModalLabel" 
-        aria-hidden="true">
+    <div
+      class="modal fade"
+      id="confirm-delete-modal"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="confirmModalLabel"
+      aria-hidden="true"
+    >
       <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <!-- Change the modal's header -->
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="confirm-delete-modal-label">Are You Sure?</h1>
-            </div>
-            <div class="modal-body">
-              Deletion will permanently remove the product profile.
-            </div>
-            <div class="modal-footer">
-                <button type="button" 
-                        id="close-deletion-btn"
-                        class="btn btn-secondary" 
-                        data-bs-toggle="modal"
-                        data-bs-target="#info-modal">
-                  Cancel
-              </button>
-                <button type="button" 
-                        id="delbtn" 
-                        class="btn btn-danger"
-                        data-bs-dismiss="modal">
-                  Confirm Deletion
-              </button>
-            </div>
+        <div class="modal-content">
+          <!-- Change the modal's header -->
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="confirm-delete-modal-label">
+              Are You Sure?
+            </h1>
           </div>
+          <div class="modal-body">
+            Deletion will permanently remove the product profile.
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              id="close-deletion-btn"
+              class="btn btn-secondary"
+              data-bs-toggle="modal"
+              data-bs-target="#info-modal"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              id="delbtn"
+              class="btn btn-danger"
+              data-bs-dismiss="modal"
+            >
+              Confirm Deletion
+            </button>
+          </div>
+        </div>
       </div>
     </div>
     <!-- Confirm Cancel modal on modif -->
-    <div class="modal fade" 
-        id="confirm-cancel-modify-modal"
-        data-bs-backdrop="static"
-        data-bs-keyboard="false"
-        tabindex="-1"
-        role="dialog" 
-        aria-labelledby="confirmModalLabel" 
-        aria-hidden="true">
+    <div
+      class="modal fade"
+      id="confirm-cancel-modify-modal"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="confirmModalLabel"
+      aria-hidden="true"
+    >
       <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <!-- Change the modal's header -->
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="confirm-cancel-modify-modal-label">Are You Sure?</h1>
-            </div>
-            <div class="modal-body">
-              Exiting will cancel your changes to the profile.
-            </div>
-            <div class="modal-footer">
-                <button type="button" 
-                        id="cancel-cancel-modify-btn"
-                        class="btn btn-secondary" 
-                        data-bs-toggle="modal"
-                        data-bs-target="#info-modal">
-                  Go back
-              </button>
-                <button type="button" 
-                        id="cancelbtn" 
-                        class="btn btn-danger"
-                        data-bs-dismiss="modal">
-                  Confirm
-              </button>
-            </div>
+        <div class="modal-content">
+          <!-- Change the modal's header -->
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="confirm-cancel-modify-modal-label">
+              Are You Sure?
+            </h1>
           </div>
+          <div class="modal-body">
+            Exiting will cancel your changes to the profile.
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              id="cancel-cancel-modify-btn"
+              class="btn btn-secondary"
+              data-bs-toggle="modal"
+              data-bs-target="#info-modal"
+            >
+              Go back
+            </button>
+            <button
+              type="button"
+              id="cancelbtn"
+              class="btn btn-danger"
+              data-bs-dismiss="modal"
+            >
+              Confirm
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -306,67 +322,78 @@
           <div class="modal-header">
             <!-- Change the modal's header -->
             <h1 class="modal-title fs-5" id="info-modal-label">Info</h1>
-            <button
-              type="button"
-              class="btn-close"
-
-              aria-label="Close"
-            ></button>
+            <button type="button" class="btn-close" aria-label="Close"></button>
           </div>
-          <div class="modal-body">
-            <!-- when edit the content of this modal, just edit the code below -->
-            <!-- need to change the input elements below to text info -->
-            <div class="mb-3">
-              <label for="title" class="form-label">Title:</label>
-              <p id="info-modal-static-title"></p>
-              <input
-                type="text"
-                class="form-control"
-                id="info-modal-input-title"
-                placeholder="Product Name"
-              />
+          <form class="needs-validation" id="info-modal-form">
+            <div class="modal-body">
+              <!-- when edit the content of this modal, just edit the code below -->
+              <!-- need to change the input elements below to text info -->
+              <div class="mb-3">
+                <label for="title" class="form-label">Title:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="info-modal-input-title"
+                  placeholder="Product Name"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="tag" class="form-label" id="info-modal-tag-label"
+                  >Tag:</label
+                >
+                <div class="dropdown d-inline-block">
+                  <input
+                    type="text"
+                    class="form-control form-control-sm dropdown-toggle m-1"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    id="info-modal-input-tag"
+                    placeholder="tag1, tag2, ..."
+                  />
+                  <ul class="dropdown-menu" id="info-modal-tag-list"></ul>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="exp_date" class="form-label"
+                  >Expiration Date:</label
+                >
+                <input
+                  type="date"
+                  class="form-control"
+                  id="info-modal-input-exp_date"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="serial_num" class="form-label">Serial #:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="info-modal-input-serial_num"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="note" class="form-label">Additional Notes:</label>
+                <textarea
+                  class="form-control"
+                  id="info-modal-input-note"
+                  rows="5"
+                ></textarea>
+              </div>
             </div>
-            <div class="mb-3">
-              <label for="exp_date" class="form-label">Expiration Date:</label>
-              <p id="info-modal-static-exp_date"></p>
-              <input
-                type="date"
-                class="form-control"
-                id="info-modal-input-exp_date"
-              />
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-danger"
+                data-bs-toggle="modal"
+                data-bs-target="#confirm-delete-modal"
+              >
+                Delete
+              </button>
+              <button type="submit" class="btn btn-primary" id="modify-profile">
+                Modify
+              </button>
             </div>
-            <div class="mb-3">
-              <label for="serial_num" class="form-label">Serial #:</label>
-              <p id="info-modal-static-serial_num"></p>
-              <input
-                type="text"
-                class="form-control"
-                id="info-modal-input-serial_num"
-              />
-            </div>
-            <div class="mb-3">
-              <label for="note" class="form-label">Additional Notes:</label>
-              <p id="info-modal-static-note"></p>
-              <textarea
-                class="form-control"
-                id="info-modal-input-note"
-                rows="5"
-              ></textarea>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-danger"
-              data-bs-toggle="modal" 
-              data-bs-target="#confirm-delete-modal"
-            >
-              Delete
-            </button>
-            <button type="button" class="btn btn-primary" id="modify-profile">
-              Modify
-            </button>
-          </div>
+          </form>
         </div>
       </div>
     </div>

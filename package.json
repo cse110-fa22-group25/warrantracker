@@ -20,15 +20,10 @@
     "url": "https://github.com/cse110-fa22-group25/warrantracker/issues"
   },
   "homepage": "https://github.com/cse110-fa22-group25/warrantracker#readme",
-  "dependencies": {
-    "jest": "^29.2.2",
-    "jest-environment-jsdom": "^29.3.1",
-    "jsdoc": "^4.0.0",
-    "jsdom": "^20.0.2"
-  },
   "devDependencies": {
     "@babel/core": "^7.20.2",
     "@babel/preset-env": "^7.20.2",
+    "@types/jest": "^29.2.3",
     "babel-jest": "^29.3.1",
     "eslint": "^8.26.0",
     "eslint-config-standard": "^17.0.0",
@@ -37,6 +32,10 @@
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-snakecasejs": "^2.2.0",
     "htmlhint": "^1.1.4",
+    "jest": "^29.2.2",
+    "jest-environment-jsdom": "^29.3.1",
+    "jsdoc": "^4.0.0",
+    "jsdom": "^20.0.2",
     "stylelint": "^14.14.1",
     "stylelint-config-standard": "^29.0.0"
   }
