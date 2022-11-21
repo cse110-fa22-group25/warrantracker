@@ -6,6 +6,7 @@ import {
   info_modal_instance,
   confirm_cancel_modify_instance,
   delete_profile,
+  rm_dupe_tags,
   search_tag
 } from "./home.js";
 /**
@@ -57,6 +58,7 @@ export function setup_modify() {
       TAG_MAP.delete(selected_profile.tag);
     }
     // update the profile's tag value with user input
+    tag.value = rm_dupe_tags(tag.value);
     selected_profile.tag = tag.value;
     // update tag count
     TAG_MAP.set(tag.value, TAG_MAP.get(tag.value) + 1 || 1);
@@ -108,7 +110,7 @@ export function setup_tag_recommend() {
 /**
  * Update tag suggestion list that appears in new profile/info modal
  * @param {HTMLInputElement} tag_input HTML input element currently being edited by user
- * @param {String} type New modal 'new' or info modal 'info'
+ * @param {string} type New modal 'new' or info modal 'info'
  */
 function handle_tag_input_change(tag_input, type) {
   // find all matched tag names
@@ -125,7 +127,13 @@ function handle_tag_input_change(tag_input, type) {
     curr_li.innerHTML = `<a class="dropdown-item" href="#">${tag_name}</a>`;
     tag_html_list.appendChild(curr_li);
     curr_li.addEventListener("click", () => {
-      tag_input.value = tag_name;
+      // If multiple tags in text field, don't erase previous tags
+      let last_idx = tag_input.value.lastIndexOf(",");
+      if (last_idx !== -1) {
+        tag_input.value = tag_input.value.substring(0, last_idx + 1) + tag_name;
+      } else {
+        tag_input.value = tag_name;
+      }
     });
   });
 }

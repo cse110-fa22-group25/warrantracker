@@ -17,6 +17,7 @@ let selected_profile; // Profile selected for editing and deleting
 const ID_SET = new Set(); // all id's in existence
 const TAG_MAP = new Map();
 let FIRST_LOAD = true;
+let active_tags = new Set(); // active tags for filtering by multiple tags
 
 window.addEventListener("DOMContentLoaded", init);
 
@@ -142,7 +143,7 @@ function create_profile() {
   const new_profile = new Profile(
     id,
     title.value,
-    tag.value,
+    rm_dupe_tags(tag.value),
     exp_date.value,
     serial_num.value,
     note.value
@@ -278,20 +279,23 @@ function delete_profile(profile) {
 }
 
 /**
- * Returns a subset of profile_list of elements that match the given tag
- * @param {String} tag tag to search for in profile_list
- * @returns {Profile[]} array of profiles that match the given tag
+ * Returns a subset of tag of elements that match the given input
+ * @param {string} tag tag to search for in existing tags
+ * @returns {string[]} array of tags that match the given tag
  */
 export function search_tag(tag) {
   const match_list = [];
   profile_list.forEach((profile) => {
-    if (
-      profile.tag &&
-      !match_list.includes(profile.tag) &&
-      profile.tag.includes(tag)
-    ) {
-      match_list.push(profile.tag);
-    }
+    let cur_profile_tag_list = parse_profile_tags(profile);
+    cur_profile_tag_list.forEach((cur_tag) => {
+      if (
+        profile.tag &&
+        !match_list.includes(cur_tag) &&
+        profile.tag.includes(cur_tag)
+      ) {
+        match_list.push(cur_tag);
+      }
+    })
   });
   return match_list;
 }
@@ -302,7 +306,7 @@ export function search_tag(tag) {
  */
 function create_tag_btn() {
   const tag_html_list = document.querySelector("#tag-btn-div"); // div element store all tag btn element
-  const is_visited = new Set();
+  const is_visited = new Set(); // set of profile tags
   let previous_btn_active = "All"; // set default active btn to all-btn
 
   // find active btn
@@ -331,24 +335,26 @@ function create_tag_btn() {
 
   // set up event listener for other tag-btn
   profile_list.forEach((profile) => {
-    if (profile.tag && !is_visited.has(profile.tag)) {
-      // if encounter a new tag, create the html element for the btn
-      const curr_tag_btn = document.createElement("button");
-      curr_tag_btn.setAttribute("type", "button");
-      curr_tag_btn.setAttribute("class", "btn btn-light");
-      curr_tag_btn.setAttribute("data-bs-toggle", "button");
-      curr_tag_btn.setAttribute("id", profile.tag);
-      curr_tag_btn.innerHTML = `${profile.tag}`;
+    let cur_profile_tag_list = parse_profile_tags(profile);
+    cur_profile_tag_list.forEach((tag) => {
+      if (tag && !is_visited.has(tag)) {
+        // if encounter a new tag, create the html element for the btn
+        const curr_tag_btn = document.createElement("button");
+        curr_tag_btn.setAttribute("type", "button");
+        curr_tag_btn.setAttribute("class", "btn btn-light");
+        curr_tag_btn.setAttribute("data-bs-toggle", "button");
+        curr_tag_btn.setAttribute("id", tag);
+        curr_tag_btn.innerHTML = `${tag}`;
 
-      // event listener for the btn
-      curr_tag_btn.addEventListener("click", () => {
-        handle_tag_btn_click(curr_tag_btn, profile.tag);
-      });
-
-      // display the btn by actually adding it to html
-      tag_html_list.append(curr_tag_btn);
-      is_visited.add(profile.tag);
-    }
+        // event listener for the btn
+        curr_tag_btn.addEventListener("click", () => {
+          handle_tag_btn_click(curr_tag_btn, tag);
+        });
+        // display the btn by actually adding it to html
+        tag_html_list.append(curr_tag_btn);
+        is_visited.add(tag);
+      }
+    });
   });
 
   // re-select the previous active btn
@@ -368,31 +374,84 @@ function create_tag_btn() {
 /**
  * Handle user-click on tag filters
  * @param {HTMLButtonElement} curr_tag_btn - Tag button clicked
- * @param {String} tag - the tag associated with the btn
+ * @param {string} tag - the tag associated with the btn
  */
 function handle_tag_btn_click(curr_tag_btn, tag) {
-  // Set all tag button filters as inactive except the curr_tag_btn (being clicked)
   const tag_btn_div = document.querySelector("#tag-btn-div");
-  for (let i = 0; i < tag_btn_div.childElementCount; i++) {
-    if (tag_btn_div.children[i] !== curr_tag_btn) {
+  // if tag is all, disable all other filters
+  if (tag === "all") {
+    active_tags.clear();
+  } else if (active_tags.has(tag)) {
+    // if tag was previously active, set as inactive
+    active_tags.delete(tag);
+    // if no active tags, set "all" as active
+    if (active_tags.size === 0) {
+      tag_btn_div.children[0].classList.add("active");
+    }
+  } else {
+    // otherwise add tag as active
+    active_tags.add(tag);
+  }
+
+  // Remove "active" class from buttons of inactive tags
+  for (let i = active_tags.size === 0 ? 1 : 0; i < tag_btn_div.childElementCount; i++) {
+    if (!active_tags.has(tag_btn_div.children[i].innerHTML)) {
       tag_btn_div.children[i].classList.remove("active");
     }
   }
 
-  // if curr_tag_btn is active, display the selected cards
-  if (curr_tag_btn.classList.contains("active")) {
-    const profile_list_tag = []; // store all profiles with this tag
-
-    // find every Profile with the same tag as the curr_tag_btn
-    profile_list.forEach((profile_temp) => {
-      if (tag === "all" || (profile_temp.tag && profile_temp.tag === tag)) {
-        profile_list_tag.push(profile_temp); // add the profile to a temp list
-      }
-    });
-
-    // display the selected profile's card on main page
-    display_selected_profile(profile_list_tag);
+  // display all profiles if all is active
+  if (active_tags.size === 0) {
+    display_selected_profile(profile_list);
+    return;
   }
+
+  // display the matching profiles of active tags
+  const profile_list_tag = []; // store all profiles with this tag
+  for (let i = 0; i < profile_list.length; i++) {
+    let cur_profile_tag_list = parse_profile_tags(profile_list[i]);
+    profile_list_tag.push(profile_list[i]);
+    for (let t of active_tags) {
+      if (cur_profile_tag_list.indexOf(t) === -1) {
+        profile_list_tag.pop();
+        break;
+      }
+    }
+  }
+  // display filtered profiles
+  display_selected_profile(profile_list_tag);
+}
+
+/**
+ * Given a profile, returns profile's tags as an array
+ * @param {Profile} profile
+ * @returns {string[]} Array of tags (strings) for the given profile
+ */
+function parse_profile_tags(profile) {
+  let arr = profile.tag.split(",");
+  for (let i = 0; i < arr.length; i++) {
+    arr[i] = arr[i].trim();
+  }
+  return arr;
+}
+
+/**
+ * Given a tag list string, returns a copy without duplicate tags
+ * @param {string} tag_list original tag list with potential duplicates
+ * @returns {string} original string without duplicates
+ */
+function rm_dupe_tags(tag_list) {
+  let orig = tag_list.split(","); // tag_list
+  let tags = new Set(); // tags already added to out
+  let no_dupe = [];
+  for (let i = 0; i < orig.length; i++) {
+    orig[i] = orig[i].trim();
+    if (!tags.has(orig[i])) {
+      tags.add(orig[i]);
+      no_dupe.push(orig[i]);
+    }
+  }
+  return no_dupe.join(",");
 }
 
 /**
@@ -435,7 +494,7 @@ function display_selected_profile(profiles) {
  * 3. call add_profiles_to_doc(profiles) to display the
  *    profile we just added to the temp list
  *
- * @param {String} keyWord a string
+ * @param {string} key_word a string
  */
 function search(key_word) {}
 
@@ -448,6 +507,7 @@ export {
   create_card,
   update_info_modal,
   delete_profile,
+  rm_dupe_tags,
   search,
   Profile,
   TAG_MAP,
