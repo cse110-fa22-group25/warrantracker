@@ -505,34 +505,41 @@ function display_selected_profile(profiles) {
 function search(query) {
   // split search query into array of words
   let query_arr = query.split(" ");
+  if (query.length === 0) {
+    active_profiles = profile_list;
+    display_selected_profile(active_profiles);
+    return;
+  }
   // algorithm: convert each profile into set of key words
   // each element of query_arr must be within that set for the profile to match
-  let keyword_set = new Set(); // keywords in current profile
+  let keyword_set = ""; // keywords in current profile
   let search_match = []; // list of profiles that match search
   for (let i = 0; i < profile_list.length; i++) {
-    keyword_set.clear();
+    keyword_set = ""
     let curr = profile_list[i];
     search_match.push(curr);
 
     // split title and add title to keyword set
     curr.title.split(" ").forEach((word) => {
-      keyword_set.add(word);
+      keyword_set += word;
     });
 
     // add each tag to keyword set
     parse_profile_tags(curr).forEach((tag) => {
-      keyword_set.add(tag);
+      tag.split(" ").forEach((tag_word) => {
+        keyword_set += " " + tag_word;
+      });
     });
 
     // add serial numbers and notes into keyword set
-    keyword_set.add(curr.serial_num);
+    keyword_set += " " + curr.serial_num;
 
     curr.note.split(" ").forEach((word) => {
-      keyword_set.add(word);
+      keyword_set += word;
     });
 
     for (let j = 0; j < query_arr.length; j++) {
-      if (!keyword_set.has(query_arr[i])) {
+      if (keyword_set.indexOf(query_arr[j]) === -1) {
         search_match.pop();
         break;
       }
