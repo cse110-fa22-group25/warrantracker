@@ -1,25 +1,29 @@
-import { setup_modify, setup_delete, setup_tag_recommend, setup_search } from "./setup.js";
 /**
  * Main file containing main functions of Warrantracker
  */
+
+import { setup_modify, setup_delete, setup_tag_recommend, setup_search } from "./setup.js";
+import { Profile } from "./Profile.js";
+import { get_profile_from_storage, save_profile_to_storage } from "./storage.js";
+
 /** Global Variables */
-let profile_list = []; // store all profile object
-let grid; // the html element which is the parent for all profile cards
-let new_profile_btn; // the first element in the grid (the card with a "+" sign);
-let info_modal; // the modal showing up when clicking a profile card
-let new_profile_modal; // the modal showing up when clicking the new-profile-btn
-let new_profile_form;
-let new_modal_instance; // bootstrap modal instance for new_profile_modal;
-let info_modal_instance; // boostrap modal instance for infoModal;
-let confirm_cancel_modal;
-let confirm_cancel_modify_instance;
-let selected_profile; // Profile selected for editing and deleting
+let PROFILE_LIST = []; // store all profile object
+let GRID; // the html element which is the parent for all profile cards
+let NEW_PROFILE_BTN; // the first element in the grid (the card with a "+" sign);
+let INFO_MODAL; // the modal showing up when clicking a profile card
+let NEW_PROFILE_MODAL; // the modal showing up when clicking the new-profile-btn
+let NEW_PROFILE_FORM; // the html form in new-profile-modal
+let NEW_MODAL_INSTANCE; // bootstrap modal instance for new_profile_modal;
+let INFO_MODAL_INSTANCE; // bootstrap modal instance for infoModal;
+let CONFIRM_CANCEL_MODAL; // html modal for confirming cancel modification
+let CONFIRM_CANCEL_MODIFY_INSTANCE; // bootstrap modal instance for CONFIRM_CANCEL_MODAL
+let SELECTED_PROFILE; // Profile selected for editing and deleting
 const ID_SET = new Set(); // all id's in existence
-const TAG_MAP = new Map();
-let FIRST_LOAD = true;
-let active_tags = new Set(); // active tags for filtering by multiple tags
-let active_profiles = []; // All profiles currently being shown
-let search_profiles = []; // all profiles capable of being shown (search feature)
+const TAG_MAP = new Map(); // key: tag (String), value: count for the tag (Number)
+let FIRST_LOAD = true; // boolean to check if it is the first time laoding
+const ACTIVE_TAGS = new Set(); // active tags for filtering by multiple tags
+let ACTIVE_PROFILES = []; // All profiles currently being shown
+let SEARCH_PROFILES = []; // all profiles capable of being shown (search feature)
 
 window.addEventListener("DOMContentLoaded", init);
 
@@ -28,79 +32,42 @@ window.addEventListener("DOMContentLoaded", init);
  */
 function init() {
   // select needed html elements
-  grid = document.querySelector("#grid");
-  new_profile_btn = document.querySelector("#new-profile-btn");
-  info_modal = document.querySelector("#info-modal");
-  new_profile_modal = document.querySelector("#new-modal");
-  new_profile_form = document.querySelector("#new-modal-form");
-  new_modal_instance = new window.bootstrap.Modal(new_profile_modal);
-  info_modal_instance = new window.bootstrap.Modal(info_modal);
-  confirm_cancel_modal = document.querySelector("#confirm-cancel-modify-modal");
-  confirm_cancel_modify_instance = new window.bootstrap.Modal(
-    confirm_cancel_modal
+  GRID = document.querySelector("#grid");
+  NEW_PROFILE_BTN = document.querySelector("#new-profile-btn");
+  INFO_MODAL = document.querySelector("#info-modal");
+  NEW_PROFILE_MODAL = document.querySelector("#new-modal");
+  NEW_PROFILE_FORM = document.querySelector("#new-modal-form");
+  NEW_MODAL_INSTANCE = new window.bootstrap.Modal(NEW_PROFILE_MODAL);
+  INFO_MODAL_INSTANCE = new window.bootstrap.Modal(INFO_MODAL);
+  CONFIRM_CANCEL_MODAL = document.querySelector("#confirm-cancel-modify-modal");
+  CONFIRM_CANCEL_MODIFY_INSTANCE = new window.bootstrap.Modal(
+    CONFIRM_CANCEL_MODAL
   );
 
   // get existing profiles from localStorage
   // generate card component and display them
   const stored_profiles = get_profile_from_storage();
   if (stored_profiles) {
-    profile_list.push(...stored_profiles);
+    PROFILE_LIST.push(...stored_profiles);
     add_profiles_to_doc(stored_profiles);
     FIRST_LOAD = false;
   }
 
-  search_profiles = profile_list;
+  // Initialize search profiles to all
+  SEARCH_PROFILES = PROFILE_LIST;
 
+  // create tag filter btn
   create_tag_btn();
-  // add more opeartions if needed below
 
   // add event listeners below
-
   // handle when user click save-btn in new profile modal
-  new_profile_form.addEventListener("submit", create_profile);
+  NEW_PROFILE_FORM.addEventListener("submit", create_profile);
 
   // Set up action listeners for modals.
   setup_delete();
   setup_modify();
   setup_search();
-  setup_tag_recommend(search_tag);
-}
-
-/**
- * Construct a new Profile Object using the pass-in arguments
- * @constructor
- * @param {string} title - the name of the product
- * @param {string} tag - the tag of the product
- * @param {string} exp_date - the expiration date of the product
- * @param {string} serial_num - the serial number of the product
- * @param {string} note - the additional notes for the product
- */
-function Profile(id, title, tag, exp_date, serial_num, note) {
-  this.id = id;
-  this.title = title;
-  this.tag = tag;
-  this.exp_date = exp_date;
-  this.serial_num = serial_num;
-  this.note = note;
-}
-
-/**
- * Retreat the existing profile_list in localStorage.
- * Return the parsed array in which there are profile
- * object. If nothing in the localStorage, return nothing.
- * @returns {Profile[]} an array contains profile objects or nothing
- */
-function get_profile_from_storage() {
-  const profiles = localStorage.getItem("profiles");
-  if (!profiles) return;
-  return JSON.parse(profiles);
-}
-
-/**
- * save the profile_list to the localStorage
- */
-function save_profile_to_storage() {
-  localStorage.setItem("profiles", JSON.stringify(profile_list));
+  setup_tag_recommend();
 }
 
 /**
@@ -114,7 +81,7 @@ function add_profiles_to_doc(profiles) {
   profiles.forEach((profile) => {
     const curr_col = create_card(profile);
     ID_SET.add(profile.id);
-    grid.appendChild(curr_col);
+    GRID.appendChild(curr_col);
 
     // set up TAG_MAP on first load using stored profile
     if (FIRST_LOAD && profile.tag) {
@@ -133,11 +100,11 @@ function add_profiles_to_doc(profiles) {
  */
 function create_profile() {
   // select needed html elements in new_profile_modal
-  const title = new_profile_modal.querySelector("#new-modal-title");
-  const tag = new_profile_modal.querySelector("#new-modal-tag"); // haven't implement yet
-  const exp_date = new_profile_modal.querySelector("#new-modal-exp_date");
-  const serial_num = new_profile_modal.querySelector("#new-modal-serial_num");
-  const note = new_profile_modal.querySelector("#new-modal-note");
+  const title = NEW_PROFILE_MODAL.querySelector("#new-modal-title");
+  const tag = NEW_PROFILE_MODAL.querySelector("#new-modal-tag"); // haven't implement yet
+  const exp_date = NEW_PROFILE_MODAL.querySelector("#new-modal-exp_date");
+  const serial_num = NEW_PROFILE_MODAL.querySelector("#new-modal-serial_num");
+  const note = NEW_PROFILE_MODAL.querySelector("#new-modal-note");
 
   let id; // generate unique ID for profile
   do {
@@ -155,12 +122,12 @@ function create_profile() {
   );
 
   // save newProfile to localStorage
-  profile_list = [new_profile, ...profile_list];
+  PROFILE_LIST = [new_profile, ...PROFILE_LIST];
   save_profile_to_storage();
 
   // create a card component to display
   const curr_col = create_card(new_profile);
-  grid.insertBefore(curr_col, new_profile_btn.nextSibling);
+  GRID.insertBefore(curr_col, NEW_PROFILE_BTN.nextSibling);
 
   // if tag value not exist, create a new tag btn
   TAG_MAP.set(new_profile.tag, TAG_MAP.get(new_profile.tag) + 1 || 1);
@@ -174,7 +141,7 @@ function create_profile() {
   note.value = "";
 
   // hide bootstrap modal
-  new_modal_instance.hide();
+  NEW_MODAL_INSTANCE.hide();
 }
 
 /**
@@ -223,7 +190,7 @@ function create_card(profile) {
   // when clicking, update the info modal with its info
   card_wrapper.addEventListener("click", () => {
     update_info_modal(profile);
-    selected_profile = profile;
+    SELECTED_PROFILE = profile;
   });
   return card_wrapper;
 }
@@ -265,7 +232,7 @@ function delete_profile(profile) {
   req_card.remove();
 
   // Remove profile from list and save list
-  profile_list = profile_list.filter(
+  PROFILE_LIST = PROFILE_LIST.filter(
     (curr_prof) => curr_prof.id !== profile.id
   );
 
@@ -296,7 +263,7 @@ export function search_tag(tag) {
     const temp = tag.split(',');
     tag = temp[temp.length - 1].trim();
   }
-  profile_list.forEach((profile) => {
+  PROFILE_LIST.forEach((profile) => {
     let cur_profile_tag_list = parse_profile_tags(profile);
     cur_profile_tag_list.forEach((cur_tag) => {
       if (
@@ -306,7 +273,7 @@ export function search_tag(tag) {
       ) {
         match_list.push(cur_tag);
       }
-    })
+    });
   });
   return match_list;
 }
@@ -345,8 +312,8 @@ function create_tag_btn() {
   });
 
   // set up event listener for other tag-btn
-  profile_list.forEach((profile) => {
-    let cur_profile_tag_list = parse_profile_tags(profile);
+  PROFILE_LIST.forEach((profile) => {
+    const cur_profile_tag_list = parse_profile_tags(profile);
     cur_profile_tag_list.forEach((tag) => {
       if (tag && !is_visited.has(tag)) {
         // if encounter a new tag, create the html element for the btn
@@ -390,28 +357,32 @@ function handle_tag_btn_click(tag) {
   const tag_btn_div = document.querySelector("#tag-btn-div");
   // if tag is all, disable all other filters
   if (tag === "all") {
-    active_tags.clear();
-  } else if (active_tags.has(tag)) {
+    ACTIVE_TAGS.clear();
+  } else if (ACTIVE_TAGS.has(tag)) {
     // if tag was previously active, set as inactive
-    active_tags.delete(tag);
+    ACTIVE_TAGS.delete(tag);
     // if no active tags, set "all" as active
-    if (active_tags.size === 0) {
+    if (ACTIVE_TAGS.size === 0) {
       tag_btn_div.children[0].classList.add("active");
     }
   } else {
     // otherwise add tag as active
-    active_tags.add(tag);
+    ACTIVE_TAGS.add(tag);
   }
 
   // Remove "active" class from buttons of inactive tags
-  for (let i = active_tags.size === 0 ? 1 : 0; i < tag_btn_div.childElementCount; i++) {
-    if (!active_tags.has(tag_btn_div.children[i].innerHTML)) {
+  for (
+    let i = ACTIVE_TAGS.size === 0 ? 1 : 0;
+    i < tag_btn_div.childElementCount;
+    i++
+  ) {
+    if (!ACTIVE_TAGS.has(tag_btn_div.children[i].innerHTML)) {
       tag_btn_div.children[i].classList.remove("active");
     }
   }
 
   tag_filter();
-  display_selected_profile(active_profiles);
+  display_selected_profile(ACTIVE_PROFILES);
 }
 
 /**
@@ -419,18 +390,17 @@ function handle_tag_btn_click(tag) {
  */
 function tag_filter() {
   // display all profiles if all is active
-  if (active_tags.size === 0) {
-    active_profiles = search_profiles;
+  if (ACTIVE_TAGS.size === 0) {
+    ACTIVE_PROFILES = SEARCH_PROFILES;
   } else {
     // display the matching profiles of active tags
-    active_profiles = []; // store all profiles with this tag
-    for (let i = 0; i < search_profiles.length; i++) {
-      let cur_profile_tag_list = parse_profile_tags(search_profiles[i]);
-      active_profiles.push(search_profiles[i]);
-      // check profile against each active tag
-      for (let t of active_tags) {
+    ACTIVE_PROFILES = []; // store all profiles with this tag
+    for (let i = 0; i < SEARCH_PROFILES.length; i++) {
+      const cur_profile_tag_list = parse_profile_tags(SEARCH_PROFILES[i]);
+      ACTIVE_PROFILES.push(SEARCH_PROFILES[i]);
+      for (const t of ACTIVE_TAGS) {
         if (cur_profile_tag_list.indexOf(t) === -1) {
-          active_profiles.pop();
+          ACTIVE_PROFILES.pop();
           break;
         }
       }
@@ -445,7 +415,7 @@ function tag_filter() {
  * @returns {string[]} Array of tags (strings) for the given profile
  */
 function parse_profile_tags(profile) {
-  let arr = profile.tag.split(",");
+  const arr = profile.tag.split(",");
   for (let i = 0; i < arr.length; i++) {
     arr[i] = arr[i].trim();
   }
@@ -458,11 +428,11 @@ function parse_profile_tags(profile) {
  * @returns {string} original string without duplicates
  */
 function rm_dupe_tags(tag_list) {
-  let orig = tag_list.split(","); // tag_list
-  let tags = new Set(); // tags already added to out
+  const orig = tag_list.split(","); // tag_list
+  const tags = new Set(); // tags already added to out
   tags.add("all");
   tags.add("All");
-  let no_dupe = [];
+  const no_dupe = [];
   for (let i = 0; i < orig.length; i++) {
     orig[i] = orig[i].trim();
     if (!tags.has(orig[i])) {
@@ -480,7 +450,7 @@ function rm_dupe_tags(tag_list) {
  */
 function display_selected_profile(profiles) {
   // remove curr cards in grid
-  grid.innerHTML = `
+  GRID.innerHTML = `
     <div class="col-sm-6 col-lg-4 p-2" id="new-profile-btn">
       <div
         type="button"
@@ -498,13 +468,11 @@ function display_selected_profile(profiles) {
   // add selected profiles
   profiles.forEach((profile) => {
     const curr_card_wrapper = create_card(profile);
-    grid.appendChild(curr_card_wrapper);
+    GRID.appendChild(curr_card_wrapper);
   });
 }
 
 /**
- * **PRECONDITION: CALL AFTER USING tag_filter()**
- *
  * Search the card by keyword. Display all the cards matching
  * that keyword (or sentence).
  *
@@ -515,20 +483,20 @@ function display_selected_profile(profiles) {
  */
 function search(query) {
   // split search query into array of words
-  search_profiles = profile_list;
+  SEARCH_PROFILES = PROFILE_LIST;
   let query_arr = query.toLowerCase().split(" ");
   if (query.length === 0) {
-    search_profiles = profile_list;
-    display_selected_profile(search_profiles);
+    SEARCH_PROFILES = PROFILE_LIST;
+    display_selected_profile(SEARCH_PROFILES);
     return;
   }
   // algorithm: convert each profile into set of key words
   // each element of query_arr must be within that set for the profile to match
   let keyword_set; // keywords in current profile
-  let search_match = []; // list of profiles that match search
-  for (let i = 0; i < profile_list.length; i++) {
+  const search_match = []; // list of profiles that match search
+  for (let i = 0; i < PROFILE_LIST.length; i++) {
     keyword_set = ""
-    let curr = profile_list[i];
+    const curr = PROFILE_LIST[i];
     search_match.push(curr);
 
     // split title and add title to keyword set
@@ -558,18 +526,19 @@ function search(query) {
     }
   }
 
-  active_profiles = search_match;
-  search_profiles = active_profiles;
-  display_selected_profile(search_profiles);
+  ACTIVE_PROFILES = search_match;
+  SEARCH_PROFILES = ACTIVE_PROFILES;
+  display_selected_profile(SEARCH_PROFILES);
 }
 
 export {
-  active_tags,
-  active_profiles,
-  profile_list,
-  selected_profile,
-  info_modal_instance,
-  confirm_cancel_modify_instance,
+  ACTIVE_TAGS,
+  ACTIVE_PROFILES,
+  PROFILE_LIST,
+  SELECTED_PROFILE,
+  INFO_MODAL_INSTANCE,
+  CONFIRM_CANCEL_MODIFY_INSTANCE,
+  TAG_MAP,
   handle_tag_btn_click,
   save_profile_to_storage,
   create_profile,
@@ -579,6 +548,5 @@ export {
   rm_dupe_tags,
   search,
   Profile,
-  TAG_MAP,
   create_tag_btn
 };
