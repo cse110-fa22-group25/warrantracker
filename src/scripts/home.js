@@ -1,4 +1,4 @@
-import { setup_modify, setup_delete, setup_tag_recommend } from "./setup.js";
+import { setup_modify, setup_delete, setup_tag_recommend, setup_search } from "./setup.js";
 /**
  * Main file containing main functions of Warrantracker
  */
@@ -59,6 +59,7 @@ function init() {
   // Set up action listeners for modals.
   setup_delete();
   setup_modify();
+  setup_search();
   setup_tag_recommend(search_tag);
 }
 
@@ -508,15 +509,43 @@ function search(query) {
   // each element of query_arr must be within that set for the profile to match
   let keyword_set = new Set(); // keywords in current profile
   let search_match = []; // list of profiles that match search
-  for (let i = 0; i < active_profiles.length; i++) {
+  for (let i = 0; i < profile_list.length; i++) {
     keyword_set.clear();
-    let curr = active_profiles[i];
+    let curr = profile_list[i];
+    search_match.push(curr);
 
-    let tmp = new Profile("id", "title", "tag", "exp_date", "serial_num", "note");
+    // split title and add title to keyword set
+    curr.title.split(" ").forEach((word) => {
+      keyword_set.add(word);
+    });
+
+    // add each tag to keyword set
+    parse_profile_tags(curr).forEach((tag) => {
+      keyword_set.add(tag);
+    });
+
+    // add serial numbers and notes into keyword set
+    keyword_set.add(curr.serial_num);
+
+    curr.note.split(" ").forEach((word) => {
+      keyword_set.add(word);
+    });
+
+    for (let j = 0; j < query_arr.length; j++) {
+      if (!keyword_set.has(query_arr[i])) {
+        search_match.pop();
+        break;
+      }
+    }
   }
+
+  active_profiles = search_match;
+  display_selected_profile(active_profiles);
 }
 
 export {
+  active_profiles,
+  profile_list,
   selected_profile,
   info_modal_instance,
   confirm_cancel_modify_instance,

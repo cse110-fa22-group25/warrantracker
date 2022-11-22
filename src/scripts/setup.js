@@ -7,7 +7,8 @@ import {
   confirm_cancel_modify_instance,
   delete_profile,
   rm_dupe_tags,
-  search_tag
+  search_tag,
+  search
 } from "./home.js";
 /**
  * This file contains the definitions for some routines for some single-use
@@ -135,5 +136,14 @@ function handle_tag_input_change(tag_input, type) {
         tag_input.value = tag_name;
       }
     });
+  });
+}
+
+export function setup_search() {
+  const search_form = document.querySelector("#search-form");
+  const search_btn = search_form.querySelector("#search-btn")
+  const search_bar = search_form.querySelector("#search-bar")
+  search_btn.addEventListener("click", () => {
+    search(search_bar.value);
   });
 }
