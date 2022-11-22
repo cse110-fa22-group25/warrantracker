@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: Profile.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,35 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: Profile.js</h1>
 
     
 
 
 
     
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Profile Object Constructor
+ * @constructor
+ * @param {string} title - the name of the product
+ * @param {string} tag - the tag of the product
+ * @param {string} exp_date - the expiration date of the product
+ * @param {string} serial_num - the serial number of the product
+ * @param {string} note - the additional notes for the product
+ */
+export function Profile(id, title, tag, exp_date, serial_num, note) {
+  this.id = id;
+  this.title = title;
+  this.tag = tag;
+  this.exp_date = exp_date;
+  this.serial_num = serial_num;
+  this.note = note;
+}
+</code></pre>
+        </article>
+    </section>
 
 
 

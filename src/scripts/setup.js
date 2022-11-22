@@ -1,10 +1,10 @@
 import {
-  selected_profile,
+  SELECTED_PROFILE,
   TAG_MAP,
   create_tag_btn,
   save_profile_to_storage,
-  info_modal_instance,
-  confirm_cancel_modify_instance,
+  INFO_MODAL_INSTANCE,
+  CONFIRM_CANCEL_MODIFY_INSTANCE,
   delete_profile,
   rm_dupe_tags,
   search_tag
@@ -30,48 +30,48 @@ export function setup_modify() {
     .querySelector(".btn-close");
   confirm_cancel_btn.addEventListener("click", () => {
     // Show confirm cancel modal if there was an unsaved change
-    info_modal_instance.hide();
+    INFO_MODAL_INSTANCE.hide();
     if (
-      title.value !== selected_profile.title ||
-      exp_date.value !== selected_profile.exp_date ||
-      serial_num.value !== selected_profile.serial_num ||
-      note.value !== selected_profile.note ||
-      tag.value !== selected_profile.tag
+      title.value !== SELECTED_PROFILE.title ||
+      exp_date.value !== SELECTED_PROFILE.exp_date ||
+      serial_num.value !== SELECTED_PROFILE.serial_num ||
+      note.value !== SELECTED_PROFILE.note ||
+      tag.value !== SELECTED_PROFILE.tag
     ) {
-      confirm_cancel_modify_instance.show();
+      CONFIRM_CANCEL_MODIFY_INSTANCE.show();
     }
   });
 
   // Define behavior for modify button, update current profile and write to storage
   const mod_button = document.querySelector("#modify-profile");
   mod_button.addEventListener("click", () => {
-    const req_card = document.getElementById(selected_profile.id);
+    const req_card = document.getElementById(SELECTED_PROFILE.id);
     const card_title = req_card.querySelector(".card-title");
     card_title.innerHTML = title.value;
     const card_text = req_card.querySelector(".card-text");
     card_text.innerHTML = note.value;
 
     // Decrease tag count for previous tag by 1
-    TAG_MAP.set(selected_profile.tag, TAG_MAP.get(selected_profile.tag) - 1);
+    TAG_MAP.set(SELECTED_PROFILE.tag, TAG_MAP.get(SELECTED_PROFILE.tag) - 1);
     // if no other profiles use this tag, remove it from map
-    if (TAG_MAP.get(selected_profile.tag) === 0) {
-      TAG_MAP.delete(selected_profile.tag);
+    if (TAG_MAP.get(SELECTED_PROFILE.tag) === 0) {
+      TAG_MAP.delete(SELECTED_PROFILE.tag);
     }
     // update the profile's tag value with user input
     tag.value = rm_dupe_tags(tag.value);
-    selected_profile.tag = tag.value;
+    SELECTED_PROFILE.tag = tag.value;
     // update tag count
     TAG_MAP.set(tag.value, TAG_MAP.get(tag.value) + 1 || 1);
     // recreate filter btns
     create_tag_btn();
 
     // handle other properties changing
-    selected_profile.title = title.value;
-    selected_profile.exp_date = exp_date.value;
-    selected_profile.serial_num = serial_num.value;
-    selected_profile.note = note.value;
+    SELECTED_PROFILE.title = title.value;
+    SELECTED_PROFILE.exp_date = exp_date.value;
+    SELECTED_PROFILE.serial_num = serial_num.value;
+    SELECTED_PROFILE.note = note.value;
     save_profile_to_storage();
-    info_modal_instance.hide();
+    INFO_MODAL_INSTANCE.hide();
   });
 }
 
@@ -86,7 +86,7 @@ export function setup_delete() {
     .getElementsByClassName("modal-footer")[0]
     .getElementsByClassName("btn btn-danger")[0];
   confirm_delete_btn.addEventListener("click", () => {
-    delete_profile(selected_profile);
+    delete_profile(SELECTED_PROFILE);
   });
 }
 
@@ -128,7 +128,7 @@ function handle_tag_input_change(tag_input, type) {
     tag_html_list.appendChild(curr_li);
     curr_li.addEventListener("click", () => {
       // If multiple tags in text field, don't erase previous tags
-      let last_idx = tag_input.value.lastIndexOf(",");
+      const last_idx = tag_input.value.lastIndexOf(",");
       if (last_idx !== -1) {
         tag_input.value = tag_input.value.substring(0, last_idx + 1) + tag_name;
       } else {
