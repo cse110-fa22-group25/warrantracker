@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: storage.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,38 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: storage.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { PROFILE_LIST } from "./home.js"
 
+/**
+ * Retreat the existing profile_list in localStorage.
+ * Return the parsed array in which there are profile
+ * object. If nothing in the localStorage, return nothing.
+ * @returns {Profile[]} an array contains profile objects or nothing
+ */
+export function get_profile_from_storage() {
+  const profiles = localStorage.getItem("profiles");
+  if (!profiles) return;
+  return JSON.parse(profiles);
+}
 
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+/**
+ * save the profile_list to the localStorage
+ */
+export function save_profile_to_storage() {
+  localStorage.setItem("profiles", JSON.stringify(PROFILE_LIST));
+}
+</code></pre>
+        </article>
+    </section>
 
 
 

@@ -26,25 +26,29 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { setup_modify, setup_delete, setup_tag_recommend } from "./setup.js";
-/**
+            <pre class="prettyprint source linenums"><code>/**
  * Main file containing main functions of Warrantracker
  */
+
+import { setup_modify, setup_delete, setup_tag_recommend } from "./setup.js";
+import { Profile } from "./Profile.js";
+import { get_profile_from_storage, save_profile_to_storage } from "./storage.js";
+
 /** Global Variables */
 let PROFILE_LIST = []; // store all profile object
 let GRID; // the html element which is the parent for all profile cards
 let NEW_PROFILE_BTN; // the first element in the grid (the card with a "+" sign);
 let INFO_MODAL; // the modal showing up when clicking a profile card
 let NEW_PROFILE_MODAL; // the modal showing up when clicking the new-profile-btn
-let NEW_PROFILE_FORM;
+let NEW_PROFILE_FORM; // the html form in new-profile-modal
 let NEW_MODAL_INSTANCE; // bootstrap modal instance for new_profile_modal;
-let INFO_MODAL_INSTANCE; // boostrap modal instance for infoModal;
-let CONFIRM_CANCEL_MODAL;
-let CONFIRM_CANCEL_MODIFY_INSTANCE;
+let INFO_MODAL_INSTANCE; // bootstrap modal instance for infoModal;
+let CONFIRM_CANCEL_MODAL; // html modal for confirming cancel modification
+let CONFIRM_CANCEL_MODIFY_INSTANCE; // bootstrap modal instance for CONFIRM_CANCEL_MODAL
 let SELECTED_PROFILE; // Profile selected for editing and deleting
 const ID_SET = new Set(); // all id's in existence
-const TAG_MAP = new Map();
-let FIRST_LOAD = true;
+const TAG_MAP = new Map(); // key: tag (String), value: count for the tag (Number)
+let FIRST_LOAD = true; // boolean to check if it is the first time laoding
 const ACTIVE_TAGS = new Set(); // active tags for filtering by multiple tags
 
 window.addEventListener("DOMContentLoaded", init);
@@ -75,11 +79,10 @@ function init() {
     FIRST_LOAD = false;
   }
 
+  // create tag filter btn
   create_tag_btn();
-  // add more opeartions if needed below
 
   // add event listeners below
-
   // handle when user click save-btn in new profile modal
   NEW_PROFILE_FORM.addEventListener("submit", create_profile);
 
@@ -87,43 +90,6 @@ function init() {
   setup_delete();
   setup_modify();
   setup_tag_recommend();
-}
-
-/**
- * Construct a new Profile Object using the pass-in arguments
- * @constructor
- * @param {string} title - the name of the product
- * @param {string} tag - the tag of the product
- * @param {string} exp_date - the expiration date of the product
- * @param {string} serial_num - the serial number of the product
- * @param {string} note - the additional notes for the product
- */
-function Profile(id, title, tag, exp_date, serial_num, note) {
-  this.id = id;
-  this.title = title;
-  this.tag = tag;
-  this.exp_date = exp_date;
-  this.serial_num = serial_num;
-  this.note = note;
-}
-
-/**
- * Retreat the existing profile_list in localStorage.
- * Return the parsed array in which there are profile
- * object. If nothing in the localStorage, return nothing.
- * @returns {Profile[]} an array contains profile objects or nothing
- */
-function get_profile_from_storage() {
-  const profiles = localStorage.getItem("profiles");
-  if (!profiles) return;
-  return JSON.parse(profiles);
-}
-
-/**
- * save the profile_list to the localStorage
- */
-function save_profile_to_storage() {
-  localStorage.setItem("profiles", JSON.stringify(PROFILE_LIST));
 }
 
 /**
@@ -314,7 +280,7 @@ function delete_profile(profile) {
 export function search_tag(tag) {
   const match_list = [];
   PROFILE_LIST.forEach((profile) => {
-    let cur_profile_tag_list = parse_profile_tags(profile);
+    const cur_profile_tag_list = parse_profile_tags(profile);
     cur_profile_tag_list.forEach((cur_tag) => {
       if (
         profile.tag &amp;&amp;
@@ -323,7 +289,7 @@ export function search_tag(tag) {
       ) {
         match_list.push(cur_tag);
       }
-    })
+    });
   });
   return match_list;
 }
@@ -363,7 +329,7 @@ function create_tag_btn() {
 
   // set up event listener for other tag-btn
   PROFILE_LIST.forEach((profile) => {
-    let cur_profile_tag_list = parse_profile_tags(profile);
+    const cur_profile_tag_list = parse_profile_tags(profile);
     cur_profile_tag_list.forEach((tag) => {
       if (tag &amp;&amp; !is_visited.has(tag)) {
         // if encounter a new tag, create the html element for the btn
@@ -421,7 +387,11 @@ function handle_tag_btn_click(tag) {
   }
 
   // Remove "active" class from buttons of inactive tags
-  for (let i = ACTIVE_TAGS.size === 0 ? 1 : 0; i &lt; tag_btn_div.childElementCount; i++) {
+  for (
+    let i = ACTIVE_TAGS.size === 0 ? 1 : 0;
+    i &lt; tag_btn_div.childElementCount;
+    i++
+  ) {
     if (!ACTIVE_TAGS.has(tag_btn_div.children[i].innerHTML)) {
       tag_btn_div.children[i].classList.remove("active");
     }
@@ -434,9 +404,9 @@ function handle_tag_btn_click(tag) {
     // display the matching profiles of active tags
     const profile_list_tag = []; // store all profiles with this tag
     for (let i = 0; i &lt; PROFILE_LIST.length; i++) {
-      let cur_profile_tag_list = parse_profile_tags(PROFILE_LIST[i]);
+      const cur_profile_tag_list = parse_profile_tags(PROFILE_LIST[i]);
       profile_list_tag.push(PROFILE_LIST[i]);
-      for (let t of ACTIVE_TAGS) {
+      for (const t of ACTIVE_TAGS) {
         if (cur_profile_tag_list.indexOf(t) === -1) {
           profile_list_tag.pop();
           break;
@@ -454,7 +424,7 @@ function handle_tag_btn_click(tag) {
  * @returns {string[]} Array of tags (strings) for the given profile
  */
 function parse_profile_tags(profile) {
-  let arr = profile.tag.split(",");
+  const arr = profile.tag.split(",");
   for (let i = 0; i &lt; arr.length; i++) {
     arr[i] = arr[i].trim();
   }
@@ -467,9 +437,9 @@ function parse_profile_tags(profile) {
  * @returns {string} original string without duplicates
  */
 function rm_dupe_tags(tag_list) {
-  let orig = tag_list.split(","); // tag_list
-  let tags = new Set(); // tags already added to out
-  let no_dupe = [];
+  const orig = tag_list.split(","); // tag_list
+  const tags = new Set(); // tags already added to out
+  const no_dupe = [];
   for (let i = 0; i &lt; orig.length; i++) {
     orig[i] = orig[i].trim();
     if (!tags.has(orig[i])) {
@@ -525,6 +495,7 @@ function display_selected_profile(profiles) {
 function search(key_word) {}
 
 export {
+  PROFILE_LIST,
   SELECTED_PROFILE,
   INFO_MODAL_INSTANCE,
   CONFIRM_CANCEL_MODIFY_INSTANCE,
@@ -555,7 +526,7 @@ export {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a> on Tue Nov 22 2022 03:09:02 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a> on Tue Nov 22 2022 03:38:03 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>
