@@ -143,9 +143,8 @@ function handle_tag_input_change(tag_input, type) {
 
 export function setup_search() {
   const search_form = document.querySelector("#search-form");
-  const search_btn = search_form.querySelector("#search-btn")
   const search_bar = search_form.querySelector("#search-bar")
-  search_btn.addEventListener("click", () => {
+  search_form.addEventListener("input", () => {
     // deactivate tag filters
     active_tags.clear();
     const tag_btn_div = document.querySelector("#tag-btn-div");
