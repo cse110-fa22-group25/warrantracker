@@ -15,11 +15,80 @@ describe('Basic user flow for Website', () => {
   // add several profiles
   it('add several profiles using add button', async () => {
     console.log('Checking to make sure user can add several profiles');
+    const add_button = await page.$('#new-profile-btn');
+    //first add
     await add_button.click();
     let title_field = await page.$('#new-modal-title');
-    title_field.type('name1');
+    await title_field.type('name1');
+    let tag_field = await page.$('#new-modal-tag');
+    await tag_field.type('tag1');
+    //regarding date, need also test click input
+    let expire_field = await page.$('#info-modal-input-exp_date');
+    await expire_field.type('11132022');
+    let serial_field = await page.$('#info-modal-input-serial_num');
+    await serial_field.type('abcd1234');
+    let note_field = await page.$('#new-modal-note');
+    await note_field.type('This is a test');
+    let save_button = await page.$('#createProfile');
+    await save_button.click();
+
+    //second add
+    await add_button.click();
+    title_field = await page.$('#new-modal-title');
+    await title_field.type('name2 - no tag');
+    expire_field = await page.$('#info-modal-input-exp_date');
+    await expire_field.type('11132022');
+    save_button = await page.$('#createProfile');
+    await save_button.click();
+
+    //third add
+    await add_button.click();
+    title_field = await page.$('#new-modal-title');
+    await title_field.type('name3');
+    tag_field = await page.$('#new-modal-tag');
+    await tag_field.type('tag2');
+    expire_field = await page.$('#info-modal-input-exp_date');
+    await expire_field.type('11132022');
+    save_button = await page.$('#createProfile');
+    await save_button.click();
+
+    //fourth add
+    await add_button.click();
+    title_field = await page.$('#new-modal-title');
+    await title_field.type('name 4');
+    tag_field = await page.$('#new-modal-tag');
+    await tag_field.type('tag3');
+    expire_field = await page.$('#info-modal-input-exp_date');
+    await expire_field.type('11132022');
+    save_button = await page.$('#createProfile');
+    await save_button.click();
+
+    //fifth add
+    await add_button.click();
+    title_field = await page.$('#new-modal-title');
+    await title_field.type('name5');
+    tag_field = await page.$('#new-modal-tag');
+    await tag_field.type('tag1');
+    expire_field = await page.$('#info-modal-input-exp_date');
+    await expire_field.type('11132022');
+    save_button = await page.$('#createProfile');
+    await save_button.click();
+
+    //check total 4 tag selector buttons, 5 profile cards with info
+    const tag_section = await page.$('#tag-btn-div');
+    const all_tag_button = await tag_section.$$('button')
+    expect(all_tag_button.length).toBe(4);
+    const profile_grid = await page.$('#grid');
+    const all_profile_card = await profile_grid.$$('.card')
+    expect(all_profile_card.length).toBe(6);
+
     
-    // Start as true, if any don't have data, swap to false
+    
+
+  }, 10000);
+/*
+
+// Start as true, if any don't have data, swap to false
     let allArePopulated = true;
     let data, plainValue;
     // Query select all of the <product-item> elements
@@ -38,12 +107,6 @@ describe('Basic user flow for Website', () => {
       // Expect allArePopulated to still be true
       expect(allArePopulated).toBe(true);
     }
-    // TODO - Step 1
-    // Right now this function is only checking the first <product-item> it found, make it so that
-    // it checks every <product-item> it found
-
-  }, 10000);
-/*
   // Check to make sure that when you click "Add to Cart" on the first <product-item> that
   // the button swaps to "Remove from Cart"
   it('Clicking the "Add to Cart" button should change button text', async () => {
@@ -173,5 +236,6 @@ describe('Basic user flow for Website', () => {
     });
     expect(storageContent).toEqual([]);
   });
+  */
 });
-*/
+
