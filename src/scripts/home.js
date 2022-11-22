@@ -454,6 +454,8 @@ function parse_profile_tags(profile) {
 function rm_dupe_tags(tag_list) {
   let orig = tag_list.split(","); // tag_list
   let tags = new Set(); // tags already added to out
+  tags.add("all");
+  tags.add("All");
   let no_dupe = [];
   for (let i = 0; i < orig.length; i++) {
     orig[i] = orig[i].trim();
