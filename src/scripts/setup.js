@@ -128,7 +128,7 @@ function handle_tag_input_change(tag_input, type) {
     tag_html_list.appendChild(curr_li);
     curr_li.addEventListener("click", () => {
       // If multiple tags in text field, don't erase previous tags
-      let last_idx = tag_input.value.lastIndexOf(",");
+      const last_idx = tag_input.value.lastIndexOf(",");
       if (last_idx !== -1) {
         tag_input.value = tag_input.value.substring(0, last_idx + 1) + tag_name;
       } else {
