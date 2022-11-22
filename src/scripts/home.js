@@ -3,21 +3,21 @@ import { setup_modify, setup_delete, setup_tag_recommend } from "./setup.js";
  * Main file containing main functions of Warrantracker
  */
 /** Global Variables */
-let profile_list = []; // store all profile object
-let grid; // the html element which is the parent for all profile cards
-let new_profile_btn; // the first element in the grid (the card with a "+" sign);
-let info_modal; // the modal showing up when clicking a profile card
-let new_profile_modal; // the modal showing up when clicking the new-profile-btn
-let new_profile_form;
-let new_modal_instance; // bootstrap modal instance for new_profile_modal;
-let info_modal_instance; // boostrap modal instance for infoModal;
-let confirm_cancel_modal;
-let confirm_cancel_modify_instance;
-let selected_profile; // Profile selected for editing and deleting
+let PROFILE_LIST = []; // store all profile object
+let GRID; // the html element which is the parent for all profile cards
+let NEW_PROFILE_BTN; // the first element in the grid (the card with a "+" sign);
+let INFO_MODAL; // the modal showing up when clicking a profile card
+let NEW_PROFILE_MODAL; // the modal showing up when clicking the new-profile-btn
+let NEW_PROFILE_FORM;
+let NEW_MODAL_INSTANCE; // bootstrap modal instance for new_profile_modal;
+let INFO_MODAL_INSTANCE; // boostrap modal instance for infoModal;
+let CONFIRM_CANCEL_MODAL;
+let CONFIRM_CANCEL_MODIFY_INSTANCE;
+let SELECTED_PROFILE; // Profile selected for editing and deleting
 const ID_SET = new Set(); // all id's in existence
 const TAG_MAP = new Map();
 let FIRST_LOAD = true;
-let active_tags = new Set(); // active tags for filtering by multiple tags
+const ACTIVE_TAGS = new Set(); // active tags for filtering by multiple tags
 
 window.addEventListener("DOMContentLoaded", init);
 
@@ -26,23 +26,23 @@ window.addEventListener("DOMContentLoaded", init);
  */
 function init() {
   // select needed html elements
-  grid = document.querySelector("#grid");
-  new_profile_btn = document.querySelector("#new-profile-btn");
-  info_modal = document.querySelector("#info-modal");
-  new_profile_modal = document.querySelector("#new-modal");
-  new_profile_form = document.querySelector("#new-modal-form");
-  new_modal_instance = new window.bootstrap.Modal(new_profile_modal);
-  info_modal_instance = new window.bootstrap.Modal(info_modal);
-  confirm_cancel_modal = document.querySelector("#confirm-cancel-modify-modal");
-  confirm_cancel_modify_instance = new window.bootstrap.Modal(
-    confirm_cancel_modal
+  GRID = document.querySelector("#grid");
+  NEW_PROFILE_BTN = document.querySelector("#new-profile-btn");
+  INFO_MODAL = document.querySelector("#info-modal");
+  NEW_PROFILE_MODAL = document.querySelector("#new-modal");
+  NEW_PROFILE_FORM = document.querySelector("#new-modal-form");
+  NEW_MODAL_INSTANCE = new window.bootstrap.Modal(NEW_PROFILE_MODAL);
+  INFO_MODAL_INSTANCE = new window.bootstrap.Modal(INFO_MODAL);
+  CONFIRM_CANCEL_MODAL = document.querySelector("#confirm-cancel-modify-modal");
+  CONFIRM_CANCEL_MODIFY_INSTANCE = new window.bootstrap.Modal(
+    CONFIRM_CANCEL_MODAL
   );
 
   // get existing profiles from localStorage
   // generate card component and display them
   const stored_profiles = get_profile_from_storage();
   if (stored_profiles) {
-    profile_list.push(...stored_profiles);
+    PROFILE_LIST.push(...stored_profiles);
     add_profiles_to_doc(stored_profiles);
     FIRST_LOAD = false;
   }
@@ -53,12 +53,12 @@ function init() {
   // add event listeners below
 
   // handle when user click save-btn in new profile modal
-  new_profile_form.addEventListener("submit", create_profile);
+  NEW_PROFILE_FORM.addEventListener("submit", create_profile);
 
   // Set up action listeners for modals.
   setup_delete();
   setup_modify();
-  setup_tag_recommend(search_tag);
+  setup_tag_recommend();
 }
 
 /**
@@ -95,7 +95,7 @@ function get_profile_from_storage() {
  * save the profile_list to the localStorage
  */
 function save_profile_to_storage() {
-  localStorage.setItem("profiles", JSON.stringify(profile_list));
+  localStorage.setItem("profiles", JSON.stringify(PROFILE_LIST));
 }
 
 /**
@@ -109,7 +109,7 @@ function add_profiles_to_doc(profiles) {
   profiles.forEach((profile) => {
     const curr_col = create_card(profile);
     ID_SET.add(profile.id);
-    grid.appendChild(curr_col);
+    GRID.appendChild(curr_col);
 
     // set up TAG_MAP on first load using stored profile
     if (FIRST_LOAD && profile.tag) {
@@ -128,11 +128,11 @@ function add_profiles_to_doc(profiles) {
  */
 function create_profile() {
   // select needed html elements in new_profile_modal
-  const title = new_profile_modal.querySelector("#new-modal-title");
-  const tag = new_profile_modal.querySelector("#new-modal-tag"); // haven't implement yet
-  const exp_date = new_profile_modal.querySelector("#new-modal-exp_date");
-  const serial_num = new_profile_modal.querySelector("#new-modal-serial_num");
-  const note = new_profile_modal.querySelector("#new-modal-note");
+  const title = NEW_PROFILE_MODAL.querySelector("#new-modal-title");
+  const tag = NEW_PROFILE_MODAL.querySelector("#new-modal-tag"); // haven't implement yet
+  const exp_date = NEW_PROFILE_MODAL.querySelector("#new-modal-exp_date");
+  const serial_num = NEW_PROFILE_MODAL.querySelector("#new-modal-serial_num");
+  const note = NEW_PROFILE_MODAL.querySelector("#new-modal-note");
 
   let id; // generate unique ID for profile
   do {
@@ -150,12 +150,12 @@ function create_profile() {
   );
 
   // save newProfile to localStorage
-  profile_list = [new_profile, ...profile_list];
+  PROFILE_LIST = [new_profile, ...PROFILE_LIST];
   save_profile_to_storage();
 
   // create a card component to display
   const curr_col = create_card(new_profile);
-  grid.insertBefore(curr_col, new_profile_btn.nextSibling);
+  GRID.insertBefore(curr_col, NEW_PROFILE_BTN.nextSibling);
 
   // if tag value not exist, create a new tag btn
   TAG_MAP.set(new_profile.tag, TAG_MAP.get(new_profile.tag) + 1 || 1);
@@ -169,7 +169,7 @@ function create_profile() {
   note.value = "";
 
   // hide bootstrap modal
-  new_modal_instance.hide();
+  NEW_MODAL_INSTANCE.hide();
 }
 
 /**
@@ -218,7 +218,7 @@ function create_card(profile) {
   // when clicking, update the info modal with its info
   card_wrapper.addEventListener("click", () => {
     update_info_modal(profile);
-    selected_profile = profile;
+    SELECTED_PROFILE = profile;
   });
   return card_wrapper;
 }
@@ -260,7 +260,7 @@ function delete_profile(profile) {
   req_card.remove();
 
   // Remove profile from list and save list
-  profile_list = profile_list.filter(
+  PROFILE_LIST = PROFILE_LIST.filter(
     (curr_prof) => curr_prof.id !== profile.id
   );
 
@@ -285,7 +285,7 @@ function delete_profile(profile) {
  */
 export function search_tag(tag) {
   const match_list = [];
-  profile_list.forEach((profile) => {
+  PROFILE_LIST.forEach((profile) => {
     let cur_profile_tag_list = parse_profile_tags(profile);
     cur_profile_tag_list.forEach((cur_tag) => {
       if (
@@ -334,7 +334,7 @@ function create_tag_btn() {
   });
 
   // set up event listener for other tag-btn
-  profile_list.forEach((profile) => {
+  PROFILE_LIST.forEach((profile) => {
     let cur_profile_tag_list = parse_profile_tags(profile);
     cur_profile_tag_list.forEach((tag) => {
       if (tag && !is_visited.has(tag)) {
@@ -379,36 +379,36 @@ function handle_tag_btn_click(tag) {
   const tag_btn_div = document.querySelector("#tag-btn-div");
   // if tag is all, disable all other filters
   if (tag === "all") {
-    active_tags.clear();
-  } else if (active_tags.has(tag)) {
+    ACTIVE_TAGS.clear();
+  } else if (ACTIVE_TAGS.has(tag)) {
     // if tag was previously active, set as inactive
-    active_tags.delete(tag);
+    ACTIVE_TAGS.delete(tag);
     // if no active tags, set "all" as active
-    if (active_tags.size === 0) {
+    if (ACTIVE_TAGS.size === 0) {
       tag_btn_div.children[0].classList.add("active");
     }
   } else {
     // otherwise add tag as active
-    active_tags.add(tag);
+    ACTIVE_TAGS.add(tag);
   }
 
   // Remove "active" class from buttons of inactive tags
-  for (let i = active_tags.size === 0 ? 1 : 0; i < tag_btn_div.childElementCount; i++) {
-    if (!active_tags.has(tag_btn_div.children[i].innerHTML)) {
+  for (let i = ACTIVE_TAGS.size === 0 ? 1 : 0; i < tag_btn_div.childElementCount; i++) {
+    if (!ACTIVE_TAGS.has(tag_btn_div.children[i].innerHTML)) {
       tag_btn_div.children[i].classList.remove("active");
     }
   }
 
   // display all profiles if all is active
-  if (active_tags.size === 0) {
-    display_selected_profile(profile_list);
+  if (ACTIVE_TAGS.size === 0) {
+    display_selected_profile(PROFILE_LIST);
   } else {
     // display the matching profiles of active tags
     const profile_list_tag = []; // store all profiles with this tag
-    for (let i = 0; i < profile_list.length; i++) {
-      let cur_profile_tag_list = parse_profile_tags(profile_list[i]);
-      profile_list_tag.push(profile_list[i]);
-      for (let t of active_tags) {
+    for (let i = 0; i < PROFILE_LIST.length; i++) {
+      let cur_profile_tag_list = parse_profile_tags(PROFILE_LIST[i]);
+      profile_list_tag.push(PROFILE_LIST[i]);
+      for (let t of ACTIVE_TAGS) {
         if (cur_profile_tag_list.indexOf(t) === -1) {
           profile_list_tag.pop();
           break;
@@ -459,7 +459,7 @@ function rm_dupe_tags(tag_list) {
  */
 function display_selected_profile(profiles) {
   // remove curr cards in grid
-  grid.innerHTML = `
+  GRID.innerHTML = `
     <div class="col-sm-6 col-lg-4 p-2" id="new-profile-btn">
       <div
         type="button"
@@ -477,7 +477,7 @@ function display_selected_profile(profiles) {
   // add selected profiles
   profiles.forEach((profile) => {
     const curr_card_wrapper = create_card(profile);
-    grid.appendChild(curr_card_wrapper);
+    GRID.appendChild(curr_card_wrapper);
   });
 }
 
@@ -497,9 +497,10 @@ function display_selected_profile(profiles) {
 function search(key_word) {}
 
 export {
-  selected_profile,
-  info_modal_instance,
-  confirm_cancel_modify_instance,
+  SELECTED_PROFILE,
+  INFO_MODAL_INSTANCE,
+  CONFIRM_CANCEL_MODIFY_INSTANCE,
+  TAG_MAP,
   save_profile_to_storage,
   create_profile,
   create_card,
@@ -508,6 +509,5 @@ export {
   rm_dupe_tags,
   search,
   Profile,
-  TAG_MAP,
   create_tag_btn
 };
