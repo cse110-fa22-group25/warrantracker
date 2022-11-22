@@ -290,13 +290,19 @@ function delete_profile(profile) {
  */
 export function search_tag(tag) {
   const match_list = [];
+  // if we got multiple tag in input textbox,
+  // ignore previous tags for searching
+  if (tag.includes(',')) {
+    const temp = tag.split(',');
+    tag = temp[temp.length - 1].trim();
+  }
   profile_list.forEach((profile) => {
     let cur_profile_tag_list = parse_profile_tags(profile);
     cur_profile_tag_list.forEach((cur_tag) => {
       if (
         profile.tag &&
         !match_list.includes(cur_tag) &&
-        profile.tag.includes(cur_tag)
+        cur_tag.includes(tag)
       ) {
         match_list.push(cur_tag);
       }
