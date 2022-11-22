@@ -392,20 +392,20 @@ function tag_filter() {
   // display all profiles if all is active
   if (ACTIVE_TAGS.size === 0) {
     ACTIVE_PROFILES = SEARCH_PROFILES;
-  } else {
-    // display the matching profiles of active tags
-    ACTIVE_PROFILES = []; // store all profiles with this tag
-    for (let i = 0; i < SEARCH_PROFILES.length; i++) {
-      const cur_profile_tag_list = parse_profile_tags(SEARCH_PROFILES[i]);
-      ACTIVE_PROFILES.push(SEARCH_PROFILES[i]);
-      for (const t of ACTIVE_TAGS) {
-        if (cur_profile_tag_list.indexOf(t) === -1) {
-          ACTIVE_PROFILES.pop();
-          break;
-        }
+    return;
+  }
+  // display the matching profiles of active tags
+  ACTIVE_PROFILES = []; // store all profiles with this tag
+  for (let i = 0; i < SEARCH_PROFILES.length; i++) {
+    const cur_profile_tag_set = new Set(parse_profile_tags(SEARCH_PROFILES[i]));
+    ACTIVE_PROFILES.push(SEARCH_PROFILES[i]);
+    // if one of the selected tags does not appear in profile, do not show profile
+    for (const t of ACTIVE_TAGS) {
+      if (!cur_profile_tag_set.has(t)) {
+        ACTIVE_PROFILES.pop();
+        break;
       }
     }
-    // display filtered profiles
   }
 }
 
@@ -484,7 +484,7 @@ function display_selected_profile(profiles) {
 function search(query) {
   // split search query into array of words
   SEARCH_PROFILES = PROFILE_LIST;
-  let query_arr = query.toLowerCase().split(" ");
+  const query_arr = query.toLowerCase().split(" ");
   if (query.length === 0) {
     SEARCH_PROFILES = PROFILE_LIST;
     display_selected_profile(SEARCH_PROFILES);
@@ -492,10 +492,24 @@ function search(query) {
   }
   // algorithm: convert each profile into set of key words
   // each element of query_arr must be within that set for the profile to match
-  let keyword_set; // keywords in current profile
   const search_match = []; // list of profiles that match search
+
+  search_clr(search_match, query_arr);
+
+  ACTIVE_PROFILES = search_match;
+  SEARCH_PROFILES = ACTIVE_PROFILES;
+  display_selected_profile(SEARCH_PROFILES);
+}
+
+/**
+ * Sets search_match to contain all profiles that match the query
+ *
+ * @param {Profile[]} search_match Output parameter for query-matching profiles
+ * @param {*} query_arr Array of queries in search
+ */
+function search_clr(search_match, query_arr) {
   for (let i = 0; i < PROFILE_LIST.length; i++) {
-    keyword_set = ""
+    let keyword_set = ""
     const curr = PROFILE_LIST[i];
     search_match.push(curr);
 
@@ -525,10 +539,6 @@ function search(query) {
       }
     }
   }
-
-  ACTIVE_PROFILES = search_match;
-  SEARCH_PROFILES = ACTIVE_PROFILES;
-  display_selected_profile(SEARCH_PROFILES);
 }
 
 export {

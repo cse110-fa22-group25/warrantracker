@@ -148,7 +148,10 @@ export function setup_search() {
     ACTIVE_TAGS.clear();
     const tag_btn_div = document.querySelector("#tag-btn-div");
     tag_btn_div.children[0].classList.remove("active");
-
+    // Remove "active" class from buttons of inactive tags
+    for (let i = 0; i < tag_btn_div.childElementCount; i++) {
+      tag_btn_div.children[i].classList.remove("active");
+    }
     // search
     search(search_bar.value);
   });
