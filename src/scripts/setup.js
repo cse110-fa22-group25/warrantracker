@@ -1,9 +1,11 @@
 import {
+  active_tags,
   selected_profile,
   TAG_MAP,
   create_tag_btn,
   save_profile_to_storage,
   info_modal_instance,
+  handle_tag_btn_click,
   confirm_cancel_modify_instance,
   delete_profile,
   rm_dupe_tags,
@@ -144,6 +146,12 @@ export function setup_search() {
   const search_btn = search_form.querySelector("#search-btn")
   const search_bar = search_form.querySelector("#search-bar")
   search_btn.addEventListener("click", () => {
+    // deactivate tag filters
+    active_tags.clear();
+    const tag_btn_div = document.querySelector("#tag-btn-div");
+    tag_btn_div.children[0].classList.remove("active");
+
+    // search
     search(search_bar.value);
   });
 }

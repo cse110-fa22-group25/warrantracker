@@ -19,6 +19,7 @@ const TAG_MAP = new Map();
 let FIRST_LOAD = true;
 let active_tags = new Set(); // active tags for filtering by multiple tags
 let active_profiles = []; // All profiles currently being shown
+let search_profiles = []; // all profiles capable of being shown (search feature)
 
 window.addEventListener("DOMContentLoaded", init);
 
@@ -47,6 +48,8 @@ function init() {
     add_profiles_to_doc(stored_profiles);
     FIRST_LOAD = false;
   }
+
+  search_profiles = profile_list;
 
   create_tag_btn();
   // add more opeartions if needed below
@@ -411,13 +414,13 @@ function handle_tag_btn_click(tag) {
 function tag_filter() {
   // display all profiles if all is active
   if (active_tags.size === 0) {
-    active_profiles = profile_list
+    active_profiles = search_profiles;
   } else {
     // display the matching profiles of active tags
     active_profiles = []; // store all profiles with this tag
-    for (let i = 0; i < profile_list.length; i++) {
-      let cur_profile_tag_list = parse_profile_tags(profile_list[i]);
-      active_profiles.push(profile_list[i]);
+    for (let i = 0; i < search_profiles.length; i++) {
+      let cur_profile_tag_list = parse_profile_tags(search_profiles[i]);
+      active_profiles.push(search_profiles[i]);
       // check profile against each active tag
       for (let t of active_tags) {
         if (cur_profile_tag_list.indexOf(t) === -1) {
@@ -504,10 +507,11 @@ function display_selected_profile(profiles) {
  */
 function search(query) {
   // split search query into array of words
+  search_profiles = profile_list;
   let query_arr = query.split(" ");
   if (query.length === 0) {
-    active_profiles = profile_list;
-    display_selected_profile(active_profiles);
+    search_profiles = profile_list;
+    display_selected_profile(search_profiles);
     return;
   }
   // algorithm: convert each profile into set of key words
@@ -547,15 +551,18 @@ function search(query) {
   }
 
   active_profiles = search_match;
-  display_selected_profile(active_profiles);
+  search_profiles = active_profiles;
+  display_selected_profile(search_profiles);
 }
 
 export {
+  active_tags,
   active_profiles,
   profile_list,
   selected_profile,
   info_modal_instance,
   confirm_cancel_modify_instance,
+  handle_tag_btn_click,
   save_profile_to_storage,
   create_profile,
   create_card,
