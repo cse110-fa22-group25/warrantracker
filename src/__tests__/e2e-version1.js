@@ -30,7 +30,7 @@ describe('Basic user flow for Website', () => {
     let note_field = await page.$('#new-modal-note');
     await note_field.type('This is a test');
     let save_button = await page.$('#createProfile');
-    await save_button.click();
+    await save_button.evaluate(curr_button => curr_button.click());
 
     //second add
     await add_button.click();
@@ -39,7 +39,7 @@ describe('Basic user flow for Website', () => {
     expire_field = await page.$('#info-modal-input-exp_date');
     await expire_field.type('11132022');
     save_button = await page.$('#createProfile');
-    await save_button.click();
+    await save_button.evaluate(curr_button => curr_button.click());
 
     //third add
     await add_button.click();
@@ -50,7 +50,7 @@ describe('Basic user flow for Website', () => {
     expire_field = await page.$('#info-modal-input-exp_date');
     await expire_field.type('11132022');
     save_button = await page.$('#createProfile');
-    await save_button.click();
+    await save_button.evaluate(curr_button => curr_button.click());
 
     //fourth add
     await add_button.click();
@@ -61,7 +61,7 @@ describe('Basic user flow for Website', () => {
     expire_field = await page.$('#info-modal-input-exp_date');
     await expire_field.type('11132022');
     save_button = await page.$('#createProfile');
-    await save_button.click();
+    await save_button.evaluate(curr_button => curr_button.click());
 
     //fifth add
     await add_button.click();
@@ -72,18 +72,98 @@ describe('Basic user flow for Website', () => {
     expire_field = await page.$('#info-modal-input-exp_date');
     await expire_field.type('11132022');
     save_button = await page.$('#createProfile');
-    await save_button.click();
+    await save_button.evaluate(curr_button => curr_button.click());
 
     //check total 4 tag selector buttons, 5 profile cards with info
     const tag_section = await page.$('#tag-btn-div');
-    const all_tag_button = await tag_section.$$('button')
+    const all_tag_button = await tag_section.$$('button');
     expect(all_tag_button.length).toBe(4);
     const profile_grid = await page.$('#grid');
-    const all_profile_card = await profile_grid.$$('.card')
+    const all_profile_card = await profile_grid.$$('.card');
     expect(all_profile_card.length).toBe(6);
 
-    
-    
+    //click on tags to check amount of box correct
+    await all_tag_button[1].click();
+    profile_grid = await page.$('#grid');
+    all_profile_card = await profile_grid.$$('.card');
+    expect(all_profile_card.length).toBe(3);
+    await all_tag_button[2].click();
+    profile_grid = await page.$('#grid');
+    all_profile_card = await profile_grid.$$('.card');
+    expect(all_profile_card.length).toBe(2);
+    await all_tag_button[3].click();
+    profile_grid = await page.$('#grid');
+    all_profile_card = await profile_grid.$$('.card');
+    expect(all_profile_card.length).toBe(2);
+
+    //modify name and tags and check
+
+    //delete and check amount in each tag correct
+    await all_tag_button[1].click();
+    profile_grid = await page.$('#grid');
+    //all_profile_card is supposed to be all visible card on current page
+    all_profile_card = await profile_grid.$$('.card');
+    await all_profile_card[0].click();
+    let path_to_delete_button = await page.$('#info-modal-form');
+    let delete_button = await path_to_delete_button.$('button');
+    await delete_button.evaluate(curr_button => curr_button.click());
+    let confirm_delete_button = await page.$('#delbtn');
+    await confirm_delete_button.evaluate(curr_button => curr_button.click());
+    profile_grid = await page.$('#grid');
+    all_profile_card = await profile_grid.$$('.card');
+    expect(all_profile_card.length).toBe(2);
+
+    await all_tag_button[3].click();
+    profile_grid = await page.$('#grid');
+    all_profile_card = await profile_grid.$$('.card');
+    await all_profile_card[0].click();
+    path_to_delete_button = await page.$('#info-modal-form');
+    delete_button = await path_to_delete_button.$('button');
+    await delete_button.evaluate(curr_button => curr_button.click());
+    confirm_delete_button = await page.$('#delbtn');
+    await confirm_delete_button.evaluate(curr_button => curr_button.click());
+    profile_grid = await page.$('#grid');
+    all_profile_card = await profile_grid.$$('.card');
+    //because go back to all tag as one tag is gone by deletion
+    expect(all_profile_card.length).toBe(4);
+    tag_section = await page.$('#tag-btn-div');
+    all_tag_button = await tag_section.$$('button');
+    expect(all_tag_button.length).toBe(3);
+    await all_profile_card[0].click();
+    path_to_delete_button = await page.$('#info-modal-form');
+    delete_button = await path_to_delete_button.$('button');
+    await delete_button.evaluate(curr_button => curr_button.click());
+    confirm_delete_button = await page.$('#delbtn');
+    await confirm_delete_button.evaluate(curr_button => curr_button.click());
+    profile_grid = await page.$('#grid');
+    all_profile_card = await profile_grid.$$('.card');
+    expect(all_profile_card.length).toBe(3);
+
+    await all_profile_card[0].click();
+    path_to_delete_button = await page.$('#info-modal-form');
+    delete_button = await path_to_delete_button.$('button');
+    await delete_button.evaluate(curr_button => curr_button.click());
+    confirm_delete_button = await page.$('#delbtn');
+    await confirm_delete_button.evaluate(curr_button => curr_button.click());
+    profile_grid = await page.$('#grid');
+    all_profile_card = await profile_grid.$$('.card');
+    expect(all_profile_card.length).toBe(2);
+
+    await all_profile_card[0].click();
+    path_to_delete_button = await page.$('#info-modal-form');
+    delete_button = await path_to_delete_button.$('button');
+    await delete_button.evaluate(curr_button => curr_button.click());
+    confirm_delete_button = await page.$('#delbtn');
+    await confirm_delete_button.evaluate(curr_button => curr_button.click());
+    profile_grid = await page.$('#grid');
+    all_profile_card = await profile_grid.$$('.card');
+    expect(all_profile_card.length).toBe(1);
+    tag_section = await page.$('#tag-btn-div');
+    all_tag_button = await tag_section.$$('button');
+    expect(all_tag_button.length).toBe(1);
+
+
+
 
   }, 10000);
 /*
