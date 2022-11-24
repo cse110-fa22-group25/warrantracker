@@ -38,16 +38,14 @@
     <!-- main page -->
     <main class="container p-auto pt-3" id="page">
       <!-- div for search bar -->
-      <form class="d-flex justify-content-center" role="search">
+      <form class="d-flex justify-content-center" role="search" id="search-form" onsubmit="return false">
         <input
           class="form-control me- search-bar"
           type="search"
           placeholder="Search"
           aria-label="Search"
+          id="search-bar"
         />
-        <button class="btn btn-outline-dark search-btn" type="submit">
-          Search
-        </button>
       </form>
 
       <!-- section for label bar -->
