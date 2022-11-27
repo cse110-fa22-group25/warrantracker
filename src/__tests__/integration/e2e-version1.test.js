@@ -9,6 +9,10 @@ const NEW_MODAL_NOTE = '#new-modal-note';
 const CREATE_PROFILE_BTN = '#createProfile';
 const ANIMATION_TIME = 300;
 
+//variables for delete profile
+const INFO_MODAL = '#info-modal';
+const CONFIRM_DELETE_MODAL = '#confirm-delete-modal';
+
 describe('Basic user flow for Website', () => {
   // First, visit the website
   beforeAll(async () => {
@@ -105,6 +109,7 @@ describe('Basic user flow for Website', () => {
     await all_tag_button[1].click();
     profile_grid = await page.$('#grid');
     all_profile_card = await profile_grid.$$('.card');
+    console.log(all_profile_card);
     expect(all_profile_card.length).toBe(3);
     await all_tag_button[1].click();
     await all_tag_button[2].click();
@@ -116,6 +121,7 @@ describe('Basic user flow for Website', () => {
     profile_grid = await page.$('#grid');
     all_profile_card = await profile_grid.$$('.card');
     expect(all_profile_card.length).toBe(2);
+    await all_tag_button[3].click();
 
     // ensure localstorage is correct, DO NOT TEST ID, ID IS RANDOM EVERY TIME
     let ls = await JSON.parse(await page.evaluate(() => localStorage.getItem('profiles')));
@@ -162,69 +168,89 @@ describe('Basic user flow for Website', () => {
 
       // //modify name and tags and check
 
-    // //delete and check amount in each tag correct
-    // await all_tag_button[1].click();
-    // profile_grid = await page.$('#grid');
-    // //all_profile_card is supposed to be all visible card on current page
-    // all_profile_card = await profile_grid.$$('.card');
-    // await all_profile_card[0].click();
-    // let path_to_delete_button = await page.$('#info-modal-form');
-    // let delete_button = await path_to_delete_button.$('button');
-    // await delete_button.evaluate(curr_button => curr_button.click());
-    // let confirm_delete_button = await page.$('#delbtn');
-    // await confirm_delete_button.evaluate(curr_button => curr_button.click());
-    // profile_grid = await page.$('#grid');
-    // all_profile_card = await profile_grid.$$('.card');
-    // expect(all_profile_card.length).toBe(2);
+  //delete those profile    
+  it('Test delete functionality', async () => {
+    //delete and check amount in each tag correct
+    const tag_section = await page.$('#tag-btn-div');
+    const all_tag_button = await tag_section.$$('button');
+    await all_tag_button[1].click();
+    console.log("can click tag");
+    let profile_grid = await page.$('#grid');
+    console.log(profile_grid);
+    let all_profile_card = await profile_grid.$$('button');
+    console.log(all_profile_card[0]);
+    console.log(all_profile_card[1]);
+    await all_profile_card[1].click();
+    console.log("click card");
+    await page.waitForSelector(INFO_MODAL, {visible: true}); // wait for the modal to be visible
+    await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);}); // wait for animation to finish
+    console.log("info appear");
+    let path_to_delete_button = await page.$('#info-modal-form');
+    let delete_button = await path_to_delete_button.$('button');
+    await delete_button.evaluate(curr_button => curr_button.click());
+    await page.waitForSelector(INFO_MODAL, {visible: false});
+    await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
+    await page.waitForSelector(CONFIRM_DELETE_MODAL, {visible: true});
+    await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
+    console.log("till here");
+    let confirm_delete_button = await page.$('#delbtn');
+    await confirm_delete_button.evaluate(curr_button => curr_button.click());
+    await page.waitForSelector(CONFIRM_DELETE_MODAL, {visible: false});
+    await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
+    profile_grid = await page.$('#grid');
+    all_profile_card = await profile_grid.$$('.card');
+    expect(all_profile_card.length).toBe(2);
+ /*
+    await all_tag_button[3].click();
+    profile_grid = await page.$('#grid');
+    all_profile_card = await profile_grid.$$('.card');
+    await all_profile_card[0].click();
+    path_to_delete_button = await page.$('#info-modal-form');
+    delete_button = await path_to_delete_button.$('button');
+    await delete_button.evaluate(curr_button => curr_button.click());
+    confirm_delete_button = await page.$('#delbtn');
+    await confirm_delete_button.evaluate(curr_button => curr_button.click());
+    profile_grid = await page.$('#grid');
+    all_profile_card = await profile_grid.$$('.card');
+    //because go back to all tag as one tag is gone by deletion
+    expect(all_profile_card.length).toBe(4);
+    tag_section = await page.$('#tag-btn-div');
+    all_tag_button = await tag_section.$$('button');
+    expect(all_tag_button.length).toBe(3);
+    await all_profile_card[0].click();
+    path_to_delete_button = await page.$('#info-modal-form');
+    delete_button = await path_to_delete_button.$('button');
+    await delete_button.evaluate(curr_button => curr_button.click());
+    confirm_delete_button = await page.$('#delbtn');
+    await confirm_delete_button.evaluate(curr_button => curr_button.click());
+    profile_grid = await page.$('#grid');
+    all_profile_card = await profile_grid.$$('.card');
+    expect(all_profile_card.length).toBe(3);
 
-    // await all_tag_button[3].click();
-    // profile_grid = await page.$('#grid');
-    // all_profile_card = await profile_grid.$$('.card');
-    // await all_profile_card[0].click();
-    // path_to_delete_button = await page.$('#info-modal-form');
-    // delete_button = await path_to_delete_button.$('button');
-    // await delete_button.evaluate(curr_button => curr_button.click());
-    // confirm_delete_button = await page.$('#delbtn');
-    // await confirm_delete_button.evaluate(curr_button => curr_button.click());
-    // profile_grid = await page.$('#grid');
-    // all_profile_card = await profile_grid.$$('.card');
-    // //because go back to all tag as one tag is gone by deletion
-    // expect(all_profile_card.length).toBe(4);
-    // tag_section = await page.$('#tag-btn-div');
-    // all_tag_button = await tag_section.$$('button');
-    // expect(all_tag_button.length).toBe(3);
-    // await all_profile_card[0].click();
-    // path_to_delete_button = await page.$('#info-modal-form');
-    // delete_button = await path_to_delete_button.$('button');
-    // await delete_button.evaluate(curr_button => curr_button.click());
-    // confirm_delete_button = await page.$('#delbtn');
-    // await confirm_delete_button.evaluate(curr_button => curr_button.click());
-    // profile_grid = await page.$('#grid');
-    // all_profile_card = await profile_grid.$$('.card');
-    // expect(all_profile_card.length).toBe(3);
+    await all_profile_card[0].click();
+    path_to_delete_button = await page.$('#info-modal-form');
+    delete_button = await path_to_delete_button.$('button');
+    await delete_button.evaluate(curr_button => curr_button.click());
+    confirm_delete_button = await page.$('#delbtn');
+    await confirm_delete_button.evaluate(curr_button => curr_button.click());
+    profile_grid = await page.$('#grid');
+    all_profile_card = await profile_grid.$$('.card');
+    expect(all_profile_card.length).toBe(2);
 
-    // await all_profile_card[0].click();
-    // path_to_delete_button = await page.$('#info-modal-form');
-    // delete_button = await path_to_delete_button.$('button');
-    // await delete_button.evaluate(curr_button => curr_button.click());
-    // confirm_delete_button = await page.$('#delbtn');
-    // await confirm_delete_button.evaluate(curr_button => curr_button.click());
-    // profile_grid = await page.$('#grid');
-    // all_profile_card = await profile_grid.$$('.card');
-    // expect(all_profile_card.length).toBe(2);
-
-    // await all_profile_card[0].click();
-    // path_to_delete_button = await page.$('#info-modal-form');
-    // delete_button = await path_to_delete_button.$('button');
-    // await delete_button.evaluate(curr_button => curr_button.click());
-    // confirm_delete_button = await page.$('#delbtn');
-    // await confirm_delete_button.evaluate(curr_button => curr_button.click());
-    // profile_grid = await page.$('#grid');
-    // all_profile_card = await profile_grid.$$('.card');
-    // expect(all_profile_card.length).toBe(1);
-    // tag_section = await page.$('#tag-btn-div');
-    // all_tag_button = await tag_section.$$('button');
-    // expect(all_tag_button.length).toBe(1);
+    await all_profile_card[0].click();
+    path_to_delete_button = await page.$('#info-modal-form');
+    delete_button = await path_to_delete_button.$('button');
+    await delete_button.evaluate(curr_button => curr_button.click());
+    confirm_delete_button = await page.$('#delbtn');
+    await confirm_delete_button.evaluate(curr_button => curr_button.click());
+    profile_grid = await page.$('#grid');
+    all_profile_card = await profile_grid.$$('.card');
+    expect(all_profile_card.length).toBe(1);
+    tag_section = await page.$('#tag-btn-div');
+    all_tag_button = await tag_section.$$('button');
+    expect(all_tag_button.length).toBe(1); */
+  }, 30000);
+    
 
 
 
