@@ -54,8 +54,7 @@ Jest will run on all files with the `.test.js` suffix regardless of location in 
    3. Ensure your files pass the linter.
 6. Assign someone else to review pull request
 7. Resolve merge conflicts -> merge
-   1. GitHub actions will rerun unit tests on merged main branch (Hasn't been implemented but it takes 5 minutes to add but I'm too tired right now)
+   1. **REVIEWERS MUST RUN E2E AND INTEGRATION TESTS**
+   2. GitHub actions will rerun unit tests on merged main branch (Hasn't been implemented but it takes 5 minutes to add but I'm too tired right now)
 8. Prune PR branch a few days after merge just to be safe.
-9. Push to production branch manually when we got something stable going?
-
-Throw integration testing somewhere in the above when we do it.
+9.  Push to production branch manually when we got something stable going?
