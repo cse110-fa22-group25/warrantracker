@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import { Profile, create_card, search } from '../scripts/home';
+import { Profile, create_card, search } from '../../scripts/home';
 
 let test_profile = new Profile(0, "title1", "tag2", "expDate3", "serialNum", "note");
 

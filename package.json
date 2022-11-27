@@ -44,6 +44,7 @@
   },
   "jest": {
     "preset": "jest-puppeteer",
-    "verbose": true
+    "verbose": true,
+    "testMatch": ["**/__tests__/unit/*.test.js"]
   }
 }
