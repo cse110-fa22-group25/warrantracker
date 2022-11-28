@@ -2,10 +2,12 @@ html,
 body {
   height: 100%;
   width: 100%;
+  font-family: 'Lato', sans-serif;
 }
 
 #team-logo {
-  width: 30px;
+  width: 20px;
+  vertical-align: top;
 }
 
 .navbar-custom {
