@@ -4,6 +4,18 @@ body {
   width: 100%;
 }
 
+#team-logo {
+  width: 30px;
+}
+
+.navbar-custom {
+  background-color: #7c74ca;
+}
+
+.navbar-brand {
+  color: #f48580;
+}
+
 .search-bar {
   max-width: 600px;
   height: 50px;
