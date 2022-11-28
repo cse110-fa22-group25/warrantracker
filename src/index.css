@@ -23,16 +23,17 @@ body {
   height: 50px;
 }
 
-.search-btn {
-  width: 80px;
-}
-
 .btn-labels {
   display: inline-block;
   vertical-align: middle;
   overflow-x: auto;
   white-space: nowrap;
   width: 600px;
+}
+
+#plus-icon {
+  font-size: 48px;
+  --ionicon-stroke-width: 12px;
 }
 
 .event-card {

@@ -319,7 +319,7 @@ function create_tag_btn() {
         // if encounter a new tag, create the html element for the btn
         const curr_tag_btn = document.createElement("button");
         curr_tag_btn.setAttribute("type", "button");
-        curr_tag_btn.setAttribute("class", "btn btn-light");
+        curr_tag_btn.setAttribute("class", "btn btn-light m-1");
         curr_tag_btn.setAttribute("data-bs-toggle", "button");
         curr_tag_btn.setAttribute("id", tag);
         curr_tag_btn.innerHTML = `${tag}`;
@@ -458,9 +458,7 @@ function display_selected_profile(profiles) {
         data-bs-target="#new-modal"
         class="card"
       >
-        <h5 class="position-absolute top-50 start-50 translate-middle">
-          +
-        </h5>
+        <ion-icon class="position-absolute top-50 start-50 translate-middle" name="add-outline" id="plus-icon"></ion-icon>
       </div>
     </div>
   `;
