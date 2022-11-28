@@ -38,5 +38,9 @@
     "jsdom": "^20.0.2",
     "stylelint": "^14.14.1",
     "stylelint-config-standard": "^29.0.0"
+  },
+  "jest": {
+    "preset": "jest-puppeteer",
+    "verbose": true
   }
 }
