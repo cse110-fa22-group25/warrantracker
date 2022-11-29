@@ -1,39 +1,75 @@
+const NEW_PROFILE_BTN = "#new-profile-btn";
+const NEW_MODAL = '#new-modal';
+const NEW_MODAL_TITLE = '#new-modal-title';
+const NEW_MODAL_TAG = '#new-modal-tag';
+const NEW_MODAL_EXP_DATE = '#new-modal-exp_date';
+const NEW_MODAL_SERIAL_NUM = '#new-modal-serial_num';
+const NEW_MODAL_NOTE = '#new-modal-note';
+const CREATE_PROFILE_BTN = '#createProfile';
+const INFO_MODAL = '#info-modal';
+const CONFIRM_DELETE_MODAL = '#confirm-delete-modal';
+const ANIMATION_TIME = 300;
+
 describe('Deletion Test', () => {
     // Open webpage in server
     beforeAll(async () => {
       await page.goto("http://127.0.0.1:5500/src/index.html"); 
-      await page.evaluate(() => {
-        localStorage.setItem('token', 'example-token');
-      });
     });
 
-    // Check if local storage is empty
+    it('Initial Home Page - add button present', async () => {
+      console.log('add profile button');
+      const add_button = await page.$('#new-profile-btn');
+      const add_button_is_null = add_button == null;
+      expect(add_button_is_null).toBe(false);
+    });
+
+    //Check if local storage is empty
     it('Local Storage Test - expected empty', async () => {
-        const profile_list = await page.evaluate(() =>  Object.assign({}, window.localStorage.getItem('profiles')));
-        expect(profile_list).toBe('[]');
+        let ls = await JSON.parse(await page.evaluate(() => localStorage.getItem('profiles')));
+        expect(ls).toBe(null);
     },1000);
 
     // Add item to site
     it('Add Profile to page', async () => {
-        const add_button = await page.$('#new-profile-btn');
-        await add_button.evaluate(ab => ab.click());
-        let title_field = await page.$('#new-modal-title');
-        await title_field.type('name1');
-        let tag_field = await page.$('#new-modal-tag');
-        await tag_field.type('tag1');
-        let expire_field = await page.$('#info-modal-input-exp_date');
-        await expire_field.type('11132022');
-        let serial_field = await page.$('#info-modal-input-serial_num');
-        await serial_field.type('abcd1234');
-        let note_field = await page.$('#new-modal-note');
-        await note_field.type('This is a test');
-        const save_button = await page.$('#createProfile');
-        await save_button.evaluate(sb => sb.click());
-      });
+      await page.click(NEW_PROFILE_BTN);
+      await page.waitForSelector(NEW_MODAL, {visible: true}); // wait for the modal to be visible
+      await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);}); // wait for animation to finish
+      await page.type(NEW_MODAL_TITLE, 'title1');
+      await page.type(NEW_MODAL_TAG, 'tag1');
+      await page.type(NEW_MODAL_EXP_DATE, '11132022');
+      await page.type(NEW_MODAL_NOTE, 'This is a test');
+      await page.click(CREATE_PROFILE_BTN);
+      await page.waitForSelector(NEW_MODAL, {visible: false})
+      await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
+    });
 
-    // Check if local storage was updated
-    it('Local Storage Test - expected 1', async () => {
-        const profile_list = await page.evaluate(() =>  Object.assign({}, window.localStorage.getItem('profiles')));
-        expect(profile_list).toBe('[]');
-    },1000);
+  // Check if local storage was updated
+  it('Local Storage Test - expected one', async () => {
+    let ls = await JSON.parse(await page.evaluate(() => localStorage.getItem('profiles')));
+    expect(ls.length).toEqual(1);
+  },1000);
+  
+  // Test empty delete
+  it('Empty Deletion', async () => {
+    let profile_grid = await page.$('#grid');
+    let all_profile_card = await profile_grid.$$('.card');
+    await all_profile_card[1].click();
+    await page.waitForSelector(INFO_MODAL, {visible: true}); 
+    await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);}); 
+    let temp_path = await page.$('#info-modal-form')
+    let delete_btn = await temp_path.$('button')
+    await delete_btn.evaluate(db => db.click());
+    await page.waitForSelector(INFO_MODAL, {visible: false});
+    await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
+    await page.waitForSelector(CONFIRM_DELETE_MODAL, {visible: true});
+    await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
+    let cancel_btn = await page.$('#close-deletion-btn')
+    await cancel_btn.evaluate(cb => cb.click());
+    await page.waitForSelector(CONFIRM_DELETE_MODAL, {visible: false});
+    await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
+    await page.waitForSelector(INFO_MODAL, {visible: true});
+    await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
+    temp_path = await page.$('#info-modal-form')
+    let close_btn = await temp_path.$('button')
+  });
 });
