@@ -99,7 +99,7 @@ describe('Basic user flow for Website', () => {
 
     //check total 4 tag selector buttons, 5 profile cards with info
     const tag_section = await page.$('#tag-btn-div');
-    const all_tag_button = await tag_section.$$('button');
+    let all_tag_button = await tag_section.$$('button');
     expect(all_tag_button.length).toBe(4);
     let profile_grid = await page.$('#grid');
     let all_profile_card = await profile_grid.$$('.card');
@@ -160,14 +160,143 @@ describe('Basic user flow for Website', () => {
     expect(ls[4].exp_date).toEqual('2022-11-13');
     expect(ls[4].serial_num).toEqual('');
     expect(ls[4].note).toEqual('This is a test');
-
-
     // [{"id":237104159327,"title":"name5","tag":"tag1","exp_date":"2022-11-13","serial_num":"","note":""},{"id":1193226186527,"title":"name 4","tag":"tag3","exp_date":"2022-11-13","serial_num":"","note":""},{"id":1429733691996,"title":"name3","tag":"tag2","exp_date":"2022-11-13","serial_num":"","note":""},{"id":1343810509623,"title":"name2 - no tag","tag":"","exp_date":"2022-11-13","serial_num":"","note":""},{"id":645242524600,"title":"title1","tag":"tag1","exp_date":"2022-11-13","serial_num":"","note":"This is a test"}]
+    
+    
+    //delete section (delete all profiles)
+    //delete first card from tag1
+    all_tag_button = await tag_section.$$('button');
+    await all_tag_button[1].click();
+    console.log("can click tag");
+    profile_grid = await page.$('#grid');
+    console.log(profile_grid);
+    all_profile_card = await profile_grid.$$('.card');
+    await all_profile_card[1].click();
+    await page.waitForSelector(INFO_MODAL, {visible: true}); // wait for the modal to be visible
+    await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);}); // wait for animation to finish
+    let path_to_delete_button = await page.$('#info-modal-form');
+    let delete_button = await path_to_delete_button.$('button');
+    await delete_button.evaluate(curr_button => curr_button.click());
+    await page.waitForSelector(INFO_MODAL, {visible: false});
+    await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
+    await page.waitForSelector(CONFIRM_DELETE_MODAL, {visible: true});
+    await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
+    let confirm_delete_button = await page.$('#delbtn');
+    await confirm_delete_button.evaluate(curr_button => curr_button.click());
+    await page.waitForSelector(CONFIRM_DELETE_MODAL, {visible: false});
+    await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
+    profile_grid = await page.$('#grid');
+    all_profile_card = await profile_grid.$$('.card');
+    expect(all_profile_card.length).toBe(2);
+    await all_tag_button[1].click();
+
+    //delete first one from tag2, check tag2 disappear
+    all_tag_button = await tag_section.$$('button');
+    await all_tag_button[3].click();
+    profile_grid = await page.$('#grid');
+    all_profile_card = await profile_grid.$$('.card');
+    await all_profile_card[1].click();
+    await page.waitForSelector(INFO_MODAL, {visible: true}); // wait for the modal to be visible
+    await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);}); // wait for animation to finish
+    path_to_delete_button = await page.$('#info-modal-form');
+    delete_button = await path_to_delete_button.$('button');
+    await delete_button.evaluate(curr_button => curr_button.click());
+    await page.waitForSelector(INFO_MODAL, {visible: false});
+    await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
+    await page.waitForSelector(CONFIRM_DELETE_MODAL, {visible: true});
+    await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
+    confirm_delete_button = await page.$('#delbtn');
+    await confirm_delete_button.evaluate(curr_button => curr_button.click());
+    await page.waitForSelector(CONFIRM_DELETE_MODAL, {visible: false});
+    await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
+    profile_grid = await page.$('#grid');
+    all_tag_button = await tag_section.$$('button');
+    expect(all_tag_button.length).toBe(3);
+
+    //delete first one from all (tag) and only 1 tag left
+    profile_grid = await page.$('#grid');
+    all_profile_card = await profile_grid.$$('.card');
+    await all_profile_card[1].click();
+    await page.waitForSelector(INFO_MODAL, {visible: true}); // wait for the modal to be visible
+    await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);}); // wait for animation to finish
+    path_to_delete_button = await page.$('#info-modal-form');
+    delete_button = await path_to_delete_button.$('button');
+    await delete_button.evaluate(curr_button => curr_button.click());
+    await page.waitForSelector(INFO_MODAL, {visible: false});
+    await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
+    await page.waitForSelector(CONFIRM_DELETE_MODAL, {visible: true});
+    await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
+    confirm_delete_button = await page.$('#delbtn');
+    await confirm_delete_button.evaluate(curr_button => curr_button.click());
+    await page.waitForSelector(CONFIRM_DELETE_MODAL, {visible: false});
+    await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
+    profile_grid = await page.$('#grid');
+    all_profile_card = await profile_grid.$$('.card');
+    expect(all_profile_card.length).toBe(3);
+    all_tag_button = await tag_section.$$('button');
+    expect(all_tag_button.length).toBe(2);
+    await all_tag_button[1].click();
+    all_profile_card = await profile_grid.$$('.card');
+    expect(all_profile_card.length).toBe(2);
+    await all_tag_button[1].click();
+
+    //delete first one from all (tag) and only 1 tag left
+    profile_grid = await page.$('#grid');
+    all_profile_card = await profile_grid.$$('.card');
+    await all_profile_card[1].click();
+    await page.waitForSelector(INFO_MODAL, {visible: true}); // wait for the modal to be visible
+    await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);}); // wait for animation to finish
+    path_to_delete_button = await page.$('#info-modal-form');
+    delete_button = await path_to_delete_button.$('button');
+    await delete_button.evaluate(curr_button => curr_button.click());
+    await page.waitForSelector(INFO_MODAL, {visible: false});
+    await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
+    await page.waitForSelector(CONFIRM_DELETE_MODAL, {visible: true});
+    await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
+    confirm_delete_button = await page.$('#delbtn');
+    await confirm_delete_button.evaluate(curr_button => curr_button.click());
+    await page.waitForSelector(CONFIRM_DELETE_MODAL, {visible: false});
+    await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
+    profile_grid = await page.$('#grid');
+    all_profile_card = await profile_grid.$$('.card');
+    expect(all_profile_card.length).toBe(2);
+    all_tag_button = await tag_section.$$('button');
+    expect(all_tag_button.length).toBe(2);
+    await all_tag_button[1].click();
+    all_profile_card = await profile_grid.$$('.card');
+    expect(all_profile_card.length).toBe(2);
+    await all_tag_button[1].click();
+    
+    //delete last profile, check no tag and local storage empty
+    profile_grid = await page.$('#grid');
+    all_profile_card = await profile_grid.$$('.card');
+    await all_profile_card[1].click();
+    await page.waitForSelector(INFO_MODAL, {visible: true}); // wait for the modal to be visible
+    await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);}); // wait for animation to finish
+    path_to_delete_button = await page.$('#info-modal-form');
+    delete_button = await path_to_delete_button.$('button');
+    await delete_button.evaluate(curr_button => curr_button.click());
+    await page.waitForSelector(INFO_MODAL, {visible: false});
+    await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
+    await page.waitForSelector(CONFIRM_DELETE_MODAL, {visible: true});
+    await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
+    confirm_delete_button = await page.$('#delbtn');
+    await confirm_delete_button.evaluate(curr_button => curr_button.click());
+    await page.waitForSelector(CONFIRM_DELETE_MODAL, {visible: false});
+    await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
+    profile_grid = await page.$('#grid');
+    all_profile_card = await profile_grid.$$('.card');
+    expect(all_profile_card.length).toBe(1);
+    all_tag_button = await tag_section.$$('button');
+    expect(all_tag_button.length).toBe(1);
+    
+    ls = await JSON.parse(await page.evaluate(() => localStorage.getItem('profiles')));
+    expect(ls.length).toEqual(0);
   }, 100000);
 
 
       // //modify name and tags and check
-
+/*
   //delete those profile    
   it('Test delete functionality', async () => {
     //delete and check amount in each tag correct
@@ -178,6 +307,7 @@ describe('Basic user flow for Website', () => {
     let profile_grid = await page.$('#grid');
     console.log(profile_grid);
     let all_profile_card = await profile_grid.$$('button');
+    console.log(all_profile_card);
     console.log(all_profile_card[0]);
     console.log(all_profile_card[1]);
     await all_profile_card[1].click();
@@ -248,11 +378,11 @@ describe('Basic user flow for Website', () => {
     expect(all_profile_card.length).toBe(1);
     tag_section = await page.$('#tag-btn-div');
     all_tag_button = await tag_section.$$('button');
-    expect(all_tag_button.length).toBe(1); */
+    expect(all_tag_button.length).toBe(1); 
   }, 30000);
     
 
-
+*/
 
 /*
 
