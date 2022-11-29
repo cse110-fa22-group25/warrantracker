@@ -298,7 +298,7 @@ function create_tag_btn() {
   tag_html_list.innerHTML = `
   <button
     type="button"
-    class="btn btn-light"
+    class="btn btn-light tag-btn"
     data-bs-toggle="button"
     id="all-btn"
   >
@@ -319,7 +319,7 @@ function create_tag_btn() {
         // if encounter a new tag, create the html element for the btn
         const curr_tag_btn = document.createElement("button");
         curr_tag_btn.setAttribute("type", "button");
-        curr_tag_btn.setAttribute("class", "btn btn-light m-1");
+        curr_tag_btn.setAttribute("class", "btn btn-light m-1 tag-btn");
         curr_tag_btn.setAttribute("data-bs-toggle", "button");
         curr_tag_btn.setAttribute("id", tag);
         curr_tag_btn.innerHTML = `${tag}`;
