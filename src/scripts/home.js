@@ -233,7 +233,6 @@ function delete_profile(profile) {
 
   // Remove profile from list and save list
   const rmv_idx = PROFILE_LIST.indexOf(profile);
-  console.log("rmv idx: " + rmv_idx);
   if (rmv_idx > -1) {
     PROFILE_LIST.splice(rmv_idx, 1);
   }
