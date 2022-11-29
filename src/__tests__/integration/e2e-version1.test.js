@@ -162,15 +162,23 @@ describe('Basic user flow for Website', () => {
     expect(ls[4].note).toEqual('This is a test');
     // [{"id":237104159327,"title":"name5","tag":"tag1","exp_date":"2022-11-13","serial_num":"","note":""},{"id":1193226186527,"title":"name 4","tag":"tag3","exp_date":"2022-11-13","serial_num":"","note":""},{"id":1429733691996,"title":"name3","tag":"tag2","exp_date":"2022-11-13","serial_num":"","note":""},{"id":1343810509623,"title":"name2 - no tag","tag":"","exp_date":"2022-11-13","serial_num":"","note":""},{"id":645242524600,"title":"title1","tag":"tag1","exp_date":"2022-11-13","serial_num":"","note":"This is a test"}]
     
-    
-    //delete section (delete all profiles)
+  }, 100000);
+
+
+  it ('Tests delete', async () => {
+ //delete section (delete all profiles)
     //delete first card from tag1
+    const tag_section = await page.$('#tag-btn-div');
+    let all_tag_button = await tag_section.$$('button');
     all_tag_button = await tag_section.$$('button');
+    let profile_grid = await page.$('#grid');
+
+
     await all_tag_button[1].click();
     console.log("can click tag");
     profile_grid = await page.$('#grid');
     console.log(profile_grid);
-    all_profile_card = await profile_grid.$$('.card');
+    let all_profile_card = await profile_grid.$$('.card');
     await all_profile_card[1].click();
     await page.waitForSelector(INFO_MODAL, {visible: true}); // wait for the modal to be visible
     await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);}); // wait for animation to finish
@@ -290,9 +298,9 @@ describe('Basic user flow for Website', () => {
     all_tag_button = await tag_section.$$('button');
     expect(all_tag_button.length).toBe(1);
     
-    ls = await JSON.parse(await page.evaluate(() => localStorage.getItem('profiles')));
+    let ls = await JSON.parse(await page.evaluate(() => localStorage.getItem('profiles')));
     expect(ls.length).toEqual(0);
-  }, 100000);
+  }, 10000);
 
    //check that profile cards are still present after website is re-loaded
    it("Reload webpage", async () => {
@@ -318,11 +326,11 @@ describe('Basic user flow for Website', () => {
 
     //get cards and local storage
     const profile_grid = await page.$('#grid');
-    all_profile_card = await profile_grid.$$('.card');
+    let all_profile_card = await profile_grid.$$('.card');
     let local_contents = await JSON.parse(await page.evaluate( () => localStorage.getItem('profiles')));
 
     //ensure local storage and the number of cards on the page are equal 
-    expect(local_contents.length).toBe(all_profile_card.length);
+    expect(local_contents.length + 1).toBe(all_profile_card.length);
 
   }, 10000);
 
