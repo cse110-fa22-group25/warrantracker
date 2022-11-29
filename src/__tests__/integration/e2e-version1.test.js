@@ -294,6 +294,19 @@ describe('Basic user flow for Website', () => {
     expect(ls.length).toEqual(0);
   }, 100000);
 
+   //check that profile cards are still present after website is re-loaded
+   it("Reload webpage", async () => {
+    console.log("Checking profiles cards are still there after website is re-loaded");
+   
+    await page.reload();
+    const profile_grid = await page.$('#grid');
+    let local_contents = await JSON.parse(await page.evaluate( () => localStorage.getItem('profiles')));
+
+    expect(local_contents.length).toBe(5);
+
+  }, 10000);
+
+
 
       // //modify name and tags and check
 /*
