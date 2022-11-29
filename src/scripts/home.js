@@ -158,7 +158,7 @@ function create_profile() {
  */
 function create_card(profile) {
   const card_wrapper = document.createElement("div");
-  card_wrapper.setAttribute("class", "col-sm-6 col-lg-4 p-2");
+  card_wrapper.setAttribute("class", "col-sm-6 col-lg-3 p-2");
   card_wrapper.setAttribute("id", `${profile.id}`);
 
   const card = document.createElement("div");
@@ -453,7 +453,7 @@ function rm_dupe_tags(tag_list) {
 function display_selected_profile(profiles) {
   // remove curr cards in grid
   GRID.innerHTML = `
-    <div class="col-sm-6 col-lg-4 p-2" id="new-profile-btn">
+    <div class="col-sm-6 col-lg-3 p-2" id="new-profile-btn">
       <div
         type="button"
         data-bs-toggle="modal"
