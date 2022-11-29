@@ -232,9 +232,11 @@ function delete_profile(profile) {
   req_card.remove();
 
   // Remove profile from list and save list
-  PROFILE_LIST = PROFILE_LIST.filter(
-    (curr_prof) => curr_prof.id !== profile.id
-  );
+  const rmv_idx = PROFILE_LIST.indexOf(profile);
+  console.log("rmv idx: " + rmv_idx);
+  if (rmv_idx > -1) {
+    PROFILE_LIST.splice(rmv_idx, 1);
+  }
 
   // decrease tag count by 1
   TAG_MAP.set(profile.tag, TAG_MAP.get(profile.tag) - 1);
