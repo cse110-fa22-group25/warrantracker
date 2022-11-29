@@ -62,3 +62,45 @@ body {
   background-color: #FEFAE0;
   border-color: #FEFAE0;
 }
+
+.modal-header, .modal-body, .modal-footer, .form-control {
+  background-color: #FEFAE0;
+}
+
+.btn-primary {
+  background-color: #CCD5AE;
+  border-color: #CCD5AE;
+}
+
+.btn-primary:hover {
+  background-color: #797D62;
+  border-color: #797D62;
+}
+
+.btn-danger {
+  background-color: #D4A373;
+  border-color: #D4A373;
+}
+
+.btn-danger:hover {
+  background-color: #997B66;
+  border-color: #997B66;
+}
+
+.btn-light:hover {
+  background-color: #E9EDC9;
+  border-color: #E9EDC9;
+}
+
+.active {
+  background-color: #CCD5AE !important;
+  border-color: #CCD5AE !important;
+}
+
+input:focus, textarea:focus {
+  background-color: #eceed8 !important;
+}
+
+.dropdown-menu {
+  background-color: #FEFAE0;
+}
