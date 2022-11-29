@@ -1,5 +1,8 @@
-// Get functions to test
-import { Profile, delete_profile } from '../scripts/home';
+/**
+ * @jest-environment jsdom
+ */
+
+ import { Profile, delete_profile } from '../scripts/home';
 
 /**
  * Tests deletion of empty profile - should return null
@@ -13,7 +16,8 @@ describe('Test empty deletion', () => {
         expect(test_profile.serial_num).toBe("serialNum");
         expect(test_profile.note).toBe("note");
     });
-    const retVal = delete_profile();
+    const retVal = delete_profile(null);
+
     test('Empty Deletion', () => {
         expect(test_profile.title).toBe("title");
         expect(test_profile.tag).toBe("tag");
@@ -22,5 +26,4 @@ describe('Test empty deletion', () => {
         expect(test_profile.note).toBe("note");
         expect(retVal).toBe(undefined);
     });
-    localStorage.clear();
 })
