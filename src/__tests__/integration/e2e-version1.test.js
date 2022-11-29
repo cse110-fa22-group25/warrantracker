@@ -296,13 +296,33 @@ describe('Basic user flow for Website', () => {
 
    //check that profile cards are still present after website is re-loaded
    it("Reload webpage", async () => {
+
+    //add one profile for the test
+    await page.click(NEW_PROFILE_BTN);
+    await page.waitForSelector(NEW_MODAL, {visible: true}); // wait for the modal to be visible
+    await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);}); // wait for animation to finish
+
+    await page.type(NEW_MODAL_TITLE, 'title1');
+    await page.type(NEW_MODAL_TAG, 'tag1');
+    await page.type(NEW_MODAL_EXP_DATE, '11132022');
+    await page.type(NEW_MODAL_NOTE, 'This is a test');
+    await page.click(CREATE_PROFILE_BTN);
+
+    // wait for modal closing animation to end
+    await page.waitForSelector('#new-modal', {visible: false})
+    await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
+
+    //reload page
     console.log("Checking profiles cards are still there after website is re-loaded");
-   
     await page.reload();
+
+    //get cards and local storage
     const profile_grid = await page.$('#grid');
+    all_profile_card = await profile_grid.$$('.card');
     let local_contents = await JSON.parse(await page.evaluate( () => localStorage.getItem('profiles')));
 
-    expect(local_contents.length).toBe(5);
+    //ensure local storage and the number of cards on the page are equal 
+    expect(local_contents.length).toBe(all_profile_card.length);
 
   }, 10000);
 
