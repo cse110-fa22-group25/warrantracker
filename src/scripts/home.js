@@ -2,9 +2,17 @@
  * Main file containing main functions of Warrantracker
  */
 
-import { setup_modify, setup_delete, setup_tag_recommend, setup_search } from "./setup.js";
+import {
+  setup_modify,
+  setup_delete,
+  setup_tag_recommend,
+  setup_search
+} from "./setup.js";
 import { Profile } from "./Profile.js";
-import { get_profile_from_storage, save_profile_to_storage } from "./storage.js";
+import {
+  get_profile_from_storage,
+  save_profile_to_storage
+} from "./storage.js";
 
 /** Global Variables */
 let PROFILE_LIST = []; // store all profile object
@@ -158,47 +166,37 @@ function create_profile() {
  */
 function create_card(profile) {
   const card_wrapper = document.createElement("div");
-  card_wrapper.setAttribute("class", "col-sm-6 col-lg-3 p-2");
+  card_wrapper.setAttribute("class", "col-sm-6 col-lg-4 col-xl-3 p-2");
   card_wrapper.setAttribute("id", `${profile.id}`);
 
-  const card = document.createElement("div");
-  card.setAttribute("type", "button");
-  card.setAttribute("data-bs-toggle", "modal");
-  card.setAttribute("data-bs-target", "#info-modal");
-  card.setAttribute("class", "card");
-
-  const card_body = document.createElement("div");
-  card_body.setAttribute("class", "card-body");
-
-  const card_title = document.createElement("h5");
-  card_title.innerHTML = `${profile.title.length < 26 ? profile.title : profile.title.substring(0, 26) + "..."}`;
-  card_title.setAttribute("class", "card-title");
-
-  const exp_date = document.createElement("h6");
-  exp_date.innerHTML = `Expires on ${profile.exp_date}`;
-  exp_date.setAttribute("class", "card-subtitle mb-2 text-muted");
-
-  const serial_num = document.createElement("h6");
-  if (profile.serial_num) {
-    serial_num.innerHTML = `Serial #: ${profile.serial_num.length < 20 ? profile.serial_num : profile.serial_num.substring(0, 20) + "..."}`;
-    serial_num.setAttribute("class", "card-subtitle mb-2 text-muted");
-  }
-
-  const card_text = document.createElement("p");
-  card_text.setAttribute("class", "card-text");
-  card_text.innerHTML = `${profile.note.length < 110 ? profile.note : profile.note.substring(0, 110) + "..."}`;
-
-  // can add some btn or other needed elements here
-
-  // construct the Card Components here
-  card_body.appendChild(card_title);
-  card_body.appendChild(exp_date);
-  if (profile.serial_num) {
-    card_body.appendChild(serial_num);
-  }
-  card_body.appendChild(card_text);
-  card.appendChild(card_body);
-  card_wrapper.appendChild(card);
+  card_wrapper.innerHTML = `
+    <div type="button" data-bs-toggle="modal" data-bs-target="#info-modal" class="card">
+      <div class="card-body">
+        <h5 class="card-title">${
+          profile.title.length < 26
+            ? profile.title
+            : profile.title.substring(0, 26) + "..."
+        }</h5>
+        <h6 class="card-subtitle mb-2 text-muted">Expires on ${
+          profile.exp_date
+        }</h6>
+        ${
+          profile.serial_num
+            ? `<h6 class="card-subtitle mb-2 text-muted">Serial #: ${
+                profile.serial_num.length < 12
+                  ? profile.serial_num
+                  : profile.serial_num.substring(0, 12) + "..."
+              }</h6>`
+            : ""
+        }
+        <p class="card-text">${
+          profile.note.length < 80
+            ? profile.note
+            : profile.note.substring(0, 80) + "..."
+        }</p>
+      </div>
+    </div>
+  `;
 
   // add a event listener to the component
   // when clicking, update the info modal with its info
@@ -274,8 +272,8 @@ export function search_tag(tag) {
   const match_list = [];
   // if we got multiple tag in input textbox,
   // ignore previous tags for searching
-  if (tag.includes(',')) {
-    const temp = tag.split(',');
+  if (tag.includes(",")) {
+    const temp = tag.split(",");
     tag = temp[temp.length - 1].trim();
   }
   PROFILE_LIST.forEach((profile) => {
@@ -466,7 +464,7 @@ function rm_dupe_tags(tag_list) {
 function display_selected_profile(profiles) {
   // remove curr cards in grid
   GRID.innerHTML = `
-    <div class="col-sm-6 col-lg-3 p-2" id="new-profile-btn">
+    <div class="col-sm-6 col-lg-4 col-xl-3 p-2" id="new-profile-btn">
       <div
         type="button"
         data-bs-toggle="modal"
@@ -522,7 +520,7 @@ function search(query) {
  */
 function search_clr(search_match, query_arr) {
   for (let i = 0; i < PROFILE_LIST.length; i++) {
-    let keyword_set = ""
+    let keyword_set = "";
     const curr = PROFILE_LIST[i];
     search_match.push(curr);
 
