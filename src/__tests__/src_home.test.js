@@ -59,15 +59,17 @@ describe('Test createCard()', () => {
 });
 
 describe('Test parse_profile_tags()', () => {
+
+  //create a new profile with multiple tags with extra whitespace
   let test_profile_2 = new Profile(1, "title2", "tag2      ,  tag3", "expDate45", "serialNum", "note2");
 
   test('parsing tags', () => {
 
+    //parsing tags for both test profiles
     const profile_2_parsed_tags = parse_profile_tags(test_profile_2);
     const profile_1_parsed_tags = parse_profile_tags(test_profile);
 
-    console.log(profile_2_parsed_tags);
-
+    //checking to make sure profiles were parse correctly
     expect(profile_2_parsed_tags).toStrictEqual([ 'tag2', 'tag3' ]);
     expect(profile_1_parsed_tags).toStrictEqual(['tag2']);
   });
