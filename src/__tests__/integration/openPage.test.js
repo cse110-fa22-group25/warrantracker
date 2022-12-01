@@ -1,11 +1,11 @@
 const Puppeteer  = require("puppeteer");
-import {Profile} from '../scripts/Profile.js';
+import {Profile} from '../../scripts/Profile.js';
 
 let test_profile = new Profile(0, "profile title", "test tag", "02282001", "test serialNumber", "additional notes");
  
 describe('Test Info Modal', () => {
     beforeAll(async () => {
-        await page.goto('http://127.0.0.1:5501/src/');
+        await page.goto('http://127.0.0.1:5500/src/');
     });
     jest.setTimeout(100000);
     test('Card size initially should be 1', async () => {

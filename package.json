@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
+    "test-unit": "jest --verbose ./src/__tests__/unit",
     "doc": "jsdoc -c jsdoc.json",
     "jslint": "npx eslint ./src --ext .js,.jsx,.ts,.tsx",
     "htmllint": "npx htmlhint \"./src/**/*.html\"",
