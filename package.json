@@ -2,10 +2,10 @@
   "name": "warrantracker",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "test": "jest",
     "test-unit": "jest --verbose ./src/__tests__/unit",
+    "start-server":  "npx parcel ./src/index.html --port 5500",
     "doc": "jsdoc -c jsdoc.json",
     "jslint": "npx eslint ./src --ext .js,.jsx,.ts,.tsx",
     "htmllint": "npx htmlhint \"./src/**/*.html\"",
@@ -39,6 +39,7 @@
     "jest-puppeteer": "^6.1.1",
     "jsdoc": "^4.0.0",
     "jsdom": "^20.0.2",
+    "parcel": "^2.8.0",
     "puppeteer": "^19.3.0",
     "stylelint": "^14.14.1",
     "stylelint-config-standard": "^29.0.0"

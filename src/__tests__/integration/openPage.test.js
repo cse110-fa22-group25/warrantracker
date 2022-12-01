@@ -2,7 +2,8 @@ const Puppeteer  = require("puppeteer");
 import {Profile} from '../../scripts/Profile.js';
 
 let test_profile = new Profile(0, "profile title", "test tag", "02282001", "test serialNumber", "additional notes");
- 
+const ANIMATION_TIME = 300;
+
 describe('Test Info Modal', () => {
     beforeAll(async () => {
         await page.goto('http://127.0.0.1:5500/src/');
@@ -22,7 +23,7 @@ describe('Test Info Modal', () => {
         await NEW_MODAL_BUTTON.click();
 
         // filling out info
-        await page.waitForTimeout(500);
+        await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);}); // wait for animation to finish
         // const NEW_MODAL_FORM = await page.$('#new-modal-form')
         let title_field = await page.$('#new-modal-title');
         // await title_field.press('Space');
@@ -30,39 +31,38 @@ describe('Test Info Modal', () => {
         await title_field.type(test_profile.title);
         let content = await (await title_field.getProperty('value')).jsonValue();
         expect(content).toBe(test_profile.title);
-        await page.waitForTimeout(500);
+        await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);}); // wait for animation to finish
 
         let tag_field = await page.$('#new-modal-tag');
         await tag_field.press('Backspace');
         await tag_field.type(test_profile.tag);
         content = await (await tag_field.getProperty('value')).jsonValue();
         expect(content).toBe(test_profile.tag);
-        await page.waitForTimeout(500);
+        await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);}); // wait for animation to finish
 
         let expire_field = await page.$('#new-modal-exp_date');
         await expire_field.press('Backspace');
         await expire_field.type(test_profile.exp_date);
         content = await (await expire_field.getProperty('value')).jsonValue();
         expect(content.replace(/-/g, "").slice(4)+content.replace("/-", "").slice(0,4)).toBe(test_profile.exp_date);
-        await page.waitForTimeout(500);
+        await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);}); // wait for animation to finish
 
         let serial_field = await page.$('#new-modal-serial_num');
         await serial_field.press('Backspace');
         await serial_field.type(test_profile.serial_num);
         content = await (await serial_field.getProperty('value')).jsonValue();
         expect(content).toBe(test_profile.serial_num);
-        await page.waitForTimeout(500);
+        await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);}); // wait for animation to finish
 
         let note_field = await page.$('#new-modal-note');
         await note_field.press('Backspace');
         await note_field.type(test_profile.note);
         content = await (await note_field.getProperty('value')).jsonValue();
         expect(content).toBe(test_profile.note);
-        await page.waitForTimeout(500);
-
+        await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);}); // wait for animation to finish
         let save_button = await page.$('#createProfile');
         await save_button.click();
-        await page.waitForTimeout(500);
+        await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
     });
 
     test("testing number of cards and tags after new modal form", async() =>{
@@ -82,7 +82,7 @@ describe('Test Info Modal', () => {
         const GRID = await page.$('#grid');
         const cards = await GRID.$$('.card');
         await cards[cards.length-1].click();
-        // await page.waitForTimeout(500);
+        // await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);}); // wait for animation to finish
  
         const info_title = await page.$("#info-modal-input-title");
         const title_text = await (await info_title.getProperty('value')).jsonValue();
