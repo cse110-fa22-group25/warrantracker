@@ -168,10 +168,10 @@ describe('Basic user flow for Website', () => {
     expect(ls[4].note).toEqual('This is a test');
     // [{"id":237104159327,"title":"name5","tag":"tag1","exp_date":"2022-11-13","serial_num":"","note":""},{"id":1193226186527,"title":"name 4","tag":"tag3","exp_date":"2022-11-13","serial_num":"","note":""},{"id":1429733691996,"title":"name3","tag":"tag2","exp_date":"2022-11-13","serial_num":"","note":""},{"id":1343810509623,"title":"name2 - no tag","tag":"","exp_date":"2022-11-13","serial_num":"","note":""},{"id":645242524600,"title":"title1","tag":"tag1","exp_date":"2022-11-13","serial_num":"","note":"This is a test"}]
   }, 5000);
-  /*
+  
   it('Test modify functionality', async () => {
     //modify name and tags and check
-    const tag_section = await page.$('#tag-btn-div');
+    let tag_section = await page.$('#tag-btn-div');
     let all_tag_button = await tag_section.$$('button');
     await all_tag_button[3].click();
     let profile_grid = await page.$('#grid');
@@ -186,16 +186,17 @@ describe('Basic user flow for Website', () => {
     await page.click(MODIFY_PROFILE_BTN);
     await page.waitForSelector(INFO_MODAL, {visible: false})
     await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
-    console.log(tag_section);
+    // console.log(tag_section);
+    tag_section = await page.$('#tag-btn-div');
     all_tag_button = await tag_section.$$('button');
-    console.log(all_tag_button);
+    // console.log(all_tag_button);
     expect(all_tag_button.length).toBe(5);
-    console.log("first click test");
+    // console.log("first click test");
     await all_tag_button[3].click();
     all_profile_card = await profile_grid.$$('.card');
     expect(all_profile_card.length).toBe(2);
     await all_tag_button[3].click();
-    console.log("second click test");
+    // console.log("second click test");
     await all_tag_button[4].click();
     all_profile_card = await profile_grid.$$('.card');
     expect(all_profile_card.length).toBe(2);
@@ -204,7 +205,7 @@ describe('Basic user flow for Website', () => {
 
     //delete section (delete all profiles)
   }, 10000);
-  */
+  
 
   it ('Tests delete', async () => {
  //delete section (delete all profiles)
