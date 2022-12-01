@@ -24,6 +24,7 @@ jobs:
 
       - name: Install stuff
         run:
+          npm run start-server
           npm install
       - name: Run test
         run:
