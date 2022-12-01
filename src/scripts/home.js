@@ -484,6 +484,7 @@ function display_selected_profile(profiles) {
  * @param {string} query a string
  */
 function search(query) {
+  console.log(query);
   // split search query into array of words
   SEARCH_PROFILES = PROFILE_LIST;
   const query_arr = query.toLowerCase().split(" ");
@@ -517,7 +518,7 @@ function search_clr(search_match, query_arr) {
 
     // split title and add title to keyword set
     curr.title.split(" ").forEach((word) => {
-      keyword_set += word;
+      keyword_set += word.toLowerCase();
     });
 
     // add each tag to keyword set
