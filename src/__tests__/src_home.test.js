@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import { Profile, create_card, search, parse_profile_tags } from '../scripts/home';
+import { Profile, create_card, search, parse_profile_tags, rm_dupe_tags } from '../scripts/home';
 
 let test_profile = new Profile(0, "title1", "tag2", "expDate3", "serialNum", "note");
 
@@ -58,12 +58,15 @@ describe('Test createCard()', () => {
   });
 });
 
-describe('Test parse_profile_tags()', () => {
+describe('Test parsing tags and removing duplicate tags', () => {
 
   //create a new profile with multiple tags with extra whitespace
   let test_profile_2 = new Profile(1, "title2", "tag2      ,  tag3", "expDate45", "serialNum", "note2");
 
-  test('parsing tags', () => {
+  //create a new profile with duplicate tags 
+  let test_profile_3 = new Profile(2, "title3", "tag2,     tag3,     tag2", "expDate55", "serialNum4", "note3");
+
+  test('testing parse_profile_tags()', () => {
 
     //parsing tags for both test profiles
     const profile_2_parsed_tags = parse_profile_tags(test_profile_2);
@@ -73,4 +76,17 @@ describe('Test parse_profile_tags()', () => {
     expect(profile_2_parsed_tags).toStrictEqual([ 'tag2', 'tag3' ]);
     expect(profile_1_parsed_tags).toStrictEqual(['tag2']);
   });
+
+  test('testing rm_dupe_tags()', () => {
+
+    //removing potential duplicate from test profiles 2 and 3
+    const profile_2_tag_list = rm_dupe_tags(test_profile_2.tag);
+    const profile_3_tag_list = rm_dupe_tags(test_profile_3.tag);
+
+    
+    //checking to make sure duplicates were removed from profiles 2 and 3
+    expect(profile_3_tag_list).toStrictEqual("tag2,tag3");
+    expect(profile_2_tag_list).toStrictEqual("tag2,tag3");
+  });
+
 });
