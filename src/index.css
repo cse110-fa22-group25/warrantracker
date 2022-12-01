@@ -116,3 +116,7 @@ textarea:focus {
   white-space: nowrap;
   overflow: hidden;
 }
+
+.modal-body {
+  overflow-y: auto;
+}

@@ -15,9 +15,12 @@
 
     <!-- css -->
     <link rel="stylesheet" href="./index.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato&display=swap"
+      rel="stylesheet"
+    />
 
     <!-- scripts -->
     <script type="module" src="scripts/home.js"></script>
@@ -33,7 +36,11 @@
     <nav class="navbar navbar-custom">
       <div class="container-fluid">
         <a class="navbar-brand"
-          ><img alt="team logo" src="img/team_logo_2.png" id="team-logo"><span id="nav-brand" class="m-2">Warrantracker</span></a
+          ><img alt="team logo" src="img/team_logo_2.png" id="team-logo" /><span
+            id="nav-brand"
+            class="m-2"
+            >Warrantracker</span
+          ></a
         >
       </div>
     </nav>
@@ -41,7 +48,12 @@
     <!-- main page -->
     <main class="container p-auto pt-3" id="page">
       <!-- div for search bar -->
-      <form class="d-flex justify-content-center" role="search" id="search-form" onsubmit="return false">
+      <form
+        class="d-flex justify-content-center"
+        role="search"
+        id="search-form"
+        onsubmit="return false"
+      >
         <input
           class="form-control me- search-bar"
           type="search"
@@ -78,34 +90,15 @@
                 data-bs-target="#new-modal"
                 class="card"
               >
-                <ion-icon class="position-absolute top-50 start-50 translate-middle" name="add-outline" id="plus-icon"></ion-icon>
+                <ion-icon
+                  class="position-absolute top-50 start-50 translate-middle"
+                  name="add-outline"
+                  id="plus-icon"
+                ></ion-icon>
               </div>
             </div>
           </div>
         </div>
-
-        <!-- div for upcoming event -->
-        <!-- <div class="col-lg-3 p-2">
-          <div class="card event-card">
-            <div class="card-header">
-              <i class="fa-solid fa-calendar-days"></i> Upcoming Events
-            </div>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">
-                <h6>Oct. 31</h6>
-                <i class="fa-regular fa-angle-right"></i> iPhone 13 Warranty
-                Expires
-              </li>
-              <li class="list-group-item">
-                <h6>Nov. 20</h6>
-                <i class="fa-regular fa-angle-right"></i> Change the filter
-                <br />
-                <i class="fa-regular fa-angle-right"></i> Sony a7r3 Warranty
-                Expires
-              </li>
-            </ul>
-          </div>
-        </div> -->
       </section>
     </main>
 
@@ -132,8 +125,9 @@
               aria-label="Close"
             ></button>
           </div>
-          <form class="needs-validation" id="new-modal-form">
-            <div class="modal-body">
+
+          <div class="modal-body">
+            <form class="needs-validation" id="new-modal-form">
               <!-- when edit the content of this modal, just edit the code below -->
               <div class="mb-3">
                 <label for="new-modal-title" class="form-label">Title:</label>
@@ -191,20 +185,20 @@
                   placeholder="Add more notes..."
                 ></textarea>
               </div>
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-danger"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-              <button type="submit" class="btn btn-primary" id="createProfile">
-                Save
-              </button>
-            </div>
-          </form>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="submit" class="btn btn-primary" id="createProfile" form="new-modal-form">
+              Save
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -221,7 +215,7 @@
       aria-labelledby="confirmModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
           <!-- Change the modal's header -->
           <div class="modal-header">
@@ -265,7 +259,7 @@
       aria-labelledby="confirmModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
           <!-- Change the modal's header -->
           <div class="modal-header">
@@ -323,8 +317,9 @@
             <h1 class="modal-title fs-5" id="info-modal-label">Info</h1>
             <button type="button" class="btn-close" aria-label="Close"></button>
           </div>
-          <form class="needs-validation" id="info-modal-form">
-            <div class="modal-body">
+
+          <div class="modal-body">
+            <form class="needs-validation" id="info-modal-form">
               <!-- when edit the content of this modal, just edit the code below -->
               <!-- need to change the input elements below to text info -->
               <div class="mb-3">
@@ -378,21 +373,26 @@
                   rows="5"
                 ></textarea>
               </div>
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-danger"
-                data-bs-toggle="modal"
-                data-bs-target="#confirm-delete-modal"
-              >
-                Delete
-              </button>
-              <button type="submit" class="btn btn-primary" id="modify-profile">
-                Modify
-              </button>
-            </div>
-          </form>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-bs-toggle="modal"
+              data-bs-target="#confirm-delete-modal"
+            >
+              Delete
+            </button>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              id="modify-profile"
+              form="info-modal-form"
+            >
+              Modify
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -404,7 +404,13 @@
       crossorigin="anonymous"
     ></script>
     <!-- ion-icon -->
-    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+    ></script>
   </body>
 </html>
