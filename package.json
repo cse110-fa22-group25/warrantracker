@@ -6,6 +6,7 @@
     "test": "jest",
     "test-unit": "jest --verbose ./src/__tests__/unit",
     "start-server":  "npx parcel ./src/index.html --port 5500",
+    "build-server": "npx parcel build ./src/index.html"
     "doc": "jsdoc -c jsdoc.json",
     "jslint": "npx eslint ./src --ext .js,.jsx,.ts,.tsx",
     "htmllint": "npx htmlhint \"./src/**/*.html\"",
