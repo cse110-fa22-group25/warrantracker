@@ -75,23 +75,23 @@ body {
 }
 
 .btn-primary {
+  background-color: #95a345;
+  border-color: #95a345;
+}
+
+.btn-primary:hover {
   background-color: #ccd5ae;
   border-color: #ccd5ae;
 }
 
-.btn-primary:hover {
-  background-color: #797d62;
-  border-color: #797d62;
-}
-
 .btn-danger {
-  background-color: #d4a373;
-  border-color: #d4a373;
+  background-color: #c96c2a;
+  border-color: #c96c2a;
 }
 
 .btn-danger:hover {
-  background-color: #997b66;
-  border-color: #997b66;
+  background-color: #d4a373;
+  border-color: #d4a373;
 }
 
 .btn-light:hover {
