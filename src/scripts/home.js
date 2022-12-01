@@ -150,6 +150,10 @@ function create_profile() {
   serial_num.value = "";
   note.value = "";
 
+  const search_form = document.querySelector("#search-form");
+  const search_bar = search_form.querySelector("#search-bar");
+  search_bar.value = "";
+  search(search_bar.value)
   // hide bootstrap modal
   NEW_MODAL_INSTANCE.hide();
 }

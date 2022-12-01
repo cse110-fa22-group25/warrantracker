@@ -54,7 +54,13 @@ export function setup_modify() {
     card_exp_date.innerHTML = exp_date.value;
     const card_serial_num = req_card.querySelector(".card-serial-num");
     card_exp_date.innerHTML = serial_num.value;
-
+    const card_note = req_card.querySelector(".card-text");
+    card_note.innerHTML = note.value.length < 80 ? note.value : note.value.substring(0, 80) + "...";
+    // handle other properties changing
+    SELECTED_PROFILE.title = title.value;
+    SELECTED_PROFILE.exp_date = exp_date.value;
+    SELECTED_PROFILE.serial_num = serial_num.value;
+    SELECTED_PROFILE.note = note.value;
     // Decrease tag count for previous tag by 1
     TAG_MAP.set(SELECTED_PROFILE.tag, TAG_MAP.get(SELECTED_PROFILE.tag) - 1);
     // if no other profiles use this tag, remove it from map
@@ -144,7 +150,7 @@ function handle_tag_input_change(tag_input, type) {
 
 export function setup_search() {
   const search_form = document.querySelector("#search-form");
-  const search_bar = search_form.querySelector("#search-bar")
+  const search_bar = search_form.querySelector("#search-bar");
   search_form.addEventListener("input", () => {
     // deactivate tag filters
     ACTIVE_TAGS.clear();

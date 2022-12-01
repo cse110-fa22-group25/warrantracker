@@ -1,10 +1,22 @@
-module.exports = {
+const ci = Boolean(process.env.CI || false);
+const baseOptions = {
   server: {
-    command: 'npm run start-server',
-    port: 5500
+  command: 'npm run start-server',
+  port: 5500
   },
-  launch: {
-    headless: true,
-    slowMo: 0
-  }
 }
+const ciPipelineOptions = {
+  launch: {
+    executablePath: '/usr/bin/google-chrome-stable',
+    headless: true,
+    args: [
+      '--ignore-certificate-errors',
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-accelerated-2d-canvas',
+      '--disable-gpu'
+    ]
+  },
+server: baseOptions.server
+}
+module.exports = ci ? ciPipelineOptions : baseOptions;
