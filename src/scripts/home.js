@@ -119,6 +119,8 @@ function create_profile() {
     id = Math.floor(Math.random() * Date.now());
   } while (ID_SET.has(id));
 
+  ID_SET.add(id);
+
   // create a new profile object
   const new_profile = new Profile(
     id,
