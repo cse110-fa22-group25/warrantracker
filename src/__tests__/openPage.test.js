@@ -106,5 +106,5 @@ describe('Test Info Modal', () => {
         expect(note_text).toBe(test_profile.note);
      });
  
- });
+});
   
