@@ -489,7 +489,6 @@ function display_selected_profile(profiles) {
  * @param {string} query a string
  */
 function search(query) {
-  console.log(query);
   // split search query into array of words
   SEARCH_PROFILES = PROFILE_LIST;
   const query_arr = query.toLowerCase().split(" ");
