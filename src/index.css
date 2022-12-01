@@ -32,7 +32,7 @@ body {
 .btn-labels {
   display: inline-block;
   vertical-align: middle;
-  overflow-x: auto;
+  overflow-x: scroll;
   white-space: nowrap;
   width: 600px;
 }
