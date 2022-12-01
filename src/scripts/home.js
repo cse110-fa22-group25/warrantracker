@@ -187,6 +187,7 @@ function create_card(profile) {
               }</h6>`
             : ""
         }
+        ${profile.note.length < 80 ? '<p class="card-text">' + profile.note + '</p>' : '<p class="card-text">' + profile.note.substring(0, 80) + '...</p>'}
       </div>
     </div>
   `;
