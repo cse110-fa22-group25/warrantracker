@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import { Profile, create_card, search } from '../scripts/home';
+import { Profile, create_card, search, parse_profile_tags } from '../scripts/home';
 
 let test_profile = new Profile(0, "title1", "tag2", "expDate3", "serialNum", "note");
 
@@ -55,5 +55,20 @@ describe('Test createCard()', () => {
     const new_card = create_card(test_profile);
     expect(new_card.querySelector(".card-title").innerHTML).toBe(test_profile.title);
     expect(new_card.querySelector(".card-text").innerHTML).toBe(test_profile.note);
+  });
+});
+
+describe('Test parse_profile_tags()', () => {
+  let test_profile_2 = new Profile(1, "title2", "tag2      ,  tag3", "expDate45", "serialNum", "note2");
+
+  test('parsing tags', () => {
+
+    const profile_2_parsed_tags = parse_profile_tags(test_profile_2);
+    const profile_1_parsed_tags = parse_profile_tags(test_profile);
+
+    console.log(profile_2_parsed_tags);
+
+    expect(profile_2_parsed_tags).toStrictEqual([ 'tag2', 'tag3' ]);
+    expect(profile_1_parsed_tags).toStrictEqual(['tag2']);
   });
 });

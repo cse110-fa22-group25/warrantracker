@@ -559,5 +559,6 @@ export {
   rm_dupe_tags,
   search,
   Profile,
-  create_tag_btn
+  create_tag_btn,
+  parse_profile_tags
 };
