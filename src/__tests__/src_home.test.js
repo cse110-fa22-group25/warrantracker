@@ -41,7 +41,7 @@ describe('Test createCard()', () => {
   });
 
   test('attributes', () => {
-    expect(new_card.getAttribute('class')).toBe("col-sm-6 col-lg-4 p-2");
+    expect(new_card.getAttribute('class')).toBe("col-sm-6 col-lg-4 col-xl-3 p-2");
 
     const card = new_card.querySelector('div');
     const card_attr = card.getAttributeNames();
