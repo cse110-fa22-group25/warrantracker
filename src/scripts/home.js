@@ -173,9 +173,7 @@ function create_card(profile) {
     <div type="button" data-bs-toggle="modal" data-bs-target="#info-modal" class="card">
       <div class="card-body">
         <h5 class="card-title">${
-          profile.title.length < 26
-            ? profile.title
-            : profile.title.substring(0, 26) + "..."
+          profile.title
         }</h5>
         <h6 class="card-subtitle mb-2 text-muted">Expires on ${
           profile.exp_date
@@ -183,17 +181,10 @@ function create_card(profile) {
         ${
           profile.serial_num
             ? `<h6 class="card-subtitle mb-2 text-muted">Serial #: ${
-                profile.serial_num.length < 12
-                  ? profile.serial_num
-                  : profile.serial_num.substring(0, 12) + "..."
+                profile.serial_num
               }</h6>`
             : ""
         }
-        <p class="card-text">${
-          profile.note.length < 80
-            ? profile.note
-            : profile.note.substring(0, 80) + "..."
-        }</p>
       </div>
     </div>
   `;

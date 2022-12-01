@@ -112,3 +112,11 @@ textarea:focus {
 .dropdown-menu {
   background-color: #fefae0;
 }
+
+.card-title,
+.card-subtitle {
+  max-width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
