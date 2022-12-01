@@ -24,10 +24,10 @@ jobs:
 
       - name: Install stuff
         run:
-          npm run start-server
           npm install
       - name: Run test
         run:
+          npm run start-server
           npm run test-unit
 
   # Job: Lint javascript files
