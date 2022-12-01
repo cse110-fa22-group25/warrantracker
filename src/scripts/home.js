@@ -177,12 +177,12 @@ function create_card(profile) {
         <h5 class="card-title">${
           profile.title
         }</h5>
-        <h6 class="card-subtitle mb-2 text-muted">Expires on ${
+        <h6 class="card-subtitle mb-2 text-muted card-exp-date">Expires on ${
           profile.exp_date
         }</h6>
         ${
           profile.serial_num
-            ? `<h6 class="card-subtitle mb-2 text-muted">Serial #: ${
+            ? `<h6 class="card-subtitle mb-2 text-muted card-serial-num">Serial #: ${
                 profile.serial_num
               }</h6>`
             : ""

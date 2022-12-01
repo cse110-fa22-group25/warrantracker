@@ -50,8 +50,10 @@ export function setup_modify() {
     const req_card = document.getElementById(SELECTED_PROFILE.id);
     const card_title = req_card.querySelector(".card-title");
     card_title.innerHTML = title.value;
-    const card_text = req_card.querySelector(".card-text");
-    card_text.innerHTML = note.value;
+    const card_exp_date = req_card.querySelector(".card-exp-date");
+    card_exp_date.innerHTML = exp_date.value;
+    const card_serial_num = req_card.querySelector(".card-serial-num");
+    card_exp_date.innerHTML = serial_num.value;
 
     // Decrease tag count for previous tag by 1
     TAG_MAP.set(SELECTED_PROFILE.tag, TAG_MAP.get(SELECTED_PROFILE.tag) - 1);
