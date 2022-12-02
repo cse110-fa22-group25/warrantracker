@@ -15,22 +15,28 @@
 
     <!-- css -->
     <link rel="stylesheet" href="./index.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato&display=swap"
+      rel="stylesheet"
+    />
 
     <!-- scripts -->
     <script type="module" src="scripts/home.js"></script>
-    <script
-      src="https://kit.fontawesome.com/6d99204fba.js"
-      crossorigin="anonymous"
-    ></script>
 
     <title>Warrantracker</title>
   </head>
   <body>
     <!-- navbar -->
-    <nav class="navbar bg-light navbar-light">
+    <nav class="navbar navbar-custom">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#"
-          ><i class="fa-solid fa-mug-hot"></i> Warrantracker</a
+        <a class="navbar-brand"
+          ><img alt="team logo" src="img/team_logo_2.png" id="team-logo" /><span
+            id="nav-brand"
+            class="m-2"
+            >Warrantracker</span
+          ></a
         >
       </div>
     </nav>
@@ -38,7 +44,12 @@
     <!-- main page -->
     <main class="container p-auto pt-3" id="page">
       <!-- div for search bar -->
-      <form class="d-flex justify-content-center" role="search" id="search-form" onsubmit="return false">
+      <form
+        class="d-flex justify-content-center"
+        role="search"
+        id="search-form"
+        onsubmit="return false"
+      >
         <input
           class="form-control me- search-bar"
           type="search"
@@ -64,9 +75,9 @@
 
       <section class="row" id="info-section">
         <!-- div for profile cards -->
-        <div class="col-lg-9">
+        <div class="col-lg-12">
           <div class="row" id="grid">
-            <div class="col-sm-6 col-lg-4 p-2" id="new-profile-btn">
+            <div class="col-sm-6 col-lg-4 col-xl-3 p-2" id="new-profile-btn">
               <!-- Hiding/showing the modal is handled by bootstrap, see 
                 https://getbootstrap.com/docs/4.0/components/modal/ -->
               <div
@@ -75,34 +86,21 @@
                 data-bs-target="#new-modal"
                 class="card"
               >
-                <h5 class="position-absolute top-50 start-50 translate-middle">
-                  +
-                </h5>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  fill="currentColor"
+                  class="bi bi-plus-lg position-absolute top-50 start-50 translate-middle"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"
+                  />
+                </svg>
               </div>
             </div>
-          </div>
-        </div>
-
-        <!-- div for upcoming event -->
-        <div class="col-lg-3 p-2">
-          <div class="card event-card">
-            <div class="card-header">
-              <i class="fa-solid fa-calendar-days"></i> Upcoming Events
-            </div>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">
-                <h6>Oct. 31</h6>
-                <i class="fa-regular fa-angle-right"></i> iPhone 13 Warranty
-                Expires
-              </li>
-              <li class="list-group-item">
-                <h6>Nov. 20</h6>
-                <i class="fa-regular fa-angle-right"></i> Change the filter
-                <br />
-                <i class="fa-regular fa-angle-right"></i> Sony a7r3 Warranty
-                Expires
-              </li>
-            </ul>
           </div>
         </div>
       </section>
@@ -131,8 +129,9 @@
               aria-label="Close"
             ></button>
           </div>
-          <form class="needs-validation" id="new-modal-form">
-            <div class="modal-body">
+
+          <div class="modal-body">
+            <form class="needs-validation" id="new-modal-form">
               <!-- when edit the content of this modal, just edit the code below -->
               <div class="mb-3">
                 <label for="new-modal-title" class="form-label">Title:</label>
@@ -190,20 +189,25 @@
                   placeholder="Add more notes..."
                 ></textarea>
               </div>
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-              <button type="submit" class="btn btn-primary" id="createProfile">
-                Save
-              </button>
-            </div>
-          </form>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              id="createProfile"
+              form="new-modal-form"
+            >
+              Save
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -220,7 +224,7 @@
       aria-labelledby="confirmModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
           <!-- Change the modal's header -->
           <div class="modal-header">
@@ -235,7 +239,7 @@
             <button
               type="button"
               id="close-deletion-btn"
-              class="btn btn-secondary"
+              class="btn btn-primary"
               data-bs-toggle="modal"
               data-bs-target="#info-modal"
             >
@@ -264,7 +268,7 @@
       aria-labelledby="confirmModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
           <!-- Change the modal's header -->
           <div class="modal-header">
@@ -279,7 +283,7 @@
             <button
               type="button"
               id="cancel-cancel-modify-btn"
-              class="btn btn-secondary"
+              class="btn btn-primary"
               data-bs-toggle="modal"
               data-bs-target="#info-modal"
             >
@@ -322,8 +326,9 @@
             <h1 class="modal-title fs-5" id="info-modal-label">Info</h1>
             <button type="button" class="btn-close" aria-label="Close"></button>
           </div>
-          <form class="needs-validation" id="info-modal-form">
-            <div class="modal-body">
+
+          <div class="modal-body">
+            <form class="needs-validation" id="info-modal-form">
               <!-- when edit the content of this modal, just edit the code below -->
               <!-- need to change the input elements below to text info -->
               <div class="mb-3">
@@ -377,21 +382,26 @@
                   rows="5"
                 ></textarea>
               </div>
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-danger"
-                data-bs-toggle="modal"
-                data-bs-target="#confirm-delete-modal"
-              >
-                Delete
-              </button>
-              <button type="submit" class="btn btn-primary" id="modify-profile">
-                Modify
-              </button>
-            </div>
-          </form>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-bs-toggle="modal"
+              data-bs-target="#confirm-delete-modal"
+            >
+              Delete
+            </button>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              id="modify-profile"
+              form="info-modal-form"
+            >
+              Modify
+            </button>
+          </div>
         </div>
       </div>
     </div>
