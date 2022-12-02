@@ -10,7 +10,8 @@ const CREATE_PROFILE_BTN = '#createProfile';
 const ANIMATION_TIME = 300;
 
 //variables for modify profile
-const MODIFY_PROFILE_BTN = '#modify-profile'
+const MODIFY_PROFILE_BTN = '#modify-profile';
+const INFO_MODAL_TAG = '#info-modal-input-tag';
 
 //variables for delete profile
 const INFO_MODAL = '#info-modal';
@@ -53,9 +54,9 @@ describe('Basic user flow for Website', () => {
     await page.waitForSelector('#new-modal', {visible: true}); // wait for the modal to be visible
     await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);}); // wait for animation to finish
 
-    await page.type('#new-modal-title', 'name2 - no tag');
-    await page.type('#new-modal-exp_date', '11132022');
-    await page.click("#createProfile");
+    await page.type(NEW_MODAL_TITLE, 'name2 - no tag');
+    await page.type(NEW_MODAL_EXP_DATE, '11132022');
+    await page.click(CREATE_PROFILE_BTN);
     // wait for modal closing animation to end
     await page.waitForSelector('#new-modal', {visible: false})
     await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
@@ -182,7 +183,7 @@ describe('Basic user flow for Website', () => {
     await page.waitForSelector(INFO_MODAL, {visible: true}); // wait for the modal to be visible
     await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);}); // wait for animation to finish
     console.log("before type");
-    await page.type(NEW_MODAL_TAG, 'tag2,tag4');
+    await page.type(INFO_MODAL_TAG, ',tag4');
     await page.click(MODIFY_PROFILE_BTN);
     await page.waitForSelector(INFO_MODAL, {visible: false})
     await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
