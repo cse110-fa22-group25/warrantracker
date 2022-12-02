@@ -514,7 +514,7 @@ function search(query) {
  * Sets search_match to contain all profiles that match the query
  *
  * @param {Profile[]} search_match Output parameter for query-matching profiles
- * @param {*} query_arr Array of queries in search
+ * @param {string[]} query_arr Array of queries in search
  */
 function search_clr(search_match, query_arr) {
   for (let i = 0; i < PROFILE_LIST.length; i++) {
