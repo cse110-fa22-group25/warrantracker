@@ -13,6 +13,10 @@ describe('Basic user flow for Website', () => {
     // First, visit the website
     beforeAll(async () => {
       await page.goto('http://127.0.0.1:5500/src/');
+      await page.evaluate(() => {
+        localStorage.clear();
+      });
+      await page.reload();
     });
   
     // Next, check to make sure that add button is loaded
@@ -187,5 +191,5 @@ describe('Basic user flow for Website', () => {
         profile_grid = await page.$('#grid');
         all_profile_card = await profile_grid.$$('.card');
         expect(all_profile_card.length).toBe(6);
-    },10000);
+    },100000);
 });
