@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/cse110-fa22-group25/warrantracker#readme",
   "devDependencies": {
-    "@babel/core": "^7.20.2",
+    "@babel/core": "^7.20.5",
     "@babel/preset-env": "^7.20.2",
     "@types/jest": "^29.2.3",
     "@types/jest-environment-puppeteer": "^5.0.3",

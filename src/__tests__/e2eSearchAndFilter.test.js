@@ -156,19 +156,16 @@ describe('Basic user flow for Website', () => {
         profile_grid = await page.$('#grid');
         all_profile_card = await profile_grid.$$('.card');
         expect(all_profile_card.length).toBe(2);
-        // await all_profile_card[1].click();
-        // let info_title = await page.$("#info-modal-input-title");
-        // let title_text = await (await info_title.getProperty('value')).jsonValue();
-        // expect(title_text).toBe('fridge');
-        // let close_btn = await page.$('.btn-close');
-        // await close_btn.click();
-        // let card_block = await page.$('.card-title');
-        // console.log(card_block);
-        // let card_name = await card_block.getProperty('innerText');
-        // let name_value = card_name.jsonValue();
-        // expect(name_value).toEqual('fridge'); //failed...need to be fixed
         await all_tag_button[3].click();
         await all_tag_button[5].click();
+        all_profile_card = await profile_grid.$$('.card');
+        expect(all_profile_card.length).toBe(6);
+        await all_tag_button[0].click();
+        all_profile_card = await profile_grid.$$('.card');
+        // check if the number of tag is still 8
+        expect(all_tag_button.length).toBe(8);
+        // check if click all tag will unselect all other tag
+        expect(all_profile_card.length).toBe(6);
     }, 10000);
 
     it('test search', async () => {
@@ -191,5 +188,15 @@ describe('Basic user flow for Website', () => {
         profile_grid = await page.$('#grid');
         all_profile_card = await profile_grid.$$('.card');
         expect(all_profile_card.length).toBe(6);
-    },100000);
+
+        // search after filter (disable filter after search)
+        await all_tag_button[2].click(); // only air purifer under this tag
+        await page.type(SEARCH_BAR, 'fridge');
+        all_profile_card = await profile_grid.$$('.card');
+        expect(all_profile_card.length).toBe(3);
+        await search_bar.click({clickCount: 2});
+        await search_bar.press('Backspace');
+        all_profile_card = await profile_grid.$$('.card');
+        expect(all_profile_card.length).toBe(6);
+    },10000);
 });
