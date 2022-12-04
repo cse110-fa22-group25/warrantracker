@@ -187,17 +187,19 @@ describe('Basic user flow for Website', () => {
     await page.click(MODIFY_PROFILE_BTN);
     await page.waitForSelector(INFO_MODAL, {visible: false})
     await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
-    // console.log(tag_section);
+    console.log(tag_section);
     tag_section = await page.$('#tag-btn-div');
     all_tag_button = await tag_section.$$('button');
-    // console.log(all_tag_button);
+    console.log(all_tag_button);
     expect(all_tag_button.length).toBe(5);
-    // console.log("first click test");
+    console.log("first click test");
     await all_tag_button[3].click();
+    console.log("after click tag");
+    profile_grid = await page.$('#grid');
     all_profile_card = await profile_grid.$$('.card');
     expect(all_profile_card.length).toBe(2);
     await all_tag_button[3].click();
-    // console.log("second click test");
+    console.log("second click test");
     await all_tag_button[4].click();
     all_profile_card = await profile_grid.$$('.card');
     expect(all_profile_card.length).toBe(2);
