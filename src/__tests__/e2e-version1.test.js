@@ -18,9 +18,14 @@ const INFO_MODAL = '#info-modal';
 const CONFIRM_DELETE_MODAL = '#confirm-delete-modal';
 
 describe('Basic user flow for Website', () => {
+  jest.setTimeout(100000);
   // First, visit the website
   beforeAll(async () => {
     await page.goto('http://127.0.0.1:5500/src/');
+    await page.evaluate(() => {
+      localStorage.clear();
+    });
+    await page.reload();
   });
 
   // Next, check to make sure that add button is loaded
@@ -404,6 +409,6 @@ describe('Basic user flow for Website', () => {
     //ensure local storage and the number of cards on the page are equal 
     expect(local_contents.length + 1).toBe(all_profile_card.length);
 
-  }, 10000);
+  }, 50000);
 });
 

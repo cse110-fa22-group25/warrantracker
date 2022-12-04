@@ -10,6 +10,7 @@ const CREATE_PROFILE_BTN = '#createProfile';
 const ANIMATION_TIME = 500;
 const SEARCH_BAR = '#search-bar'
 describe('Basic user flow for Website', () => {
+    jest.setTimeout(100000);
     // First, visit the website
     beforeAll(async () => {
       await page.goto('http://127.0.0.1:5500/src/');
