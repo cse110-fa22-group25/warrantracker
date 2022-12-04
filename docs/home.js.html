@@ -30,9 +30,17 @@
  * Main file containing main functions of Warrantracker
  */
 
-import { setup_modify, setup_delete, setup_tag_recommend, setup_search } from "./setup.js";
+import {
+  setup_modify,
+  setup_delete,
+  setup_tag_recommend,
+  setup_search
+} from "./setup.js";
 import { Profile } from "./Profile.js";
-import { get_profile_from_storage, save_profile_to_storage } from "./storage.js";
+import {
+  get_profile_from_storage,
+  save_profile_to_storage
+} from "./storage.js";
 
 /** Global Variables */
 let PROFILE_LIST = []; // store all profile object
@@ -139,6 +147,8 @@ function create_profile() {
     id = Math.floor(Math.random() * Date.now());
   } while (ID_SET.has(id));
 
+  ID_SET.add(id);
+
   // create a new profile object
   const new_profile = new Profile(
     id,
@@ -186,33 +196,31 @@ function create_profile() {
  */
 function create_card(profile) {
   const card_wrapper = document.createElement("div");
-  card_wrapper.setAttribute("class", "col-sm-6 col-lg-4 p-2");
+  card_wrapper.setAttribute("class", "col-sm-6 col-lg-4 col-xl-3 p-2");
   card_wrapper.setAttribute("id", `${profile.id}`);
 
-  const card = document.createElement("div");
-  card.setAttribute("type", "button");
-  card.setAttribute("data-bs-toggle", "modal");
-  card.setAttribute("data-bs-target", "#info-modal");
-  card.setAttribute("class", "card");
-
-  const card_body = document.createElement("div");
-  card_body.setAttribute("class", "card-body");
-
-  const card_title = document.createElement("h5");
-  card_title.innerHTML = `${profile.title}`;
-  card_title.setAttribute("class", "card-title");
-
-  const card_text = document.createElement("p");
-  card_text.setAttribute("class", "card-text");
-  card_text.innerHTML = `${profile.note}`;
-
-  // can add some btn or other needed elements here
-
-  // construct the Card Components here
-  card_body.appendChild(card_title);
-  card_body.appendChild(card_text);
-  card.appendChild(card_body);
-  card_wrapper.appendChild(card);
+  card_wrapper.innerHTML = `
+    &lt;div type="button" data-bs-toggle="modal" data-bs-target="#info-modal" class="card">
+      &lt;div class="card-body">
+        &lt;h5 class="card-title">${profile.title}&lt;/h5>
+        &lt;h6 class="card-subtitle mb-2 text-muted card-exp-date">Expires on ${
+          profile.exp_date
+        }&lt;/h6>
+        ${
+          profile.serial_num
+            ? `&lt;h6 class="card-subtitle mb-2 text-muted card-serial-num">Serial #: ${profile.serial_num}&lt;/h6>`
+            : ""
+        }
+        ${
+          profile.note.length &lt; 80
+            ? '&lt;p class="card-text">' + profile.note + "&lt;/p>"
+            : '&lt;p class="card-text">' +
+              profile.note.substring(0, 80) +
+              "...&lt;/p>"
+        }
+      &lt;/div>
+    &lt;/div>
+  `;
 
   // add a event listener to the component
   // when clicking, update the info modal with its info
@@ -288,8 +296,8 @@ export function search_tag(tag) {
   const match_list = [];
   // if we got multiple tag in input textbox,
   // ignore previous tags for searching
-  if (tag.includes(',')) {
-    const temp = tag.split(',');
+  if (tag.includes(",")) {
+    const temp = tag.split(",");
     tag = temp[temp.length - 1].trim();
   }
   PROFILE_LIST.forEach((profile) => {
@@ -327,7 +335,7 @@ function create_tag_btn() {
   tag_html_list.innerHTML = `
   &lt;button
     type="button"
-    class="btn btn-light"
+    class="btn btn-light tag-btn"
     data-bs-toggle="button"
     id="all-btn"
   >
@@ -348,7 +356,7 @@ function create_tag_btn() {
         // if encounter a new tag, create the html element for the btn
         const curr_tag_btn = document.createElement("button");
         curr_tag_btn.setAttribute("type", "button");
-        curr_tag_btn.setAttribute("class", "btn btn-light");
+        curr_tag_btn.setAttribute("class", "btn btn-light m-1 tag-btn");
         curr_tag_btn.setAttribute("data-bs-toggle", "button");
         curr_tag_btn.setAttribute("id", tag);
         curr_tag_btn.innerHTML = `${tag}`;
@@ -480,16 +488,16 @@ function rm_dupe_tags(tag_list) {
 function display_selected_profile(profiles) {
   // remove curr cards in grid
   GRID.innerHTML = `
-    &lt;div class="col-sm-6 col-lg-4 p-2" id="new-profile-btn">
+    &lt;div class="col-sm-6 col-lg-4 col-xl-3 p-2" id="new-profile-btn">
       &lt;div
         type="button"
         data-bs-toggle="modal"
         data-bs-target="#new-modal"
         class="card"
       >
-        &lt;h5 class="position-absolute top-50 start-50 translate-middle">
-          +
-        &lt;/h5>
+        &lt;svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-plus-lg position-absolute top-50 start-50 translate-middle" viewBox="0 0 16 16">
+          &lt;path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+        &lt;/svg>
       &lt;/div>
     &lt;/div>
   `;
@@ -534,17 +542,17 @@ function search(query) {
  * Sets search_match to contain all profiles that match the query
  *
  * @param {Profile[]} search_match Output parameter for query-matching profiles
- * @param {*} query_arr Array of queries in search
+ * @param {string[]} query_arr Array of queries in search
  */
 function search_clr(search_match, query_arr) {
   for (let i = 0; i &lt; PROFILE_LIST.length; i++) {
-    let keyword_set = ""
+    let keyword_set = "";
     const curr = PROFILE_LIST[i];
     search_match.push(curr);
 
     // split title and add title to keyword set
     curr.title.split(" ").forEach((word) => {
-      keyword_set += word;
+      keyword_set += word.toLowerCase();
     });
 
     // add each tag to keyword set
@@ -587,7 +595,8 @@ export {
   rm_dupe_tags,
   search,
   Profile,
-  create_tag_btn
+  create_tag_btn,
+  parse_profile_tags
 };
 </code></pre>
         </article>
@@ -605,7 +614,7 @@ export {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a> on Thu Nov 24 2022 01:12:59 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a> on Sat Dec 03 2022 10:07:45 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>

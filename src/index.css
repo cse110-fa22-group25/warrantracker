@@ -1,34 +1,122 @@
+/* stylelint-disable color-function-notation */
+/* stylelint-disable property-no-vendor-prefix */
+/* stylelint-disable custom-property-empty-line-before */
 html,
 body {
   height: 100%;
   width: 100%;
+  /* stylelint-disable-next-line font-family-name-quotes */
+  font-family: "Lato", sans-serif;
+  background-color: #faedcd;
+}
+
+#team-logo {
+  width: 20px;
+  vertical-align: top;
+}
+
+.navbar-custom {
+  background-color: #d4a373;
+}
+
+#nav-brand {
+  color: #fefae0;
 }
 
 .search-bar {
   max-width: 600px;
   height: 50px;
-}
-
-.search-btn {
-  width: 80px;
+  background-color: #fefae0;
 }
 
 .btn-labels {
   display: inline-block;
   vertical-align: middle;
-  overflow-x: auto;
+  overflow-x: scroll;
   white-space: nowrap;
   width: 600px;
 }
 
-.event-card {
-  min-height: 500px;
+#plus-icon {
+  font-size: 48px;
+  --ionicon-stroke-width: 12px;
 }
 
 .card {
-  box-shadow: 13px 15px 48px -12px rgba(120, 116, 116, 0.7);
-  -webkit-box-shadow: 13px 15px 48px -12px rgba(120, 116, 116, 0.7);
-  -moz-box-shadow: 13px 15px 48px -12px rgba(120, 116, 116, 0.7);
+  box-shadow: 9px 12px 13px -4px rgba(51, 51, 51, 38%);
+  -webkit-box-shadow: 9px 12px 13px -4px rgba(51, 51, 51, 38%);
+  -moz-box-shadow: 9px 12px 13px -4px rgba(51, 51, 51, 38%);
   border-width: 0;
-  height: 180px;
+  min-height: 180px;
+  transition: box-shadow 0.25s ease-out 100ms;
+  background-color: #fefae0;
+}
+
+.card:hover {
+  box-shadow: 13px 15px 48px -12px rgba(120, 116, 116, 70%);
+  -webkit-box-shadow: 13px 15px 48px -12px rgba(120, 116, 116, 70%);
+  -moz-box-shadow: 13px 15px 48px -12px rgba(120, 116, 116, 70%);
+}
+
+.tag-btn {
+  background-color: #fefae0;
+  border-color: #fefae0;
+}
+
+.modal-header,
+.modal-body,
+.modal-footer,
+.form-control {
+  background-color: #fefae0;
+}
+
+.btn-primary {
+  background-color: #95a345;
+  border-color: #95a345;
+}
+
+.btn-primary:hover {
+  background-color: #ccd5ae;
+  border-color: #ccd5ae;
+}
+
+.btn-danger {
+  background-color: #c96c2a;
+  border-color: #c96c2a;
+}
+
+.btn-danger:hover {
+  background-color: #d4a373;
+  border-color: #d4a373;
+}
+
+.btn-light:hover {
+  background-color: #e9edc9;
+  border-color: #e9edc9;
+}
+
+.active {
+  background-color: #ccd5ae !important;
+  border-color: #ccd5ae !important;
+}
+
+input:focus,
+textarea:focus {
+  background-color: #eceed8 !important;
+}
+
+.dropdown-menu {
+  background-color: #fefae0;
+}
+
+.card-title,
+.card-subtitle {
+  max-width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.modal-body {
+  overflow-y: auto;
 }

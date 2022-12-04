@@ -18,6 +18,9 @@ jobs:
   # Job: Run unit tests
   unit_test:
     runs-on: ubuntu-latest
+    container: lironavon/docker-puppeteer-container:14.16.0
+    env:
+      CI: true
     steps:
       - uses: actions/checkout@v2
 
@@ -26,7 +29,7 @@ jobs:
           npm install
       - name: Run test
         run:
-          npm run test-unit
+          npm test
 
   # Job: Lint javascript files
   lint_js:
