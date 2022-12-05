@@ -2,9 +2,9 @@
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/a9822f1d8f989e320345/maintainability)](https://codeclimate.com/github/cse110-fa22-group25/warrantracker/maintainability)
 
-Docs URL:
+Docs URL: [https://cse110-fa22-group25.github.io/warrantracker/docs/](https://cse110-fa22-group25.github.io/warrantracker/docs/)
 
-Final Product URL: 
+Final Product URL: [https://cse110-fa22-group25.github.io/warrantracker/](https://cse110-fa22-group25.github.io/warrantracker/)
 ## Development: Getting Started
 
 warrantracker uses npm packages as part of the development process, so ensure you have
