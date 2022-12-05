@@ -10,6 +10,7 @@ const CREATE_PROFILE_BTN = '#createProfile';
 const ANIMATION_TIME = 500;
 const SEARCH_BAR = '#search-bar'
 describe('Basic user flow for Website', () => {
+    jest.setTimeout(100000);
     // First, visit the website
     beforeAll(async () => {
       await page.goto('http://127.0.0.1:5500/src/');
@@ -166,7 +167,7 @@ describe('Basic user flow for Website', () => {
         expect(all_tag_button.length).toBe(8);
         // check if click all tag will unselect all other tag
         expect(all_profile_card.length).toBe(6);
-    }, 10000);
+    }, 20000);
 
     it('test search', async () => {
         //Search exist item name
@@ -198,5 +199,5 @@ describe('Basic user flow for Website', () => {
         await search_bar.press('Backspace');
         all_profile_card = await profile_grid.$$('.card');
         expect(all_profile_card.length).toBe(6);
-    },10000);
+    }, 20000);
 });
