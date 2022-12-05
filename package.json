@@ -8,7 +8,7 @@
     "start-server": "parcel src/index.html --port 5500",
     "doc": "jsdoc -c jsdoc.json",
     "jslint": "npx eslint ./src --ext .js,.jsx,.ts,.tsx",
-    "htmllint": "npx htmlhint \"./src/**/*.html\"",
+    "htmllint": "npx htmlhint --ignore=\"src/docs/**.html\"",
     "csslint": "npx stylelint \"./src/**/*.css\" --aei"
   },
   "jest": {

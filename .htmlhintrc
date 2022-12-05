@@ -6,5 +6,6 @@
   "spec-char-escape": true,
   "attr-no-duplication": true,
   "attr-unsafe-chars": true,
-  "alt-require": true
+  "alt-require": true,
+  "ignore": ["./src/docs/**"]
 }
