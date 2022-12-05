@@ -18,7 +18,7 @@
     "parserOptions": {
         "ecmaVersion": "latest"
     },
-    "ignorePatterns": ["/src/__tests__/**"],
+    "ignorePatterns": ["/src/__tests__/**", "/src/docs/**"],
     "rules": {
         "semi": ["off", "always"],
         "quotes": ["off", "double"],

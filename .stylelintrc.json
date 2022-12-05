@@ -3,5 +3,8 @@
     "rules": {
         "color-no-invalid-hex": true,
         "color-hex-length": "long"
-      }
+    },
+    "ignoreFiles": [
+      "./src/docs/**/*.css"
+    ]
 }
