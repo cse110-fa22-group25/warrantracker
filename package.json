@@ -11,6 +11,10 @@
     "htmllint": "npx htmlhint \"./src/**/*.html\"",
     "csslint": "npx stylelint \"./src/**/*.css\" --aei"
   },
+  "jest": {
+    "preset": "jest-puppeteer",
+    "verbose": true
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cse110-fa22-group25/warrantracker.git"
