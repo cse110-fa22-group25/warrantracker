@@ -1,4 +1,5 @@
 import {
+  ACTIVE_TAGS,
   SELECTED_PROFILE,
   TAG_MAP,
   create_tag_btn,
@@ -7,7 +8,8 @@ import {
   CONFIRM_CANCEL_MODIFY_INSTANCE,
   delete_profile,
   rm_dupe_tags,
-  search_tag
+  search_tag,
+  search
 } from "./home.js";
 /**
  * This file contains the definitions for some routines for some single-use
@@ -48,8 +50,10 @@ export function setup_modify() {
     const req_card = document.getElementById(SELECTED_PROFILE.id);
     const card_title = req_card.querySelector(".card-title");
     card_title.innerHTML = title.value;
-    const card_text = req_card.querySelector(".card-text");
-    card_text.innerHTML = note.value;
+    const card_exp_date = req_card.querySelector(".card-exp-date");
+    card_exp_date.innerHTML = exp_date.value;
+    const card_serial_num = req_card.querySelector(".card-serial-num");
+    card_exp_date.innerHTML = serial_num.value;
 
     // Decrease tag count for previous tag by 1
     TAG_MAP.set(SELECTED_PROFILE.tag, TAG_MAP.get(SELECTED_PROFILE.tag) - 1);
@@ -135,5 +139,22 @@ function handle_tag_input_change(tag_input, type) {
         tag_input.value = tag_name;
       }
     });
+  });
+}
+
+export function setup_search() {
+  const search_form = document.querySelector("#search-form");
+  const search_bar = search_form.querySelector("#search-bar")
+  search_form.addEventListener("input", () => {
+    // deactivate tag filters
+    ACTIVE_TAGS.clear();
+    const tag_btn_div = document.querySelector("#tag-btn-div");
+    tag_btn_div.children[0].classList.remove("active");
+    // Remove "active" class from buttons of inactive tags
+    for (let i = 0; i < tag_btn_div.childElementCount; i++) {
+      tag_btn_div.children[i].classList.remove("active");
+    }
+    // search
+    search(search_bar.value);
   });
 }

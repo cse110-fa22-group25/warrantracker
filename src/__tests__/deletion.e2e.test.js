@@ -27,7 +27,7 @@ describe('Load Page Test', () => {
     it('Local Storage Test - expected null', async () => {
         let ls = await JSON.parse(await page.evaluate(() => localStorage.getItem('profiles')));
         expect(ls).toBe(null);
-    },1000);
+    },10000);
   });
 
 describe('Single Deletion Test', () => {
@@ -49,7 +49,7 @@ describe('Single Deletion Test', () => {
   it('Local Storage Test - expected one', async () => {
     let ls = await JSON.parse(await page.evaluate(() => localStorage.getItem('profiles')));
     expect(ls.length).toEqual(1);
-  },1000);
+  },10000);
   
   // Test empty delete
   it('Empty Deletion', async () => {
@@ -82,7 +82,7 @@ describe('Single Deletion Test', () => {
   it('Local Storage Test - expected one again', async () => {
     let ls = await JSON.parse(await page.evaluate(() => localStorage.getItem('profiles')));
     expect(ls.length).toEqual(1);
-  },1000);
+  },10000);
 
   // Test single deletion
   it('Profile Deletion', async () => {
@@ -108,7 +108,7 @@ describe('Single Deletion Test', () => {
   it('Local Storage Test - expected cleared', async () => {
     let ls = await JSON.parse(await page.evaluate(() => localStorage.getItem('profiles')));
     expect(ls.length).toEqual(0); // Expect empty array instead of null value
-  },1000);
+  },10000);
 });
 
 describe('Multi Deletion Test', () => {
@@ -150,7 +150,7 @@ describe('Multi Deletion Test', () => {
     let ls = await JSON.parse(await page.evaluate(() => localStorage.getItem('profiles')));
     expect(ls.length).toEqual(3); 
     expect(ls[1].title).toBe('title2');
-  },1000);
+  },10000);
 
   // Test specific deletion
   it('Specific Deletion', async () => {
@@ -177,7 +177,7 @@ describe('Multi Deletion Test', () => {
     let ls = await JSON.parse(await page.evaluate(() => localStorage.getItem('profiles')));
     expect(ls.length).toEqual(2); 
     expect(ls[1].title).toBe('title1');
-  },1000);
+  },10000);
 
   // Test total removal
   it('Full Deletion', async () => {
@@ -219,7 +219,7 @@ describe('Multi Deletion Test', () => {
   it('Local Storage Test - expected empty', async () => {
     let ls = await JSON.parse(await page.evaluate(() => localStorage.getItem('profiles')));
     expect(ls.length).toEqual(0); 
-  },1000);
+  },10000);
 });
 
 describe('Reload + Deletion Test', () => {

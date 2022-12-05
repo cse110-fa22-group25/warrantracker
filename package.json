@@ -2,9 +2,10 @@
   "name": "warrantracker",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "test": "jest",
+    "test-unit": "jest --verbose ./src/__tests__/unit",
+    "start-server": "parcel src/index.html --port 5500",
     "doc": "jsdoc -c jsdoc.json",
     "jslint": "npx eslint ./src --ext .js,.jsx,.ts,.tsx",
     "htmllint": "npx htmlhint \"./src/**/*.html\"",
@@ -28,6 +29,7 @@
     "@babel/core": "^7.20.5",
     "@babel/preset-env": "^7.20.2",
     "@types/jest": "^29.2.3",
+    "@types/jest-environment-puppeteer": "^5.0.3",
     "babel-jest": "^29.3.1",
     "eslint": "^8.26.0",
     "eslint-config-standard": "^17.0.0",
@@ -41,8 +43,16 @@
     "jest-puppeteer": "^6.1.1",
     "jsdoc": "^4.0.0",
     "jsdom": "^20.0.2",
+    "parcel": "^2.8.0",
     "puppeteer": "^19.3.0",
     "stylelint": "^14.14.1",
     "stylelint-config-standard": "^29.0.0"
+  },
+  "jest": {
+    "preset": "jest-puppeteer",
+    "verbose": true
+  },
+  "dependencies": {
+    "@parcel/babel-preset-env": "^2.8.0"
   }
 }
