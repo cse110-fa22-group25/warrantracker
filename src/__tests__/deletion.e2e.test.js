@@ -9,11 +9,16 @@ const CREATE_PROFILE_BTN = '#createProfile';
 const INFO_MODAL = '#info-modal';
 const CONFIRM_DELETE_MODAL = '#confirm-delete-modal';
 const ANIMATION_TIME = 300;
-
+  
 describe('Load Page Test', () => {
-    // Open webpage in server
+    jest.setTimeout(100000);
+    // First, visit the website
     beforeAll(async () => {
-      await page.goto("http://127.0.0.1:5500/src/index.html"); 
+      await page.goto('http://127.0.0.1:5500/src/');
+      await page.evaluate(() => {
+        localStorage.clear();
+      });
+      await page.reload();
     });
 
     // Check if site is properly loaded
@@ -58,9 +63,10 @@ describe('Single Deletion Test', () => {
     await all_profile_card[1].click();
     await page.waitForSelector(INFO_MODAL, {visible: true}); 
     await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);}); 
-    let temp_path = await page.$('#info-modal-form')
-    let delete_btn = await temp_path.$('button')
-    await delete_btn.evaluate(db => db.click());
+    let path_to_delete_button = await page.$('#info-modal');
+    let info_buttons = await path_to_delete_button.$$('button');
+    let delete_button = info_buttons[1];
+    await delete_button.evaluate(curr_button => curr_button.click());
     await page.waitForSelector(INFO_MODAL, {visible: false});
     await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
     await page.waitForSelector(CONFIRM_DELETE_MODAL, {visible: true}); //Should open deletion confirmation box
@@ -71,7 +77,7 @@ describe('Single Deletion Test', () => {
     await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);}); // Hit "cancel" on deletion confirmation box
     await page.waitForSelector(INFO_MODAL, {visible: true});
     await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
-    temp_path = await page.$('.modal-header')
+    let temp_path = await page.$('.modal-header')
     let close_btn = await temp_path.$('.btn-close')
     await close_btn.evaluate(clb => clb.click());
     await page.waitForSelector(INFO_MODAL, {visible: false});
@@ -91,9 +97,10 @@ describe('Single Deletion Test', () => {
     await all_profile_card[1].click();
     await page.waitForSelector(INFO_MODAL, {visible: true}); 
     await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);}); 
-    let temp_path = await page.$('#info-modal-form')
-    let delete_btn = await temp_path.$('button')
-    await delete_btn.evaluate(db => db.click());
+    let path_to_delete_button = await page.$('#info-modal');
+    let info_buttons = await path_to_delete_button.$$('button');
+    let delete_button = info_buttons[1];
+    await delete_button.evaluate(curr_button => curr_button.click());
     await page.waitForSelector(INFO_MODAL, {visible: false});
     await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
     await page.waitForSelector(CONFIRM_DELETE_MODAL, {visible: true}); //Should open deletion confirmation box
@@ -159,9 +166,10 @@ describe('Multi Deletion Test', () => {
     await all_profile_card[2].click();
     await page.waitForSelector(INFO_MODAL, {visible: true}); 
     await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);}); 
-    let temp_path = await page.$('#info-modal-form')
-    let delete_btn = await temp_path.$('button')
-    await delete_btn.evaluate(db => db.click());
+    let path_to_delete_button = await page.$('#info-modal');
+    let info_buttons = await path_to_delete_button.$$('button');
+    let delete_button = info_buttons[1];
+    await delete_button.evaluate(curr_button => curr_button.click());
     await page.waitForSelector(INFO_MODAL, {visible: false});
     await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
     await page.waitForSelector(CONFIRM_DELETE_MODAL, {visible: true}); //Should open deletion confirmation box
@@ -186,9 +194,10 @@ describe('Multi Deletion Test', () => {
     await all_profile_card[1].click();
     await page.waitForSelector(INFO_MODAL, {visible: true}); 
     await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);}); 
-    let temp_path = await page.$('#info-modal-form')
-    let delete_btn = await temp_path.$('button')
-    await delete_btn.evaluate(db => db.click());
+    let path_to_delete_button = await page.$('#info-modal');
+    let info_buttons = await path_to_delete_button.$$('button');
+    let delete_button = info_buttons[1];
+    await delete_button.evaluate(curr_button => curr_button.click());
     await page.waitForSelector(INFO_MODAL, {visible: false});
     await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
     await page.waitForSelector(CONFIRM_DELETE_MODAL, {visible: true}); 
@@ -202,9 +211,10 @@ describe('Multi Deletion Test', () => {
     await all_profile_card[1].click();
     await page.waitForSelector(INFO_MODAL, {visible: true}); 
     await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);}); 
-    temp_path = await page.$('#info-modal-form')
-    delete_btn = await temp_path.$('button')
-    await delete_btn.evaluate(db => db.click());
+    path_to_delete_button = await page.$('#info-modal');
+    info_buttons = await path_to_delete_button.$$('button');
+    delete_button = info_buttons[1];
+    await delete_button.evaluate(curr_button => curr_button.click());
     await page.waitForSelector(INFO_MODAL, {visible: false});
     await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
     await page.waitForSelector(CONFIRM_DELETE_MODAL, {visible: true}); 
@@ -246,9 +256,10 @@ describe('Reload + Deletion Test', () => {
     await all_profile_card[1].click();
     await page.waitForSelector(INFO_MODAL, {visible: true}); 
     await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);}); 
-    let temp_path = await page.$('#info-modal-form')
-    let delete_btn = await temp_path.$('button')
-    await delete_btn.evaluate(db => db.click());
+    let path_to_delete_button = await page.$('#info-modal');
+    let info_buttons = await path_to_delete_button.$$('button');
+    let delete_button = info_buttons[1];
+    await delete_button.evaluate(curr_button => curr_button.click());
     await page.waitForSelector(INFO_MODAL, {visible: false});
     await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
     await page.waitForSelector(CONFIRM_DELETE_MODAL, {visible: true}); 
@@ -258,7 +269,7 @@ describe('Reload + Deletion Test', () => {
     await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
     let ls = await JSON.parse(await page.evaluate(() => localStorage.getItem('profiles')));
     expect(ls.length).toEqual(1); 
-  });
+  }, 5000);
 
   // Test reload during delete
   it('Reload during deletion', async () => {
@@ -267,9 +278,10 @@ describe('Reload + Deletion Test', () => {
     await all_profile_card[1].click();
     await page.waitForSelector(INFO_MODAL, {visible: true}); 
     await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);}); 
-    let temp_path = await page.$('#info-modal-form')
-    let delete_btn = await temp_path.$('button')
-    await delete_btn.evaluate(db => db.click());
+    let path_to_delete_button = await page.$('#info-modal');
+    let info_buttons = await path_to_delete_button.$$('button');
+    let delete_button = info_buttons[1];
+    await delete_button.evaluate(curr_button => curr_button.click());
     await page.waitForSelector(INFO_MODAL, {visible: false});
     await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
     await page.waitForSelector(CONFIRM_DELETE_MODAL, {visible: true}); 
@@ -281,7 +293,7 @@ describe('Reload + Deletion Test', () => {
     await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
     let ls = await JSON.parse(await page.evaluate(() => localStorage.getItem('profiles')));
     expect(ls.length).toEqual(0); 
-  });
+  }, 5000);
 
   // Test reload during delete
   it('Reload after deletion', async () => {
@@ -301,9 +313,10 @@ describe('Reload + Deletion Test', () => {
     await all_profile_card[1].click();
     await page.waitForSelector(INFO_MODAL, {visible: true}); 
     await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);}); 
-    let temp_path = await page.$('#info-modal-form')
-    let delete_btn = await temp_path.$('button')
-    await delete_btn.evaluate(db => db.click());
+    let path_to_delete_button = await page.$('#info-modal');
+    let info_buttons = await path_to_delete_button.$$('button');
+    let delete_button = info_buttons[1];
+    await delete_button.evaluate(curr_button => curr_button.click());
     await page.waitForSelector(INFO_MODAL, {visible: false});
     await new Promise((resolve) => {setTimeout(resolve, ANIMATION_TIME);});
     await page.waitForSelector(CONFIRM_DELETE_MODAL, {visible: true}); 
@@ -318,5 +331,5 @@ describe('Reload + Deletion Test', () => {
     await page.reload(); // Reload after deletion
     ls = await JSON.parse(await page.evaluate(() => localStorage.getItem('profiles')));
     expect(ls.length).toEqual(0); 
-  });
+  }, 5000);
 });
