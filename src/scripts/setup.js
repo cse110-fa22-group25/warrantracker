@@ -2,6 +2,7 @@ import {
   ACTIVE_TAGS,
   SELECTED_PROFILE,
   TAG_MAP,
+  INFO_PROFILE_FORM,
   create_tag_btn,
   save_profile_to_storage,
   INFO_MODAL_INSTANCE,
@@ -45,16 +46,7 @@ export function setup_modify() {
   });
 
   // Define behavior for modify button, update current profile and write to storage
-  const mod_button = document.querySelector("#modify-profile");
-  mod_button.addEventListener("click", () => {
-    const req_card = document.getElementById(SELECTED_PROFILE.id);
-    const card_title = req_card.querySelector(".card-title");
-    card_title.innerHTML = title.value;
-    const card_exp_date = req_card.querySelector(".card-exp-date");
-    card_exp_date.innerHTML = exp_date.value;
-    const card_serial_num = req_card.querySelector(".card-serial-num");
-    card_exp_date.innerHTML = serial_num.value;
-
+  INFO_PROFILE_FORM.addEventListener("submit", () => {
     // Decrease tag count for previous tag by 1
     TAG_MAP.set(SELECTED_PROFILE.tag, TAG_MAP.get(SELECTED_PROFILE.tag) - 1);
     // if no other profiles use this tag, remove it from map

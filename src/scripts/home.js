@@ -21,6 +21,7 @@ let NEW_PROFILE_BTN; // the first element in the grid (the card with a "+" sign)
 let INFO_MODAL; // the modal showing up when clicking a profile card
 let NEW_PROFILE_MODAL; // the modal showing up when clicking the new-profile-btn
 let NEW_PROFILE_FORM; // the html form in new-profile-modal
+let INFO_PROFILE_FORM;
 let NEW_MODAL_INSTANCE; // bootstrap modal instance for new_profile_modal;
 let INFO_MODAL_INSTANCE; // bootstrap modal instance for infoModal;
 let CONFIRM_CANCEL_MODAL; // html modal for confirming cancel modification
@@ -45,6 +46,7 @@ function init() {
   INFO_MODAL = document.querySelector("#info-modal");
   NEW_PROFILE_MODAL = document.querySelector("#new-modal");
   NEW_PROFILE_FORM = document.querySelector("#new-modal-form");
+  INFO_PROFILE_FORM = document.querySelector("#info-modal-form");
   NEW_MODAL_INSTANCE = new window.bootstrap.Modal(NEW_PROFILE_MODAL);
   INFO_MODAL_INSTANCE = new window.bootstrap.Modal(INFO_MODAL);
   CONFIRM_CANCEL_MODAL = document.querySelector("#confirm-cancel-modify-modal");
@@ -558,6 +560,7 @@ export {
   INFO_MODAL_INSTANCE,
   CONFIRM_CANCEL_MODIFY_INSTANCE,
   TAG_MAP,
+  INFO_PROFILE_FORM,
   handle_tag_btn_click,
   save_profile_to_storage,
   create_profile,
