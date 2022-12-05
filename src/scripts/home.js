@@ -207,7 +207,7 @@ function create_card(profile) {
 
 /**
  * Update info_modal with corresponding profile info
- * by changing each <input> value to the corresponding
+ * by changing each input value to the corresponding
  * value of the profile
  * @param {Profile} profile an Profile object
  */
