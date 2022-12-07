@@ -6,7 +6,7 @@
     "test": "jest",
     "test-unit": "jest --verbose ./src/__tests__/unit",
     "start-server": "parcel src/index.html --port 5500",
-    "doc": "jsdoc -c jsdoc.json",
+    "doc": "jsdoc -c jsdoc.json ./src/docs/onboard.md",
     "jslint": "npx eslint ./src --ext .js,.jsx,.ts,.tsx",
     "htmllint": "npx htmlhint --ignore=\"src/docs/**.html\"",
     "csslint": "npx stylelint \"./src/**/*.css\" --aei"
