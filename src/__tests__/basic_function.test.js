@@ -1,3 +1,7 @@
+/**
+ * This file tests the main functions of the website together, does not test each function thoroughly
+ */
+
 // variables for add profile
 const NEW_PROFILE_BTN = "#new-profile-btn";
 const NEW_MODAL = '#new-modal';

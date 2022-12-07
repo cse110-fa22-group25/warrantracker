@@ -18,8 +18,6 @@ describe('Test modify profile', () => {
         expect(test_profile.serial_num).toBe("serialNum1");
         expect(test_profile.note).toBe("note1");
     });
-    
-    
 
     //tests after modifications
     test('After Modify', async () => {
